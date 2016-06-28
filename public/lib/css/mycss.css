@@ -1,0 +1,38 @@
+.wrapper{
+    width: 100%;
+}
+.becenter{
+    height:60px;
+    line-height: 60px;
+}
+.topbar{
+    background-color: #00b3ee;
+    height: 60px;
+    width:100%;
+}
+.topbar-inner{
+    height: 100%;
+    width: 1190px;
+    margin: auto;
+}
+.img-name{
+    float: left;
+    margin: 0 20px 0 0;
+}
+.img-name img{
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    margin: 0 5px 0 10px;
+}
+.img-name span{
+    color: white;
+    font-weight: 700;
+}
+.info{
+    float: left;
+    width:60px;
+}
+.info i{
+    color: white;
+}
