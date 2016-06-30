@@ -5,9 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var exphbs      = require('express-handlebars');
+var hbsHelper = require('./lib/hbsHelper');
+var dbHelper = require('./db/dbHelper')
 
 
-
+var config = require('./config');
 var routes = require('./routes/index');
 var admin = require('./routes/admin');
 
@@ -22,7 +24,9 @@ var hbs = exphbs.create({
   partialsDir: 'views/partials',
   layoutsDir: "views/layouts/",
   defaultLayout: 'main',
-  extname: '.hbs'
+  extname: '.hbs',
+  helpers: hbsHelper
+
 });
 app.engine('hbs', hbs.engine);
 
@@ -39,6 +43,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+config.site.path = path.join(__dirname, 'public');
 
 app.use('/', routes);
 app.use('/admin', admin);

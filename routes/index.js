@@ -1,88 +1,47 @@
 var express = require('express');
 var router = express.Router();
+var dbHelper = require('../db/dbHelper');
+var config = require('../config');
 
-var mongoose = require('mongoose');
-mongoose.connect("mongodb://127.0.0.1:27017/test");
-/*  var Schema = mongoose.Schema;  用Schema代替mongoose.Schema*/
+var News = require('../db/schema/news');
+/*
+var news = new News({
+    title:"张乐",
+    content:"我只是测试一下图片能不能被正确导入，最后祝您身体健康，再见！",
+    
+}) ;
+news.save(function (err) {
+    if(err){
+        console.log('干你妈的失败了');
+    }else {
+        console.log('success');
+    }
+})
+*/
 
-//存储数据
-var PersonInfo = new mongoose.Schema({
-    age       : Number,
-    id        : String,
-    phone     : String,
-    colloge  : String,
-    hometown  :String
+router.get('/login',function (req,res,next) {
+   res.render('login',{layout:'lg'}); 
 });
-
-var Person = mongoose.model('Person',PersonInfo);
-
-var person = new Person({
-    age     :'20',
-    id      :'3326241995123456',
-    phone   :'13819630116',
-    colloge :'hznu',
-    hometown :'xianju'
-})
-
-person.save(function (err) {
-    if(err){
-        console.log('保存失败');
-    }
-    console.log('success');
-})
-
-//增加数据
-
-var person1 = new Person({
-    age     :'15',
-    id      :'3326242000123456',
-    phone   :'1776542365',
-    colloge :'no',
-    hometown :'xianju'
-})
-person1.save(function (err) {
-    if(err){
-        console.log('保存失败');
-    }
-    console.log('success');
-})
-
-//修改数据
-var conditions = {age:20};
-var update={$set:{hometown:'taizhou'}};
-Person.update(conditions,update,function (error,data) {
-    if(error){
-        console.log(error);
-    }else{
-        console.log(data);
-    }
-})
-
-//删除数据
-Person.remove({age:20},function (err) {
-    if(err){
-        console.log(err);
-    }else{
-        console.log('删除成功');
-    }
-})
-
-//查询数据
-Person.find({"age":{"$lt":19}},function (error,docs) {
-    if(error){
-        console.log(error);
-    }else{
-        console.log(docs);
-    }
-})
-
 
 /* GET home page. */
-router.get('/blog', function(req, res, next) {
-  res.render('blog', { title: 'Express', layout: 'main' });
+
+router.post('/login', function(req, res, next) {
+    dbHelper.findUsr(req.body, function (success, doc) {
+        res.send(doc);
+    })
 });
 
 
+router.get('/blog', function(req, res, next) {
+    dbHelper.findNews(req, function (success, data) {
+        res.render('blog', {
+            entries: data.results,
+            pageCount: data.pageCount,
+            pageNumber: data.pageNumber,
+            count: data.count,
+        });
+    })
+});
 
 
 module.exports = router;

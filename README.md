@@ -215,3 +215,116 @@ npm install -g mongoose --registry=https://registry.npm.taobao.org
 ###心得
 初次接触WebStorm，觉得功能不错，但是上手阶段有些不适应。安装MongoDB以及配置环境时觉得很麻烦，让我想起了当初配置java的时候
 ，简直一个德性。不管怎么说获得的还是很多的，希望一年后能玩出个赏心悦目的blog。
+
+###2016-06-29
+###如何让div沉底
+在进行布局的时候会发现div无法沉底，如果设置position：absolute会和父元素的父元素进行匹配，原因在于父元素没有设置position这一属性。
+###子元素设置margin属性导致父元素也产生偏移
+body内设置一个img，在使用margin-top后，整个body也会产生偏移，经检查是html元素也需要设置position。
+###完成登录功能时遇到的BUG
+世界上没有什么BUG是一个小时解决不了的，如果有，那就五个小时
+###
+首先，我第一次nodejs的版本是6.X，在webstorm上debug的时候会出现各种v8debug is not defined的提示，看得让人很别扭。解决BUG是多个步骤合起来的，具体也不清楚是哪一步。
+一：login.js文件末端添加
+```javascript
+<script src="/blog/login.js"></script>
+```
+二：卸载6.X版本的nodejs版本，装为4.4.6.第一次nodejs默认装在Program Files而不是Program Files（x86），我的系统是64位，让人不得不怀疑我下错了32位的nodejs。
+三：head.hbs文件添加
+```javascript
+<script src="/lib/cookies/jquery.cookie.js"></script>
+```
+###
+于是，就把这奇怪的bug给解决了。
+###登录功能的相关实现
+一：index.js文件添加如下代码
+```javascript
+var dbHelper = require('../db/dbHelper');
+router.post('/login', function(req, res, next) {
+    dbHelper.findUsr(req.body, function (success, doc) {
+        res.send(doc);
+    })
+});
+```
+推测../db/dbHelper中的..是父文件夹的父文件夹
+二：创建user.js,用以包含user的数据
+三：dbHelper.js实现查找用户名和密码
+```javascript
+exports.findUsr = function (data,cb) {
+    User.findOne({
+        username:data.usr
+    },function (err,doc) {
+        var user = (doc!==null)? doc.toObject() : '';
+        if(err){
+            console.log(err)
+        }else if(doc===null){
+            entries.code = 99;
+            entries.msg='用户名错误！';
+            cb(false,entries);
+        }else if(user.password!==data.pwd){
+            entries.code = 99;
+            entries.msg='密码错误！';
+            cb(false,entries);
+        }else if(user.password===data.pwd){
+            entries.data = user;
+            entries.code=0;
+            cb(true,entries);
+        }
+
+    })
+}
+```
+四：login.js提交登录数据，根据返回的数据来进行下一步操作
+
+###2016-06-30
+###如何使段落中的文本不换行
+white-space: nowrap
+###如何使自己定义的css属性覆盖bootstrap
+添加！important
+###将数据库的内容导入到页面中
+```javascript
+router.get('/blog', function(req, res, next) {
+  dbHelper.findNews(req, function (success, data) {
+    res.render('blog', {
+      entries: data.results,
+      pageCount: data.pageCount,
+      pageNumber: data.pageNumber,
+      count: data.count,
+    });
+  })
+});
+
+```
+登录/blog页面后就会使用findNews，将数据传送给cb回调函数。
+
+```javascript
+{{#each entries}}
+{{/each}}
+```
+包裹了需要复写的日志框
+###数据库的相关知识
+```javascript
+var newsSchema = new Schema({
+    title: String,
+    content: String,
+    meta: {
+        updateAt: {type:Date, default: Date.now()},
+        createAt: {type:Date, default: Date.now()}
+    },
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }
+});
+```
+
+其中的
+```javascript
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }
+```
+ref表外部引用，相当于关系数据库的join
+
+###还有东西想写，明天要练车去，晚上还得洗澡╮(╯▽╰)╭
