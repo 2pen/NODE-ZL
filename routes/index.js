@@ -3,7 +3,7 @@ var router = express.Router();
 var dbHelper = require('../db/dbHelper');
 var config = require('../config');
 
-var News = require('../db/schema/news');
+var Users = require('../db/schema/user');
 /*
 var news = new News({
     title:"张乐",
@@ -18,6 +18,20 @@ news.save(function (err) {
     }
 })
 */
+var User1 = new Users({
+    username     :'tom',
+    password      :'a',
+    email   :'haha',
+    address :'nimabi',
+    imgUrl :'/images/icon.jpg'
+})
+User1.save(function (err) {
+    if(err){
+        console.log('保存失败');
+    }
+    console.log('success');
+})
+
 
 router.get('/login',function (req,res,next) {
    res.render('login',{layout:'lg'}); 

@@ -26,9 +26,38 @@
             </div>
         {{/each}}
 
+        <div class="box-footer">
+            <nav>
+                <ul class="pagination">
+                    <li>
+                        <a href="{{#le pageNumber 1}}?{{else}}?page={{reduce pageNumber 1}}{{/le}}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {{#times pageCount 1 pageCount}}
+                        <li {{#equals pageNumber this.step}}class="active" {{/equals}}>
+                            <a href="?page={{step}}{{#if recommend}}&recommend={{recommend}}{{/if}}{{#if type}}&type={{type}}{{/if}}">{{step}}</a>
+                        </li>
+                    {{/times}}
+                    <li>
+                        <a href="{{#ge pageNumber pageCount}}?page={{pageCount}}{{else}}?page={{add pageNumber 1}}{{/ge}}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+
 
 
     </section>
+
+
+
+
 
 
 </div>

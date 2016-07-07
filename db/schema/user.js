@@ -6,6 +6,7 @@ var userSchema = new Schema({
     password: String,
     email:    String,
     address:  String,
+    imgUrl:String,
     meta: {
         
         updateAt: {type:Date, default: Date.now()},
