@@ -54,15 +54,18 @@ body{
     background-color: rgba(50,50,50,0.6);
 
 }
+.box-header.with-border {
+    border-bottom: 1px dashed #dbdbdb;
+}
 .sidebar{
-    padding-top: 60px;
+    padding-top: 50px;
     float: left;
     width: 330px;
     background-color: deeppink;
     height: 800px;
 }
 .contentbar{
-    padding-top: 60px;
+    padding-top: 50px;
     float: left;
     width: 860px;
     background-color: #ecf0f5;
@@ -110,6 +113,12 @@ body{
     float: right;
     font: 12px/1.5 'microsoft yahei';
     color: #aaa;
+}
+.no-margin {
+    margin: 0 !important
+}
+.box-body > .table {
+    margin-bottom: 0;
 }
 .box-header::before, .box-body::before, .box-footer::before, .box-header::after, .box-body::after, .box-footer::after {
     content: " ";
@@ -352,9 +361,7 @@ body{
 .messages-menu>a:focus,.messages-menu>a:hover,.messages-menu>a:active{
     background-color: #198fff !important
 }
-.box-header.with-border {
-    border-bottom: 1px solid #f4f4f4;
-}
+
 .box-header {
     color: #444;
     display: block;

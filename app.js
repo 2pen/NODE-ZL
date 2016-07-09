@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var exphbs      = require('express-handlebars');
 var hbsHelper = require('./lib/hbsHelper');
 var dbHelper = require('./db/dbHelper')
+var session     = require('express-session');
 
 
 var config = require('./config');
@@ -43,8 +44,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, '/')));
 config.site.path = path.join(__dirname, 'public');
+
+
+//加入session支持
+app.use(session({
+  name:'blogOfLiyang',
+  maxAge: 30 * 1000,
+  secret: 'liyang-web-node-secret-key',
+  resave: false,
+  saveUninitialized: false
+}));
+
+
 
 app.use('/', routes);
 app.use('/admin', admin);
