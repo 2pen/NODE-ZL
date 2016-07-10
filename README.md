@@ -389,3 +389,47 @@ ref表外部引用，相当于关系数据库的join
 其中一是老师的解决方法，二是我自己琢磨出来的，我觉得老师的方法比较高大上。
 ###data-toggle的作用
 data-toggle用于调用bootstrap，可以实现下拉菜单dropdown功能和confirm确认功能等。data-message目测用于确认功能的提示功能。
+###data-toggle的具体用法
+例如想实现确认的功能，data-toggle="confirm"，data-message="确认要删除此文章吗"，其中data-message的内容表示提示框的内容。
+```javascript
+//删除警告确认对话框
+$('[data-toggle="confirm"]').on('click', function (e) {
+    e.preventDefault();
+    var $this = $(this);
+    var msg = $this.data('message');
+    if (confirm(msg)) {
+        location.href = $this.attr('href');
+    }
+});
+
+```
+这一段代码在js中，用于实现confirm功能
+代码分析：其中var msg = $this.data('message');调用了jQuery.data()方法，将this指向的当前对象中的message（推测是data-message的数据）转化为var对象。
+confirm是js确认框函数，msg为确认框相对应的解释语句，如果按下确定则将location.href设置为当前对象的href值，表跳转到某一个界面。
+###2016-07-10
+###渲染新闻列表
+```javascript
+<a href="/admin/newsList" class="btn btn-default btn-flat">后台管理</a>
+```
+地址切换到views/admin/newsList.hbs，网页效果是header和sidebar不变，右下角展现新闻内容的部分变为后台管理。要实现部分替换的功能需要以下代码：
+admin.js代码里需要添加
+```javascript
+router.get('/newsList', function(req, res, next) {
+
+  var msg = req.session['message'] || '';
+  req.session['message'] = "";
+
+  dbHelper.findNews(req, function (success, data) {
+
+    res.render('./admin/newsList', {
+      entries: data.results,
+      pageCount: data.pageCount,
+      pageNumber: data.pageNumber,
+      count: data.count,
+      layout: 'admin',
+      message: msg
+    });
+  })
+});
+```
+render('')中的参数为一个hbs布局，{}里面的layout的参数是全体布局。全体布局中的{{{body}}}部分由render内的参数替换，所以可以实现跳转到局部布局而实现整体切换。
