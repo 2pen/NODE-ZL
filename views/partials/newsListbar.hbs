@@ -25,7 +25,15 @@
                             <th>发布时间</th>
                             <th>功能</th>
                         </tr>
-
+                        {{#each entries}}
+                            <tr>
+                                <td><a href="/pdf/blogPdf/{{_id}}">{{title}}</a></td>
+                                <td>{{author.username}}</td>
+                                <td>{{formatDate meta.createAt}}</td>
+                                <td><a href="/admin/newsDelete/{{_id}}" class="btn btn-block btn-primary btn-xs" data-toggle="confirm"
+                                       data-message="确认要删除此文章吗">删除</a></td>
+                            </tr>
+                        {{/each}}
                         </tbody>
                 </table>
             </div>

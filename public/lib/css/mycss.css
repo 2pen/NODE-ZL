@@ -135,6 +135,25 @@ body{
 .user-block .postdate b {
     margin-right: 20px;
 }
+.box-footer #uploadFile {
+    opacity: 0;
+    width: 104px;
+    height: 34px;
+    float: left;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+.pg-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999999990;
+    display: none;
+}
 .content {
     min-height: 250px;
     padding: 15px;
@@ -303,6 +322,7 @@ body{
     border-top: 1px solid #f4f4f4;
     padding: 10px;
     background-color: #fff;
+    position: relative;
 }
 
 .pagination > li {

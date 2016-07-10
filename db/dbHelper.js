@@ -4,9 +4,10 @@ var User = require('./schema/user');
 var News = require('./schema/news');
 
 var webHelper = require('../lib/webHelper');
+var config = require('../config')
 var async = require('async');
-
 var md = webHelper.Remarkable();
+var PAGE_SIZE = config.site.pagesize;
 
 exports.findUsr = function (data,cb) {
     User.findOne({
@@ -49,11 +50,10 @@ exports.addUser = function (data,cb) {
     })
 
 };
+exports.addNews = function(data, cb) {
 
-exports.addNews = function (data,cb) {
-
-
-    data.content = md.render(data,content);
+    //将markdown格式的新闻内容转换成html格式
+    data.content = md.render(data.content);
 
     var news = new News({
         title: data.title,
@@ -63,14 +63,27 @@ exports.addNews = function (data,cb) {
 
     news.save(function(err,doc){
         if (err) {
-            cb(false,err);
+            entries.code = 99;
+            entries.msg = err;
+            cb(false,entries);
         }else{
+            entries.code = 0;
+            entries.msg = '发布新闻成功！';
+            entries.data = doc.toObject();
             cb(true,entries);
         }
     })
-
-
 };
+
+exports.findNewsOne = function(req, id, cb) {
+    News.findOne({_id: id})
+        .populate('author')
+        .exec(function(err, docs) {
+            var docs = (docs !== null) ? docs.toObject() : '';
+            cb(true,docs);
+        });
+};
+
 
 exports.findNews = function(req, cb) {
     // News.find()
@@ -98,6 +111,26 @@ exports.findNews = function(req, cb) {
 
 };
 
+
+exports.deleteNews = function(id, cb) {
+
+    News.findById(id, function (err, doc) {
+        if (doc) {
+            doc.remove(function (err, doc) {
+                if (err) {
+                    entries.msg = err;
+                    cb(false,entries);
+                }else{
+                    entries.msg = '删除新闻成功！';
+                    cb(true,entries);
+                }
+            });
+        } else {
+            next(err);
+        }
+    });
+
+}
 
 
 

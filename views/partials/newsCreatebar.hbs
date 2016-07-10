@@ -1,0 +1,45 @@
+<div class="contentbar">
+    <section class="content-header">
+        <h1>
+            下面是很多文章
+            <small>这部分先抄老师的，待来日自己改</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> 日记</a></li>
+            <li class="active">Content</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <form id="defaultForm" action="">
+                        <div class="box-header">
+                            <input type="text" class="form-control" id="newsTitle" placeholder="文章标题" required>
+                        </div>
+                        <div class="box-body pad">
+                            <textarea class="textarea" id="newsContent" placeholder="文章内容" style="width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea>
+                        </div>
+                        <div class="box-footer">
+
+                            <button type="submit" class="btn btn-primary pull-right" id="addNewsBtn">发布文章</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- /.col-->
+        </div>
+        <!-- ./row -->
+    </section>
+</div>
+<div class="pg-wrapper">
+    <div class="pg-layer">
+        <div class="pg-bar"></div>
+        <span class="pg-info">0%</span>
+    </div>
+</div>
+<script src="/lib/socket.io/socket.io.js"></script>
+<script src="/blog/common.js"></script>
+<script src="/blog/newsCreateAdmin.js"></script>
