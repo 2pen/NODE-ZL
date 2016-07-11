@@ -433,3 +433,38 @@ router.get('/newsList', function(req, res, next) {
 });
 ```
 render('')中的参数为一个hbs布局，{}里面的layout的参数是全体布局。全体布局中的{{{body}}}部分由render内的参数替换，所以可以实现跳转到局部布局而实现整体切换。
+###2016-07-11
+###实现删除功能获得的知识
+```javascript
+<a href="/admin/newsDelete/{{_id}}" class="btn btn-block btn-primary btn-xs" data-toggle="confirm" data-message="确认要删除此文章吗">
+```
+如何准确删除所选文章？
+```javascript
+{{#each entries}}
+    <tr>
+        <td><a href="/pdf/blogPdf/{{_id}}">{{title}}</a></td>
+        <td>{{author.username}}</td>
+        <td>{{formatDate meta.createAt}}</td>
+        <td><a href="/admin/newsDelete/{{_id}}" class="btn btn-block btn-primary btn-xs" data-toggle="confirm"
+               data-message="确认要删除此文章吗">删除</a></td>
+    </tr>
+{{/each}}
+```
+这部分表示后台界面的关于文章相关信息的一行数据，分别是文章名，作者名，创建日期，删除。这四个都是由出自同一个id的数据（表达有问题，需要改进。
+href="/admin/newsDelete/{{_id}}"中的{{_id}}传输了你所想要删除的文章的主键（_id是某一条数据的主键）。
+href将跳转至/admin/newsDelete/{{_id}}这个网址，被admin.js接收到，出发相关代码
+```javascript
+//删除新闻
+router.get('/newsDelete/:id', function(req, res, next) {
+
+  var id = req.params.id;
+  dbHelper.deleteNews(id, function (success, data) {
+
+    req.session['message'] = data.msg;
+    res.redirect("/admin/newsList");
+  })
+});
+```
+相关猜测，/:id这部分将/后面部分的字符转换为id参数。
+var id = req.params.id;表示想服务器传输的参数id赋值给id。然后触发dbHelper的deleteNews函数删除对应文章。req.session['message'] = data.msg;功能不明，
+res.redirect("/admin/newsList");猜测用于将网站回滚回/admin/newsList。

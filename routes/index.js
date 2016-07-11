@@ -18,6 +18,7 @@ news.save(function (err) {
     }
 })
 */
+/*
 var User1 = new Users({
     username     :'tom',
     password      :'a',
@@ -31,7 +32,7 @@ User1.save(function (err) {
     }
     console.log('success');
 })
-
+ */
 
 router.get('/login',function (req,res,next) {
    res.render('login',{layout:'lg'}); 

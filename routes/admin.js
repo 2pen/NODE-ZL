@@ -39,6 +39,17 @@ router.get('/newsList', function(req, res, next) {
   })
 });
 
+//删除新闻
+router.get('/newsDelete/:id', function(req, res, next) {
+
+  var id = req.params.id;
+  dbHelper.deleteNews(id, function (success, data) {
+
+    req.session['message'] = data.msg;
+    res.redirect("/admin/newsList");
+  })
+});
+
 
 //上传图片
 router.post('/uploadImg', function(req, res, next) {
