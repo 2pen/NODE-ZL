@@ -468,3 +468,38 @@ router.get('/newsDelete/:id', function(req, res, next) {
 相关猜测，/:id这部分将/后面部分的字符转换为id参数。
 var id = req.params.id;表示想服务器传输的参数id赋值给id。然后触发dbHelper的deleteNews函数删除对应文章。req.session['message'] = data.msg;功能不明，
 res.redirect("/admin/newsList");猜测用于将网站回滚回/admin/newsList。
+###实现新建文章或者删除文章时的Toast功能
+###删除功能的Toast的实现
+首先需要引入两个文件
+```javascript
+<link rel="stylesheet" href="/lib/toastr/toastr.css">
+<script src="/lib/toastr/toastr.js"></script>
+```
+按下删除后，触发跳转至admin.js的相关代码（上面有）。在之前猜测req.session['message'] = data.msg;代码功能未清楚，现在清楚了。
+在后台管理界面有一行代码
+```javascript
+<div class="box-msg hidden">{{message}}</div>
+```
+可以推测出来data.msg赋值给{{message}}里面，于是触发了newsListAdmin.js的
+```javascript
+$(init);
+
+function init() {
+
+  var msg = $(".box-msg").text();
+  if (msg!=="") {
+    notifyInfo(msg);
+    $(".box-msg").text("");
+  }
+}
+
+```
+当msg不为空的时候，触发notifyInfo(msg)函数，其中
+```javascript
+function notifyInfo(info) {
+    // alertify.set({ delay: 5000 });
+    // alertify.success(info);
+    toastr["success"](info)
+}
+```
+为触发toast的主代码，推测"success"表示成功的样式，(info)为提示的内容。触发成功后将 $(".box-msg").text("");置为空内容，于是删除功能的弹出框完成。
