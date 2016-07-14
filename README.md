@@ -503,3 +503,48 @@ function notifyInfo(info) {
 }
 ```
 为触发toast的主代码，推测"success"表示成功的样式，(info)为提示的内容。触发成功后将 $(".box-msg").text("");置为空内容，于是删除功能的弹出框完成。
+###2016-07-12
+###req.protocol
+经查询，req.protocol可能等于"http"(字符串)
+###2016-07-14
+###如何实现文章pdf导出
+一：首先需要下载phantomjs(通过npm下载)，电脑也需下载了phantomjs。
+二：在C:\Users\zhanglele\AppData\Local\Temp\phantomjs路径下放置phantomjs-2.1.1-windows.zip
+三：可能需要npm install phantomjs -g(全局安装)
+完成这个三点基本就完成通过nodejs转换pdf的配置(真坑)
+###pdf.js关键代码
+```javascript
+router.get('/:id', function (req, res, next) {
+
+    var id = req.params.id;
+    var host = req.protocol + '://' + req.get('host') + '/pdf/blogPdf/' + id;
+    var pdffile = config.site.path + '\\pdf\\news-' + Date.now() + '.pdf';
+
+    NodePDF.render(host, pdffile, function(err, filePath){
+        if (err) {
+            console.log(err);
+        }else{
+            fs.readFile(pdffile , function (err,data){
+                res.contentType("application/pdf");
+                res.send(data);
+            });
+        }
+    });
+})
+router.get('/blogPdf/:id', function(req, res, next) {
+
+    var id = req.params.id;
+    dbHelper.findNewsOne(req, id, function (success, data) {
+        res.render('pdfblog', {
+            entries: data,
+        });
+    })
+});
+
+```
+推测req.get('host')(在浏览器上证实)是localhost:3000
+var pdffile = config.site.path + '\\pdf\\news-' + Date.now() + '.pdf';代码用于存储pdf文件的路径，推测config.site.path就是public文件夹
+NodePDF.render的第一个参数host用于将页面跳转至某个地址，由下面的函数可以看到触发了router.get('/blogPdf/:id', function(req, res, next)函数，打开pdfblog.hbs的
+布局文件。
+###关于read more的问题
+这个问题涉及到布局，老师的布局和我有所区别。所以明天要好好理解下布局的问题！

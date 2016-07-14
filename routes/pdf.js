@@ -29,7 +29,16 @@ router.get('/blogPdf/:id', function(req, res, next) {
 
     var id = req.params.id;
     dbHelper.findNewsOne(req, id, function (success, data) {
-        res.render('blog', {
+        res.render('./partials/pdfblog', {
+            entries: data,
+        });
+    })
+});
+router.get('/readPdf/:id', function(req, res, next) {
+
+    var id = req.params.id;
+    dbHelper.findNewsOne(req, id, function (success, data) {
+        res.render('layoutpdf', {
             entries: data,
         });
     })

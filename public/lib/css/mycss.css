@@ -20,12 +20,19 @@ body{
 .form-control-feedback{
     color: #777;
 }
+.user-block::before, .user-block::after {
+    content: " ";
+    display: table;
+}
+.user-block::after {
+    clear: both;
+}
 .btn{
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
     border-radius: 3px;
-    border: 1px solid transparent;
+    border: 1px solid #ccc;
 }
 .normalmargin{
     margin-bottom: 5px;
