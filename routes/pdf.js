@@ -31,6 +31,7 @@ router.get('/blogPdf/:id', function(req, res, next) {
     dbHelper.findNewsOne(req, id, function (success, data) {
         res.render('./partials/pdfblog', {
             entries: data,
+            layout:'pdf'
         });
     })
 });
@@ -38,7 +39,7 @@ router.get('/readPdf/:id', function(req, res, next) {
 
     var id = req.params.id;
     dbHelper.findNewsOne(req, id, function (success, data) {
-        res.render('layoutpdf', {
+        res.render('./partials/showblog', {
             entries: data,
         });
     })
