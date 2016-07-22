@@ -2,57 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="320b72de-8000-4fa2-abe6-8d2aa7256f4a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/layouts/pdf.hbs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/partials/headPdf.hbs" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468331230875.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468331306141.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468331486408.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468331527578.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468492048946.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468492797350.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468492809045.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468492818049.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468493012311.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468498128150.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468499467749.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468500300792.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468502474496.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468502627041.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468574900319.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468574936320.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468574966169.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468575059066.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468575374326.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468576507580.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468576634312.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468576695283.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468578094782.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468578329589.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468578573704.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468578613960.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468578701106.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468578853557.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468578963012.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468579211828.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468579280146.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468579300927.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468579379413.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468581029295.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468581116478.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/pdf/news-1468581178921.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/views/layoutpdf.hbs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/views/partials/contentbar.hbs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/views/partials/newsCreatebar.hbs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/views/partials/newsListbar.hbs" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/css/mycss.css" afterPath="$PROJECT_DIR$/public/lib/css/mycss.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/pdf.js" afterPath="$PROJECT_DIR$/routes/pdf.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/admin/newsCreate.hbs" afterPath="$PROJECT_DIR$/views/admin/newsCreate.hbs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/admin/newsList.hbs" afterPath="$PROJECT_DIR$/views/admin/newsList.hbs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/blog.hbs" afterPath="$PROJECT_DIR$/views/blog.hbs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/layouts/admin.hbs" afterPath="$PROJECT_DIR$/views/layouts/admin.hbs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/layouts/main.hbs" afterPath="$PROJECT_DIR$/views/layouts/main.hbs" />
     </list>
     <ignored path="blog.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -73,11 +27,51 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="pdfblog.hbs" pinned="false" current-in-tab="true">
+      <file leaf-file-name="pdfblog.hbs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/partials/pdfblog.hbs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="57">
               <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="newsCreate.hbs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/admin/newsCreate.hbs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="92">
+              <caret line="20" column="30" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mycss.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/lib/css/mycss.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="157">
+              <caret line="171" column="10" selection-start-line="171" selection-start-column="10" selection-end-line="171" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="newsCreateAdmin.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/blog/newsCreateAdmin.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="475">
+              <caret line="49" column="12" selection-start-line="49" selection-start-column="12" selection-end-line="49" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="admin.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/routes/admin.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="57">
+              <caret line="3" column="39" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -88,16 +82,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="361">
               <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="header.hbs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/partials/header.hbs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -123,41 +107,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="layout.hbs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/layout.hbs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sidebar.hbs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/partials/sidebar.hbs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="blog.hbs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/blog.hbs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1311">
               <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sidebarAdmin.hbs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/partials/sidebarAdmin.hbs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -192,7 +146,6 @@
         <option value="$PROJECT_DIR$/db/dbHelper.js" />
         <option value="$PROJECT_DIR$/views/partials/newsCreatebar.hbs" />
         <option value="$PROJECT_DIR$/bin/www" />
-        <option value="$PROJECT_DIR$/public/blog/newsCreateAdmin.js" />
         <option value="$PROJECT_DIR$/routes/index.js" />
         <option value="$PROJECT_DIR$/routes/admin.js" />
         <option value="$PROJECT_DIR$/views/partials/newsListbar.hbs" />
@@ -209,9 +162,10 @@
         <option value="$PROJECT_DIR$/views/blog.hbs" />
         <option value="$PROJECT_DIR$/routes/pdf.js" />
         <option value="$PROJECT_DIR$/views/layouts/admin.hbs" />
-        <option value="$PROJECT_DIR$/views/admin/newsCreate.hbs" />
         <option value="$PROJECT_DIR$/views/admin/newsList.hbs" />
         <option value="$PROJECT_DIR$/public/lib/css/mycss.css" />
+        <option value="$PROJECT_DIR$/views/admin/newsCreate.hbs" />
+        <option value="$PROJECT_DIR$/public/blog/newsCreateAdmin.js" />
       </list>
     </option>
   </component>
@@ -224,8 +178,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-48" />
-    <option name="y" value="52" />
+    <option name="x" value="-64" />
+    <option name="y" value="15" />
     <option name="width" value="1932" />
     <option name="height" value="1056" />
   </component>
@@ -623,11 +577,12 @@
       <workItem from="1468574875346" duration="6004000" />
       <workItem from="1468725586065" duration="2506000" />
       <workItem from="1468730970025" duration="447000" />
+      <workItem from="1469145056499" duration="6821000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="165634000" />
+    <option name="totallyTimeSpent" value="172455000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -639,7 +594,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-48" y="52" width="1932" height="1056" extended-state="0" />
+    <frame x="-64" y="15" width="1932" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20738786" sideWeight="0.6975089" order="0" side_tool="false" content_ui="combo" />
@@ -690,27 +645,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/db/db.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/lib/socket.io/socket.io.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="304" selection-start-line="0" selection-start-column="304" selection-end-line="0" selection-end-column="304" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/www">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="589">
-          <caret line="31" column="18" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/db/schema/news.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="266">
@@ -729,13 +663,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/db/jsonRes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
         </state>
       </provider>
     </entry>
@@ -758,20 +685,6 @@
         <state relative-caret-position="113">
           <caret line="114" column="0" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/blog/common.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1026">
-          <caret line="54" column="37" selection-start-line="54" selection-start-column="37" selection-end-line="56" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/blog/newsCreateAdmin.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1425">
-          <caret line="75" column="36" selection-start-line="75" selection-start-column="36" selection-end-line="75" selection-end-column="36" />
         </state>
       </provider>
     </entry>
@@ -846,13 +759,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1197">
-          <caret line="63" column="29" selection-start-line="63" selection-start-column="29" selection-end-line="63" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/login.hbs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="494">
@@ -896,24 +802,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/partials/newsCreatebar.hbs" />
-    <entry file="file://$PROJECT_DIR$/views/admin/newsCreate.hbs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="855">
-          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/admin/newsList.hbs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="610">
           <caret line="74" column="46" selection-start-line="74" selection-start-column="46" selection-end-line="74" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/admin.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="885">
-          <caret line="58" column="43" selection-start-line="58" selection-start-column="43" selection-end-line="62" selection-end-column="26" />
         </state>
       </provider>
     </entry>
@@ -1004,14 +896,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/lib/css/mycss.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="169" column="1" selection-start-line="169" selection-start-column="1" selection-end-line="169" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/partials/headPdf.hbs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="361">
@@ -1024,6 +908,86 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="57">
           <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/lib/css/mycss.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="171" column="10" selection-start-line="171" selection-start-column="10" selection-end-line="171" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/lib/bootstrap-3.3.5-dist/css/bootstrap-theme.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="4" column="3335" selection-start-line="4" selection-start-column="3335" selection-end-line="4" selection-end-column="3335" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/HTML5.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="2147" column="0" selection-start-line="2147" selection-start-column="0" selection-end-line="2147" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/lib/jquery/jquery.validate.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="721">
+          <caret line="1154" column="6" selection-start-line="1154" selection-start-column="6" selection-end-line="1160" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/blog/common.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="78" column="8" selection-start-line="78" selection-start-column="8" selection-end-line="78" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/admin/newsCreate.hbs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="20" column="30" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/blog/newsCreateAdmin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="49" column="12" selection-start-line="49" selection-start-column="12" selection-end-line="49" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db/jsonRes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/admin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="3" column="39" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="39" />
           <folding />
         </state>
       </provider>

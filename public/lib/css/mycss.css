@@ -167,6 +167,13 @@ body{
     z-index: 999999990;
     display: none;
 }
+.pg-wrapper > .pg-layer > .pg-info {
+    position: absolute;
+    top: 7px;
+    left: 190px;
+    font: 12px/1.5 "微软雅黑";
+    color: #666;
+}
 .content {
     min-height: 250px;
     padding: 15px;
@@ -175,7 +182,17 @@ body{
     padding-left: 15px;
     padding-right: 15px;
 }
-
+.pg-wrapper > .pg-layer > .pg-bar {
+    width: 100%;
+}
+.pg-wrapper > .pg-layer {
+    width: 400px;
+    *height: 24px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
 .content-header > .breadcrumb{
     float: right;
     background: transparent;

@@ -566,3 +566,81 @@ NodePDF.render的第一个参数host用于将页面跳转至某个地址，由�
 那当然是新的全局布局文件的{{head}}头文件不包含pace.css和pace.js两个文件啦，虽然有投机取巧之嫌，但也经实践可用。
 ###心情
 你问我爽不爽，我当然爽啦，这些BUG最近搞得我好烦！吃不好睡不着。
+
+###2016-07-20
+###如何解决上传图片BUG？
+新建一个upload文件夹就行了(有一种智商被戏弄的感觉)
+###2016-07-22
+###如何实现某个元素在页面绝对居中
+```javascript
+position:absolute;
+left: 50%;
+top: 50%;
+transform: translate(-50%,-50%);
+```
+前三个好理解，第四个表示元素向左向上移动元素自己宽高的50%
+###如何上传图片？
+```javascript
+<input type="file" id="uploadFile" multiple="multiple"  accept="image/*">
+```
+type="file" 用于文件上传。
+accept="image/*" 不限制图像的格式
+multiple="multiple"  属性规定输入字段可选择多个值
+
+```javascript
+<a class="btn btn-primary disabled" id="UploadBtn"><i class="fa fa-upload fa-fw"></i> 上传</a>
+```
+用于上传图片，其中id="UploadBtn"将js文件设置一系列动作
+
+```javascript
+function doUpload() {
+
+    $(".pg-wrapper").show();
+
+    var file = $("#uploadFile")[0].files[0];
+    var form = new FormData();
+    form.append("file", file);
+
+    $.ajax({
+        url: "/admin/uploadImg",
+        type: "POST",
+        data: form,
+        async: true,
+        processData: false,
+        contentType: false,
+        success: function(result) {
+            startReq = false;
+            if (result.code == 0) {
+
+                var picUrl = $.format("![Alt text]({0})",result.data)
+                $("#newsContent").insertAtCaret(picUrl);
+                $(".pg-wrapper").hide();
+                // console.log(result.data);
+            }
+        }
+    });
+}
+```
+var file = $("#uploadFile")[0].files[0];用于提取uploadFile的内容files[0]表示提取第一个(输入确实可以有多个，如果将0改为1那就提取第二张图片)
+var form = new FormData(); FormData是一个对象
+form.append("file", file); append用于向对象添加字段
+然后通过ajax发送数据到服务器。
+服务器操作在admin.js里的router.post('/uploadImg', function(req, res, next) ，代码太长，贴出关键部分
+```javascript
+  .on('end', function() {
+
+    console.log('-> upload done\n');
+    entries.code = 0;
+    entries.data = path;
+    res.writeHead(200, {
+      'content-type': 'text/json'
+    });
+    res.end(JSON.stringify(entries));
+  })
+```
+res.end(JSON.stringify(entries)); 将entries转换为json数据并触发ajax的success事件，其中的result参数即是res返回的数据。
+
+在admin.js中貌似还需要require('formidable');
+###心得
+这一段代码看下来收获不少，对于nodejs的web编程的理解更上一层楼。
+
