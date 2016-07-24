@@ -15,13 +15,27 @@
 2. 2
 3. 3
 
+####插入代码块
+```javascript
+app.post('/login',function(req,res,next){
+	var username = req.body.name;
+	var password = req.body.password;
+});
+```
+```c
+int a = 10;
+int b = 20;
+```
+
+`http`
+
 ####引用格式
 > 这里是引用
 
 只需要在文本前加入 > 这种尖括号（大于号）即可
 
 ####插入图片
-格式:![](){ImgCap}{/ImgCap}
+格式:\!\[\]\(\){ImgCap}{/ImgCap}
 ![tupian](./markdownImg/tupian.png)
 
 ####插入链接
@@ -48,6 +62,20 @@ Markdown 的粗体和斜体也非常简单，用两个 * 包含一段文本就�
 
 ####转移字符  
 \\\# ---> \#
+
+
+# 知识点复习  
+&ensp;  
+&ensp;  
+###express
+* 基本框架结构
+* 路由的基本原理和中间件  
+* 静态数据的操作处理
+* 错误处理与防治服务器崩溃
+&ensp;  
+&ensp;  
+
+
 
 # NODE-ZL
 # 学习日志
