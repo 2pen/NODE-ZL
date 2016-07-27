@@ -32,7 +32,9 @@ int b = 20;
 ####引用格式
 > 这里是引用
 
-只需要在文本前加入 > 这种尖括号（大于号）即可
+只需要在文本前加入 > 这种尖括号（大于号）即可  
+>引用说明：......
+>>分层次说明：......
 
 ####插入图片
 格式:\!\[\]\(\){ImgCap}{/ImgCap}
@@ -60,6 +62,9 @@ Markdown 的粗体和斜体也非常简单，用两个 * 包含一段文本就�
 &ensp;  
 &ensp;  
 
+####很多空格  
+&emsp;&emsp;&emsp;&emsp;
+
 ####转移字符  
 \\\# ---> \#
 
@@ -67,9 +72,158 @@ Markdown 的粗体和斜体也非常简单，用两个 * 包含一段文本就�
 # 知识点复习  
 &ensp;  
 &ensp;  
+###http协议
+* 绝对地址和相对地址
+* querystring
+* url和uri
+* http status code
+* http verbs
+* 表单和ajax传值
+* req取参数的3种方式
 ###express
-* 基本框架结构
+>精简的、灵活的Node.js Web 程序框架，为构建单页、多页及混合的Web 程序提供了一系列健壮的功能特性  
+
+* 基本框架结构  
+![expressFrame](./markdownImg/expressFrame.png)  
+`node_modules:`  
+&emsp;&emsp;储存nodejs的包的文件夹  
+`public:`  
+&emsp;&emsp;放置静态文件，刚创建时默认有`images`，`javascripts`，`stylesheets`，三个文件夹，分别用于储存图片，js文件，css文件。  
+`routes:`  
+&emsp;&emsp;`routes`是一个文件夹形式的本地模块，即./routes/index.js，它的功能是为指定路径组织返回内容，相当于 MVC 架构中的控制器。  
+`views`  
+&emsp;&emsp;视图文件的目录,存放模板文件。但是这种视图并不是传统的html文件，而是html的引擎模板。  
+`app.js`  
+&emsp;&emsp;工程实例，以下对app.js的代码进行解读
+```javascript
+//require 是一个用来引入模块的Node函数。Node 默认会在目录node_modules中寻找这些模块
+//引入express模块
+var express = require('express');
+//path模块提供1.路径解析，得到规范化的路径格式，2.路径结合、合并，路径最后不会带目录分隔符，3.获取绝对路径等路径处理功能
+var path = require('path');
+//serve-favicon替换了原有的static-favicon模块，提供favicon（出现在浏览器标题栏上的图标），这个东西不是必需的
+var favicon = require('serve-favicon');
+//morgan提供自动日志记录支持：所有请求都会被记录。
+var logger = require('morgan');
+//提供cookie 存储的会话支持。
+var cookieParser = require('cookie-parser');
+//只连入json 和urlencoded 的便利中间件。解析JSON 编码的请求体和解析互联网媒体类型为application/x-www-form-urlencoded 的请求体。
+var bodyParser = require('body-parser');
+//获取路由文件，相当于控制器，用于组织展示的内容，但一般在之后会被修改为require('./routes');
+var routes = require('./routes/index');
+//也是获取路由文件，反正在后面都会被修改
+var users = require('./routes/users');
+//表示创建express应用程序
+var app = express();
+
+// 设定视图路径
+app.set('views', path.join(__dirname, 'views'));
+// 设定视图引擎模板
+app.set('view engine', 'hbs');
+
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+//设定静态文件路径，__dirname 会被解析为正在执行的脚本所在的目录。所以如果你的脚本放在/home/sites/app.js 中，则__dirname 会被解析为/home/sites。
+app.use(express.static(path.join(__dirname, 'public')));
+//使用中间件 routes,可选参数path默认为"/"。使用 app.use() “定义的”中间件的顺序非常重要，它们将会顺序
+//执行，use的先后顺序决定了中间件的优先级(经常有搞错顺序的时候);用户如果访问“ / ”路径，则由 routes.index 来控制
+app.use('/', routes);
+//用户如果访问“ /users ”路径，则由 routes.users 来控制
+app.use('/users', users);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// error handlers
+
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
+});
+
+
+module.exports = app;
+
+```
+`bin\www`  
+&emsp;&emsp;工程入口,packege.json里有定义 "start": "node ./bin/www",
+
+
+
+
+
 * 路由的基本原理和中间件  
+
+路由是指向客户端提供它所发出的请求内容的机制。对基于Web 的客户端/ 服务器端程序而言，客户端在URL 中指明它想要的内容，具体来说就是路径和查询字符串。
+```javascript
+var http = require('http');
+http.createServer(function(req,res){
+// 规范化url，去掉查询字符串、可选的反斜杠，并把它变成小写
+var path = req.url.replace(/\/?(?:\?.*)?$/, '').toLowerCase();
+switch(path) {
+	case '':
+		res.writeHead(200, { 'Content-Type': 'text/plain' });
+		res.end('Homepage');
+		break;
+	case '/about':
+		res.writeHead(200, { 'Content-Type': 'text/plain' });
+		res.end('About');
+		break;
+	default:
+		res.writeHead(404, { 'Content-Type': 'text/plain' });
+		res.end('Not Found');
+		break;
+	}
+}).listen(3000);
+console.log('Server started on localhost:3000; press Ctrl-C to terminate....');  
+```  
+运行这段代码，你会发现现在你可以访问首页 （http://localhost: 3000）和关于页面（http://localhost:3000/about）。所有查询字符串都会被忽略（所以http://localhost:3000/?foo=bar 也是返回首页），并且其他所有URL（http://localhost:3000/foo）返回的都是未找到页面。  
+
+`http.createServer`创建了一个`http.Server`的实例,将一个函数作为`HTTP`请求处理函数。函数接受两个参数，分别是请求对象`req`和响应对象`res`。  
+
+`res.writeHead(200, {'Content-Type': 'text/plain'});`用于向请求的客户端发送响应头，其中Content-Type的text/plain表示服务端需要返回一段普通文本给客户端，类似的还有
+text/html  
+
+**语法:**  
+```
+response.writeHead(statusCode, [reasonPhrase], [headers])
+``` 
+**接受参数:**  
+`status`&emsp;&emsp;&emsp;HTTP状态码，如200(请求成功)，404(未找到)等。  
+`reasonPhrase`&emsp;&emsp;&emsp;人类可读的'原因短句'  
+`headers`&emsp;&emsp;&emsp;响应头的内容，表示响应头的每个属性  
+
+`res.end`结束并发送  
+最后调用`listen`，启动服务器并监听3000端头。
+
+
+\_\_dirname 会被解析为正在执行的脚本所在的目录。所以如果你的脚本放在/home/sites/app.js 中，则__dirname 会被解析为/home/sites。
+
 * 静态数据的操作处理
 * 错误处理与防治服务器崩溃
 &ensp;  
