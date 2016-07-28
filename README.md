@@ -170,59 +170,176 @@ app.use(function(err, req, res, next) {
 module.exports = app;
 
 ```
-`bin\www`  
-&emsp;&emsp;工程入口,packege.json里有定义 "start": "node ./bin/www",
-
-
-
-
+&emsp;&emsp;`bin\www`  
+&emsp;&emsp;工程入口,packege.json里有定义 "start": "node ./bin/www"  
+&emsp;&emsp;`package.json:`  
+&emsp;&emsp;项目的参数信息
 
 * 路由的基本原理和中间件  
-
-路由是指向客户端提供它所发出的请求内容的机制。对基于Web 的客户端/ 服务器端程序而言，客户端在URL 中指明它想要的内容，具体来说就是路径和查询字符串。
-```javascript
-var http = require('http');
-http.createServer(function(req,res){
-// 规范化url，去掉查询字符串、可选的反斜杠，并把它变成小写
-var path = req.url.replace(/\/?(?:\?.*)?$/, '').toLowerCase();
-switch(path) {
-	case '':
-		res.writeHead(200, { 'Content-Type': 'text/plain' });
-		res.end('Homepage');
-		break;
-	case '/about':
-		res.writeHead(200, { 'Content-Type': 'text/plain' });
-		res.end('About');
-		break;
-	default:
-		res.writeHead(404, { 'Content-Type': 'text/plain' });
-		res.end('Not Found');
-		break;
-	}
-}).listen(3000);
-console.log('Server started on localhost:3000; press Ctrl-C to terminate....');  
-```  
-运行这段代码，你会发现现在你可以访问首页 （http://localhost: 3000）和关于页面（http://localhost:3000/about）。所有查询字符串都会被忽略（所以http://localhost:3000/?foo=bar 也是返回首页），并且其他所有URL（http://localhost:3000/foo）返回的都是未找到页面。  
-
-`http.createServer`创建了一个`http.Server`的实例,将一个函数作为`HTTP`请求处理函数。函数接受两个参数，分别是请求对象`req`和响应对象`res`。  
-
-`res.writeHead(200, {'Content-Type': 'text/plain'});`用于向请求的客户端发送响应头，其中Content-Type的text/plain表示服务端需要返回一段普通文本给客户端，类似的还有
-text/html  
-
-**语法:**  
+####&emsp;&emsp;路由（URL映射）  
+&emsp;&emsp;Express利用HTTP动作提供了有意义并附有表现力的URL映射API，所有的请求都表示为路径参数的模式。  
 ```
-response.writeHead(statusCode, [reasonPhrase], [headers])
-``` 
-**接受参数:**  
-`status`&emsp;&emsp;&emsp;HTTP状态码，如200(请求成功)，404(未找到)等。  
-`reasonPhrase`&emsp;&emsp;&emsp;人类可读的'原因短句'  
-`headers`&emsp;&emsp;&emsp;响应头的内容，表示响应头的每个属性  
+\x1\x2\...\xn\:parm1\:parm2\...\:parmN
+```
+&emsp;&emsp;传统的url一般为一个具体的页面，在Express模型下为一个url路径  
+```javascript
+//一个注册页面的地址
+action = "/login.html"
+action = "/login"
+```
+#####&emsp;&emsp;路由规则  
+&emsp;&emsp;express封装了多种`http`请求方式，我们主要只使用`get`和`post`，可以使用`app.all`获取所有请求方式，回调函数有两个参数，分别是
+`req`（请求消息）和`res`（响应消息）。  
+&emsp;&emsp;req.query:处理`get`请求  
+&emsp;&emsp;req.params:处理`/:xxx`形式的`get`请求  
+&emsp;&emsp;req.body:处理`post`请求  
+&emsp;&emsp;req.param():可以处理`get`和`post`请求，但查找优先级由高到低为`req.params->req.body->req.query`  
+#####&emsp;&emsp;请求对象中最有用的属性和方法（除了来自Node 的req.headers 和req.url，所有这些方法都由Express 添加）  
+&emsp;&emsp;req.route:当前匹配路由的信息，主要用于路由调试  
+&emsp;&emsp;req.cookies/req.singnedCookies:一个对象，包含从客户端传递过来的cookies 值  
+&emsp;&emsp;req.headers:从客户端接收到的请求报头  
+&emsp;&emsp;req.accepts([types]):一个简便的方法，用来确定客户端是否接受一个或一组指定的类型（可选类型可以是单个的MIME 类型，如application/json、一个逗号分隔集合或是一个数组）。写公共
+API 的人对该方法很感兴趣。假定浏览器默认始终接受HTML  
+&emsp;&emsp;req.xhr:一个简便属性，如果请求由Ajax 发起将会返回true  
+&emsp;&emsp;req.protocol:用于标识请求的协议（http 或https）  
+&emsp;&emsp;req.url/req.originalUrl:有点用词不当，这些属性返回了路径和查询字符串（它们不包含协议、主机或端口）。
+req.url 若是出于内部路由目的，则可以重写，但是req.orginalUrl 旨在保留原始请求
+和查询字符串。  
+&emsp;&emsp;req.acceptedLanguages:一个简便方法，用来返回客户端首选的一组（人类的）语言。这些信息是从请求报头中解析而来的  
 
-`res.end`结束并发送  
-最后调用`listen`，启动服务器并监听3000端头。
+#####&emsp;&emsp;req.query路由参数预处理  
+&emsp;&emsp;可以通过req的query对象，获取表达post的参数  
+```javascript
+URL http://localhost:3000/login?username=tom&password=12345
+
+app.get('/login',function(req,res){
+	var username = req.query.username;
+	var password = req.query.password;
+});
+```
+#####&emsp;&emsp;req.params路由参数预处理  
+&emsp;&emsp;路由参数预处理通过隐式的数据处理，可以大幅提高应用代码的可读性和请求URL的验证。可以从路由获取通用数据，如通过`/user/:id`加载用户`id`  
+```javascript
+app.get('/user/:userId',function(req,res,next){
+	var id = req.params.userId;
+	...
+});
+```
+#####&emsp;&emsp;req.post路由参数预处理  
+&emsp;&emsp;可以通过req的bidy对象，获取表达post的参数  
+```javascript
+app.post('/login',function(req,res,next){
+	var username = req.body.name;
+	var password = req.body.password;
+});
+```
+####&emsp;&emsp;中间件  
+&emsp;&emsp;中间件是一种功能的封装方式，具体来说就是封装在程序中处理HTTP请求
+的功能。在Express 程序中，通过调用app.use 向管道中插入中间件。　　
+
+&emsp;&emsp;一个应用可以定义多个路由，可以控制一个用户请求从一个路由转向下一个路由，这个时候中间件就是一种封装在程序中处理HTTP请求的功能，它有3个参数:`req请求对象`、
+'res相应对象'、`next函数`;中间件和路由处理器是按他们的连入顺序调用的。  
+&emsp;&emsp;请求在管道中如何终止：如果中间件不调用`next()`，同时也不将响应输出到客户端，此时请求就在那个中间件终止了。  
+&emsp;&emsp;下面是一个复杂的范例:
+```javascript
+var app = require('express')();
+app.use(function(req, res, next){
+	console.log('\n\nALLWAYS');
+	next();
+});
+app.get('/a', function(req, res){
+	console.log('/a: 路由终止');
+	res.send('a');
+});
+app.get('/a', function(req, res){
+	console.log('/a: 永远不会调用');
+});
+app.get('/b', function(req, res, next){
+	console.log('/b: 路由未终止');
+	next();
+});
+app.use(function(req, res, next){
+	console.log('SOMETIMES');
+	next();
+});
+app.get('/b', function(req, res, next){
+	console.log('/b (part 2): 抛出错误' );
+	throw new Error('b 失败');
+});
+app.use('/b', function(err, req, res, next){
+	console.log('/b 检测到错误并传递');
+	next(err);
+});
+app.get('/c', function(err, req){
+	console.log('/c: 抛出错误');
+	throw new Error('c 失败');
+});
+app.use('/c', function(err, req, res, next){
+	console.log('/c: 检测到错误但不传递');
+	next();
+});
+app.use(function(err, req, res, next){
+	console.log(' 检测到未处理的错误: ' + err.message);
+	res.send('500 - 服务器错误');
+});
+app.use(function(req, res){
+	console.log(' 未处理的路由');
+	res.send('404 - 未找到');
+});
+app.listen(3000, function(){
+	console.log(' 监听端口3000');
+});
+```
+
+&emsp;&emsp;中间件一般不会对客户端进行响应，而是对请求进行一些预处理，再传递下去；　　
+
+&emsp;&emsp;中间件一般会在路由处理之前执行　　
+
+&emsp;&emsp;路由是一种特殊的中间件（终点）　　
+```javascript
+//检查用户是否登录中间件，所有需要登录权限的页面都使用此中间件
+function checkLogin(req, res, next) {
+	if (!req.session.user) {
+		req.flash('error', '未登入');
+		return res.redirect('/login');//页面重定位，不执行下一个路由
+	}
+	next();//检验用户已登入，将权限给下一个路由
+}
+```
+####&emsp;&emsp;全局参数Filter的中间件  
+&emsp;&emsp;对于站点信息之类的常量参数，在每个页面中可能都要显示在页面上，为了避免每次都在render传入这些数据信息。需要统一管理中间件来处理它，将其称为`filter`。
+将这个`filter`定义在所有的请求之前，由于中间件的处理顺序从上往下，所以每个请求在页面上都会传入这些参数。
+```javascript
+app.use(function(req,res,next){
+	res.locals.title = config.site.title;
+	res.locals.description = config.site.description;
+	res.locals.pagesize = config.site.pagesize;
+	res.locals.session = req.session;
+	next();
+});
+```
+####&emsp;&emsp;express路由处理范例  
+&emsp;&emsp;Webstorm工程中app.js的路由处理逻辑如下:  
+&emsp;&emsp;1. 将routes文件夹下面的文件定义为路由对象  
+&emsp;&emsp;2. 通过use方法将请求路径映射到路由对象上  
+```javascript
+//定义路由对象
+var routes = require('./routes/index');
+var users = require('./routes/users');
+//映射路径处理对象
+app.use('/',routes);
+app.use('/users',users);
+```
 
 
-\_\_dirname 会被解析为正在执行的脚本所在的目录。所以如果你的脚本放在/home/sites/app.js 中，则__dirname 会被解析为/home/sites。
+
+
+
+
+
+
+
+
 
 * 静态数据的操作处理
 * 错误处理与防治服务器崩溃
