@@ -94,7 +94,7 @@ Markdown 的粗体和斜体也非常简单，用两个 * 包含一段文本就�
 `views`  
 &emsp;&emsp;视图文件的目录,存放模板文件。但是这种视图并不是传统的html文件，而是html的引擎模板。  
 `app.js`  
-&emsp;&emsp;工程实例，以下对app.js的代码进行解读
+&emsp;&emsp;Express应用对象，以下对app.js的代码进行解读
 ```javascript
 //require 是一个用来引入模块的Node函数。Node 默认会在目录node_modules中寻找这些模块
 //引入express模块
@@ -172,8 +172,89 @@ module.exports = app;
 ```
 &emsp;&emsp;`bin\www`  
 &emsp;&emsp;工程入口,packege.json里有定义 "start": "node ./bin/www"  
+```javascript
+//初始化module
+var app = require('../app');
+var debug = require('debug')('test:server');
+var http = require('http');
+
+//设置服务器端口
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+//创建http服务器
+var server = http.createServer(app);
+
+//服务器开始监听端口
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+```
 &emsp;&emsp;`package.json:`  
-&emsp;&emsp;项目的参数信息
+&emsp;&emsp;项目配置文件，包含各种所需模块已经项目的配置信息  
+####&emsp;&emsp;与handlebars模块集成  
+&emsp;&emsp;新建好的工程默认使用的是hbs，需要安装express-handlebars模块  
+1.卸载hbs，安装express-handlebars  
+```javascript
+npm uninstall hbs
+npm install --save express-handlebars
+```
+2.修改模板集成，在app.js中添加express-handlebars  
+```javascript
+var exphbs      = require('express-handlebars');
+
+//配置hbs基础模板和分块模板
+var hbs = exphbs.create({
+  partialsDir: 'views/partials',			//partialsDir：指定partial页面的目录
+  layoutsDir: "views/layouts/",				//layout：指定布局页面的目录
+  defaultLayout: 'main',					//defaultlayout:指定默认布局文件（没带后缀）
+  extname: '.hbs',							//extname:指定handlebars文件后缀
+  helpers: hbsHelper						//helpers:指定模板函数对象
+});
+app.engine('hbs', hbs.engine);
+```
+####&emsp;&emsp;集成Session对象  
+&emsp;&emsp;session是不可缺少的重要部分，从express4开始，session作为一个独立的中间件而不再直接集成与express框架中，需要单独安装使用  
+1.安装session  
+```javascript
+npm install --save express-session
+```
+2.在app.js中加入session  
+```javascript
+var session     = require('express-session');
+//加入session支持
+app.use(session({
+  name:'blogOfLiyang',						//这里的name指的是cookie的name，默认cookie的name是connext.sid
+  maxAge: 30 * 1000,						//设置maxAge是30000ms，即30s后session和相应的cookie失效过期
+  secret: 'liyang-web-node-secret-key',
+  resave: false,
+  saveUninitialized: false
+}));
+```
+####&emsp;&emsp;创建全局的配置文件  
+&emsp;&emsp;为了更好的维护项目，定义一个配置文件（config.js）来定义基本信息，放到根目录下  
+```javascript
+var Config = {
+    site: {
+        title: '前端社区',
+        description: '用Coding创造财富',
+        version: '1.0',
+    },
+    db: {
+        cookieSecret: 'frontendblog',
+        name: 'blog',
+        host: 'localhost',
+        url: 'mongodb://127.0.0.1:27017/blog'
+    },
+    site: {
+        path:'',
+        pagesize: 6
+    }
+};
+module.exports = Config;
+```
+
 
 * 路由的基本原理和中间件  
 ####&emsp;&emsp;路由（URL映射）  
