@@ -72,13 +72,175 @@ Markdown 的粗体和斜体也非常简单，用两个 * 包含一段文本就�
 # 知识点复习  
 &ensp;  
 &ensp;  
-###http协议
-* 绝对地址和相对地址
-* querystring
-* url和uri
-* http status code
-* http verbs
-* 表单和ajax传值
+###http协议  
+>HTTP是一个属于应用层的面向对象的协议，由于其简捷、快速的方式，适用于分布式超媒体信息系统。  
+HTTP协议的主要特点可概括如下：  
+1.支持客户/服务器模式。  
+2.简单快速：客户向服务器请求服务时，只需传送请求方法和路径。请求方法常用的有GET、HEAD、POST。每种方法规定了客户与服务器联系的类型不同。由于HTTP协议简单，使得HTTP服务器的程序规模小，因而通信速度很快。  
+3.灵活：HTTP允许传输任意类型的数据对象。正在传输的类型由Content-Type加以标记。  
+4.无连接：无连接的含义是限制每次连接只处理一个请求。服务器处理完客户的请求，并收到客户的应答后，即断开连接。采用这种方式可以节省传输时间。  
+5.无状态：HTTP协议是无状态协议。无状态是指协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息，则它必须重传，这样可能导致每次连接传送的数据量增大。另一方面，在服务器不需要先前信息时它的应答就较快。  
+
+* 绝对地址和相对地址  
+&emsp;&emsp;相对地址:就是被链接文件相对与当前页面的地址,../表示源文件所在目录的上一级目录(与当前文件的父文件同级的文件)，../../表示源文件所在目录的上上级目录链接根目录。同一文件夹下的文件可以用“./文件名”的形式（当前目录）。  
+&emsp;&emsp;绝对地址:就是文件在网络或本地的绝对位置.绝对，具有唯一性，如官网地址,又例如 require('/home/byvoid/module')（/表示根目录）  
+&emsp;&emsp;Node.js模块加载的一个重要特性：通过查找 node_modules 目录来加载模块，例如require('express')  
+
+* querystring  
+&emsp;&emsp;检索 HTTP 查询字符串中变量的值。HTTP 查询字符串由问号 (?) 后的值指定。比如常见的URL网页地址都有xxx.asp?pn=123456，?号后面的就是querystring。如上URL的querystring参数就是变量pn等于123456，可以
+通过req.query.pn来获取pn变量。  
+&emsp;&emsp;**语法:**  
+&emsp;&emsp;Request.QueryString(variable)[(index)|.Count]  
+*variable*  
+&emsp;&emsp;在 HTTP 查询字符串中指定要检索的变量名  
+*index*  
+&emsp;&emsp;这是一个可选参数，可以用来检索 variable 的多个值中的某一个值。这可以是从1到Request.QueryString(variable).Count 之间的任何整数。  
+**实例**  
+&emsp;&emsp;客户端请求  
+&emsp;&emsp;/scripts/directory-lookup.asp?name=fred&age=22  
+&emsp;&emsp;results in the following QUERY_STRING value  
+&emsp;&emsp;name=fred&age=22  
+&emsp;&emsp;**QueryString**集合将包含 `name` 和 `age`两个成员。那么，您就可以使用下面的脚本。  
+&emsp;&emsp;Request.QueryString("name"),Request.QueryString("age")来查找出name和age的属性
+
+
+* url和uri  
+####&emsp;&emsp;URL—Uniform Resource Location统一资源定位符    
+![URL](./markdownImg/URL.png)  
+&emsp;&emsp;**协议**  
+&emsp;&emsp;协议确定如何传输请求。我们主要是处理http 和https。其他常见的协议还有file 和ftp。  
+&emsp;&emsp;**主机名**  
+&emsp;&emsp;主机名标识服务器。运行在本地计算机（localhost）和本地网络的服务器可以简单地表
+示，比如用一个单词，或一个数字IP 地址。在Internet 环境下，主机名通常以一个顶
+级域名（TLD）结尾，比如.com 或.net。另外，也许还会有子域名作为主机名的前缀。子域名可以是任何形式的，其中www 最为常见。子域名通常是可选的。  
+&emsp;&emsp;**端口**  
+&emsp;&emsp;每一台服务器都有一系列端口号。一些端口号比较“特殊”，如80 和443 端口。如果
+省略端口值，那么默认80 端口负责HTTP 传输，443 端口负责HTTPS 传输。如果不使
+用80 和443 端口，就需要一个大于10231 的端口号。通常使用容易记忆的端口号，如
+3000、8080 或8088。  
+&emsp;&emsp;**路径**  
+&emsp;&emsp;URL 中影响应用程序的第一个组成部分通常是路径（在考虑协议、主机名和端口的基
+础上做决定很合理，但是不够好）。路径是应用中的页面或其他资源的唯一标识。  
+&emsp;&emsp;**查询字符串**  
+&emsp;&emsp;查询字符串是一种键值对集合，是可选的。它以问号（?）开头，键值对则以与号（&）
+分隔开。所有的名称和值都必须是URL 编码的。对此，JavaScript 提供了一个嵌入式的
+函数encodeURIComponent 来处理。例如，空格被加号（+）替换。其他特殊字符被数字
+型字符替换。  
+&emsp;&emsp;**信息片段**  
+&emsp;&emsp;信息片段（或散列）被严格限制在浏览器中使用，不会传递到服务器。用它控制单页应用或AJAX 富应用越来越普遍。最初，信息片段只是用来让浏览器展现文档中通过锚点
+标记`（<a id="chapter06">）`指定的部分。  
+####&emsp;&emsp;URI—Universal Resource Identifier通用资源标志符  
+> Web上可用的每种资源 - HTML文档、图像、视频片段、程序等 - 由一个通过通用资源标志符(Universal Resource Identifier, 简称"URI")进行定位。  
+
+&emsp;&emsp;1. 访问资源的命名机制。  
+&emsp;&emsp;2. 存放资源的主机名。  
+&emsp;&emsp;3. 资源自身的名称，由路径表示。  
+> URI是一个相对来说更广泛的概念，URL是URI的一种，是URI命名机制的一个子集，可以说URI是抽象的，而具体要使用URL来定位资源。URI就是一种资源定位机制，它是比较笼统地定位了资源，并不局限于客户端和服务器，而URL就定位了网上的一切资源，只要是网上的资源，都有唯一的URL.  
+
+
+
+
+
+* http status code  
+**消息（1字头）**  
+&emsp;&emsp;这一类型的状态码，代表请求已被接受，需要继续处理。这类响应是临时响应，只包含状态行和某些可选的响应头信息，并以空行结束。由于 HTTP/1.0 协议中没有定义任何 1xx 状态码，所以除非在某些试验条件下，服务器禁止向此类客户端发送 1xx 响应。  
+**成功（2字头）**  
+&emsp;&emsp;这一类型的状态码，代表请求已成功被服务器接收、理解、并接受  
+&emsp;&emsp;**200 OK**  
+&emsp;&emsp;请求已成功，请求所希望的响应头或数据体将随此响应返回。  
+**重定向（3字头）**  
+&emsp;&emsp;这类状态码代表需要客户端采取进一步的操作才能完成请求。通常，这些状态码用来重定向，后续的请求地址（重定向目标）在本次响应的 Location 域中指明。
+当且仅当后续的请求所使用的方法是 GET 或者 HEAD 时，用户浏览器才可以在没有用户介入的情况下自动提交所需要的后续请求。客户端应当自动监测无限循环重定向（例如：A->A，或者A->B->C->A），因为这会导致服务器和客户端大量不必要的资源消耗。按照 HTTP/1.0 版规范的建议，浏览器不应自动访问超过5次的重定向。
+&emsp;&emsp;**状态码301、302、303 和307**  
+**请求错误（4字头）**  
+&emsp;&emsp;这类的状态码代表了客户端看起来可能发生了错误，妨碍了服务器的处理。除非响应的是一个 HEAD 请求，否则服务器就应该返回一个解释当前错误状况的实体，以及这是临时的还是永久性的状况。这些状态码适用于任何请求方法。浏览器应当向用户显示任何包含在此类错误响应中的实体内容。
+如果错误发生时客户端正在传送数据，那么使用TCP的服务器实现应当仔细确保在关闭客户端与服务器之间的连接之前，客户端已经收到了包含错误信息的数据包。如果客户端在收到错误信息后继续向服务器发送数据，服务器的TCP栈将向客户端发送一个重置数据包，以清除该客户端所有还未识别的输入缓冲，以免这些数据被服务器上的应用程序读取并干扰后者。  
+&emsp;&emsp;**404 Not Found**  
+&emsp;&emsp;请求失败，请求所希望得到的资源未被在服务器上发现。没有信息能够告诉用户这个状况到底是暂时的还是永久的。假如服务器知道情况的话，应当使用410状态码来告知旧资源因为某些内部的配置机制问题，已经永久的不可用，而且没有任何可以跳转的地址。404这个状态码被广泛应用于当服务器不想揭示到底为何请求被拒绝或者没有其他适合的响应可用的情况下。出现这个错误的最有可能的原因是服务器端没有这个页面。  
+**服务器错误（5、6字头）**  
+&emsp;&emsp;**500 Internal Server Error（服务器内部错误）**  
+&emsp;&emsp;服务器遇到了一个未曾预料的状况，导致了它无法完成对请求的处理。一般来说，这个问题都会在服务器端的源代码出现错误时出现。  
+
+* http verbs  
+>HTTP 协议确定了客户端与服务器通信的请求方法集合（通常称为HTTP verbs）。很显然，
+GET 和POST 最为常见。  
+
+&emsp;&emsp;标准Http协议支持六种请求方法，即：  
+&emsp;&emsp;**GET**  
+&emsp;&emsp;&emsp;&emsp;在浏览器中键入一个URL（或点击一个链接），服务器会接收到一个HTTP GET 请求，其
+中的重要信息是URL 路径和查询字符串。至于如何响应，则需要应用程序结合方法、路
+径和查询字符串来决定。对于一个网站来说，大部分页面都响应GET请求。如何使用get方法传递参数见http协议的querystring部分，如何获取get方法的参数见路由（URL映射）部分  
+&emsp;&emsp;**HEAD**  
+&emsp;&emsp;**PUT**  
+&emsp;&emsp;**DELETE**  
+&emsp;&emsp;**POST**  
+&emsp;&emsp;&emsp;&emsp;POST 请求通常用来提交信息到服务器后
+台（例如表单处理）。服务器将请求中包含的所有信息（例如表单）处理完成之后，用以
+响应的HTML 通常与相应的GET 请求是一样的。与服务器通信时，浏览器只使用GET 和
+POST 方法（如果没有使用AJAX）。    
+
+&emsp;&emsp;**OPTIONS**   
+
+* 表单和ajax传值  
+
+&emsp;&emsp;**html表单代码（登录界面）**
+```javascript
+    <form id="loginform" action="">
+      <p class="login-box-msg text-red"></p>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" placeholder="用户名" id="usr" required  minlength="3">
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control" placeholder="密码" id="pwd">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="row">
+        <div class="col-xs-8">
+        </div>
+        <div class="col-xs-4">
+          <button type="submit" class="btn btn-primary btn-block btn-flat" id="loginBtn">登 录</button>
+        </div>
+      </div>
+    </form>
+```
+&emsp;&emsp;**ajax关键代码**
+```javascript
+function doLogin() {
+
+  $.ajax({
+    type: "POST",
+    url: "/",
+    contentType: "application/json",
+    dataType: "json",
+    data: JSON.stringify({
+      'usr': $("#usr").val(),
+      'pwd': $("#pwd").val()
+    }),
+    success: function(result) {
+      if (result.code == 99) {
+        $(".login-box-msg").text(result.msg);
+      } else {
+        $.cookie('username', result.data.username, {expires:30});
+        $.cookie('password', result.data.password, {expires:30});
+        $.cookie('imgurl', result.data.imgUrl, {expires:30});
+        $.cookie('id', result.data._id, {expires:30});
+        location.href = "/p/blogs";
+      }
+    }
+  })
+}
+```
+&emsp;&emsp;**截取POST请求方式的url中含有/的请求**  
+```javascript
+router.post('/', function(req, res, next) {
+  dbHelper.findUsr(req.body, function (success, doc) {
+    req.session.user = doc.data;
+    res.send(doc);
+  })
+});
+
+```
 * req取参数的3种方式
 ###express
 >精简的、灵活的Node.js Web 程序框架，为构建单页、多页及混合的Web 程序提供了一系列健壮的功能特性  
@@ -287,9 +449,33 @@ API 的人对该方法很感兴趣。假定浏览器默认始终接受HTML
 req.url 若是出于内部路由目的，则可以重写，但是req.orginalUrl 旨在保留原始请求
 和查询字符串。  
 &emsp;&emsp;req.acceptedLanguages:一个简便方法，用来返回客户端首选的一组（人类的）语言。这些信息是从请求报头中解析而来的  
+#####&emsp;&emsp;响应对象中最有用的属性和方法（所有这些方法都是由Express添加的）。  
+&emsp;&emsp;res.status(code):设置HTTP 状态代码。Express 默认为200（成功），所以你可以使用这个方法返回状态
+404（页面不存在）或500（服务器内部错误），或任何一个其他的状态码。对于重定向
+（状态码301、302、303 和307），有一个更好的方法：redirect。  
+&emsp;&emsp;res.set(name,value):设置响应头。这通常不需要手动设置。  
+&emsp;&emsp;res.cookie（name,vaue,[options]）,res.clearCookie(name,[options]):设置或清除客户端cookies 值。  
+&emsp;&emsp;res.redirect([status],url):重定向浏览器。默认重定向代码是302（建立）。通常，你应尽量减少重定向，除非永
+久移动一个页面，这种情况应当使用代码301（永久移动）。  
+&emsp;&emsp;res.send(body),res.send(status,body):向客户端发送响应及可选的状态码。Express 的默认内容类型是text/html。如果你想改
+为text/plain，需要在res.send 之前调用res.set('Content-Type','text/plain\')。如果body是一个对象或一个数组，响应将会以JSON 发送（内容类型需要被正确设置），
+不过既然你想发送JSON，我推荐你调用res.json。  
+&emsp;&emsp;res.json(json),res.json(status,json):向客户端发送JSON 以及可选的状态码  
+&emsp;&emsp;res.jsonp(json),req.jsonp(status,json):向客户端发送JSONP 及可选的状态码  
+&emsp;&emsp;res.type(type):一个简便的方法，用于设置Content-Type 头信息。基本上相当于res.set('Content-
+Type','type')，只是如果你提供了一个没有斜杠的字符串，它会试图把其当作文件的
+扩展名映射为一个互联网媒体类型。比如，res.type('txt') 会将Content-Type 设为
+text/plain。此功能在有些领域可能会有用（例如自动提供不同的多媒体文件），但是
+通常应该避免使用它，以便明确设置正确的互联网媒体类型。  
+&emsp;&emsp;res.locals,res.render(view,[locals],callback):res.locals 是一个对象，包含用于渲染视图的默认上下文。res.render 使用配置的模
+请求和响应对象板引擎渲染视图（不能把res.render 的locals 参数与res.locals 混为一谈，上下文
+在res.locals 中会被重写，但在没有被重写的情况下仍然可用）。res.render 的默认响
+应代码为200，使用res.status 可以指定一个不同的代码。视图渲染将在第7 章深入讨论。
+
+
 
 #####&emsp;&emsp;req.query路由参数预处理  
-&emsp;&emsp;可以通过req的query对象，获取表达post的参数  
+&emsp;&emsp;可以通过req的query对象，获取表达get的参数  
 ```javascript
 URL http://localhost:3000/login?username=tom&password=12345
 
@@ -306,8 +492,8 @@ app.get('/user/:userId',function(req,res,next){
 	...
 });
 ```
-#####&emsp;&emsp;req.post路由参数预处理  
-&emsp;&emsp;可以通过req的bidy对象，获取表达post的参数  
+#####&emsp;&emsp;req.body路由参数预处理  
+&emsp;&emsp;可以通过req的body对象，获取表达post的参数  
 ```javascript
 app.post('/login',function(req,res,next){
 	var username = req.body.name;
