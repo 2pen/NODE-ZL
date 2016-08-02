@@ -184,7 +184,7 @@ POST 方法（如果没有使用AJAX）。
 * 表单和ajax传值  
 
 &emsp;&emsp;**html表单代码（登录界面）**
-```javascript
+```html
     <form id="loginform" action="">
       <p class="login-box-msg text-red"></p>
       <div class="form-group has-feedback">
@@ -209,15 +209,15 @@ POST 方法（如果没有使用AJAX）。
 function doLogin() {
 
   $.ajax({
-    type: "POST",
+    type: "POST",								//Ajax 请求使用GET方法，如果要使用POST方法，可以设定type参数值
     url: "/",
-    contentType: "application/json",
-    dataType: "json",
-    data: JSON.stringify({
+    contentType: "application/json",			//默认值: "application/x-www-form-urlencoded"。发送信息至服务器时内容编码类型。
+    dataType: "json",							//预期服务器返回的数据类型
+    data: JSON.stringify({						//发送到服务器的数据
       'usr': $("#usr").val(),
       'pwd': $("#pwd").val()
     }),
-    success: function(result) {
+    success: function(result) {					//请求成功后的回调函数
       if (result.code == 99) {
         $(".login-box-msg").text(result.msg);
       } else {
@@ -241,7 +241,124 @@ router.post('/', function(req, res, next) {
 });
 
 ```
-* req取参数的3种方式
+* req取参数的3种方式  
+&emsp;&emsp;req.query:处理`get`请求  
+&emsp;&emsp;req.params:处理`/:xxx`形式的`get`请求  
+&emsp;&emsp;req.body:处理`post`请求  
+&emsp;&emsp;详情见路由部分的路由规则  
+###常用中间件  
+* session的基本使用方法  
+首先:`npm install --save express-session`  
+然后， 在链入cookie-parser之后链入express-session：  
+`var cookieParser = require('cookie-parser');`  
+`var session     = require('express-session');`  
+```javascript
+//加入session支持
+app.use(session({
+  name:'blogOfLiyang',								//这里的name值得是cookie的name，默认cookie的name是：connect.sid
+  maxAge: 30 * 1000,								//设置maxAge是30000ms，即30s后session和相应的cookie失效过期
+  secret: 'liyang-web-node-secret-key',
+  resave: false,
+  saveUninitialized: false
+}));
+```
+session的原理：  
+1). 生成全局唯一标识符（`sessionid`）；  
+2). 开辟数据存储空间。一般会在内存中创建相应的数据结构，但这种情况下，系统一旦掉电，所有的会话数据就会丢失，如果是电子商务网站，这种事故会造成严重的后果。不过也可以写到文件里甚至存储在数据库中，这样虽然会增加`I/O`开销，但`session`可以实现某种程度的持久化，而且更有利于`session`的共享；  
+3). 将`session`的全局唯一标示符发送给客户端。  
+问题的关键就在服务端如何发送这个`session`的唯一标识上。联系到`HTTP`协议，数据无非可以放到请求行、头域或`Body`里，基于此，一般来说会有两种常用的方式：`cookie`和`URL`重写。  
+####session和cookie的应用场景  
+1.   应用场景
+Cookie的典型应用场景是Remember Me服务，即用户的账户信息通过cookie的形式保存在客户端，当用户再次请求匹配的URL的时候，账户信息会被传送到服务端，交由相应的程序完成自动登录等功能。当然也可以保存一些客户端信息，比如页面布局以及搜索历史等等。
+Session的典型应用场景是用户登录某网站之后，将其登录信息放入session，在以后的每次请求中查询相应的登录信息以确保该用户合法。当然还是有购物车等等经典场景；
+2.   安全性
+cookie将信息保存在客户端，如果不进行加密的话，无疑会暴露一些隐私信息，安全性很差，一般情况下敏感信息是经过加密后存储在cookie中，但很容易就会被窃取。而session只会将信息存储在服务端，如果存储在文件或数据库中，也有被窃取的可能，只是可能性比cookie小了太多。
+Session安全性方面比较突出的是存在会话劫持的问题，这是一种安全威胁，这在下文会进行更详细的说明。总体来讲，session的安全性要高于cookie；
+3.   性能
+Cookie存储在客户端，消耗的是客户端的I/O和内存，而session存储在服务端，消耗的是服务端的资源。但是session对服务器造成的压力比较集中，而cookie很好地分散了资源消耗，就这点来说，cookie是要优于session的；
+4.   时效性
+Cookie可以通过设置有效期使其较长时间内存在于客户端，而session一般只有比较短的有效期（用户主动销毁session或关闭浏览器后引发超时）；
+5.   其他
+Cookie的处理在开发中没有session方便。而且cookie在客户端是有数量和大小的限制的，而session的大小却只以硬件为限制，能存储的数据无疑大了太多。  
+
+&ensp;
+
+`express-session`中间件的使用：  
+&emsp;&emsp;只需要用`express app`的`use`方法将`session`挂载在'/'路径即可，这样所有的路由都可以访问到`session`。可以给要挂载的`session`传递不同的`option`参数，来控制`session`的不同特性。  
+`session`内容的存储和更改：  
+&emsp;&emsp;一旦我们将`express-session`中间件用`use`挂载后，我们可以很方便的通过`req`参数来存储和访问`session`对象的数据。`req.session`是一个`JSON`格式的`JavaScript`对象，我们可以在使用的过程中随意的增加成员，这些成员会自动的被保存到`option`参数指定的地方，默认即为内存中去。  
+```javascript
+app.get('/awesome', function(req, res){
+     if(req.session.lastPage) {
+         console.log('Last page was: ' + req.session.lastPage + ".");    
+     }    
+     req.session.lastPage = '/awesome'; //每一次访问时，session对象的lastPage会自动的保存或更新内存中的session中去。
+     res.send("You're Awesome. And the session expired time is: " + req.session.cookie.maxAge);
+});
+```
+`session`的生命周期  
+&emsp;&emsp;`session`与发送到客户端浏览器的生命周期是一致的。而我们在挂载`session`的时候，通过`option`选项的`cookie`。`maxAge`成员，我们可以设置`session`的过期时间，以ms为单位（但是，如果`session`存储在`mongodb`中的话，任何低于60s(60000ms)的设置是没有用的）。如果`maxAge`不设置，默认为null，这样的`expire`的时间就是浏览器的关闭时间，即每次关闭浏览器的时候，`session`都会失效。  
+####**详情见以下blog:**
+[express 框架之session](http://www.cnblogs.com/chenchenluo/p/4197181.html)
+
+* cookie的基本使用方法  
+
+&emsp;&emsp;在程序中开始设置和访问cookie 之前， 需要先引入中间件cookie-parser。首先  
+```javascript
+npm install --save cookie-parser
+```
+&emsp;&emsp;然后:  
+```javascript
+var cookieParser = require('cookie-parser');
+app.use(cookieParser());
+```
+&emsp;&emsp;cookie的相关操作  
+&emsp;&emsp;**创建一个会话cookie：**  
+```javascript
+$.cookie('cookieName','cookieValue');
+```
+&emsp;&emsp;注：当没有指明cookie时间时，所创建的cookie有效期默认到用户浏览器关闭止，故被称为会话cookie。  
+
+&emsp;&emsp;**创建一个持久cookie：**  
+```javascript
+$.cookie('cookieName','cookieValue',{expires:7});
+```
+&emsp;&emsp;注：当指明时间时，故称为持久cookie，并且有效时间为天。  
+
+&emsp;&emsp;**创建一个持久并带有效路径的cookie：**  
+```javascript
+$.cookie('cookieName','cookieValue',{expires:7,path:'/'});
+```
+&emsp;&emsp;注：控制应用这个cookie 的路径。注意，路径会隐含地通配其后的路径。如果你用的路径
+是/ （默认值），它会应用到网站的所有页面上。如果你用的路径是/foo，它会应用到
+/foo、/foo/bar 等路径上。如果http://www.china.com/test/index.html 建立了一个cookie，那么在http://www.china.com/test/目录里的所有页面，以及该目录下面任何子目录里的页面都可以访问这个cookie。
+这就是说，在http://www.china.com/test/test2/test3 里的任何页面都可以访问http://www.china.com/test/index.html建立的cookie。
+但是，如果http://www.china.com/test/ 需要访问http://www.china.com/test/index.html设置的cookes，该怎么办？
+这时，我们要把cookies的path属性设置成“/”。在指定路径的时候，凡是来自同一服务器，URL里有相同路径的所有WEB页面都可以共享cookies。  
+
+&emsp;&emsp;**创建一个持久并带有效路径和域名的cookie：**  
+```javascript
+$.cookie('cookieName','cookieValue',{expires:7,path:'/,domain: 'chuhoo.com',secure: false,raw:false});
+```
+&emsp;&emsp;其实，cookie的domain属性所说的跨域，确切地说，应该是跨子域(subdomain)。比如我在bbs.readlog.cn这个子域（这里是二级域名）下设置的cookie，如果不特别的设置domain属性，那这个cookie就只能被bbs.readlog.cn这个子域下的程序读到，至于www.readlog.cn是无法读取到这个cookie的，而我如果在bbs.readlog.cn设置cookie的时候，设置cookie的domain属性为readlog.cn，那么所有的子域就都可以读到这个cookie了。  
+&emsp;&emsp;Domain值是域名，比如www.china.com。这是对path路径属性的一个延伸。如果我们想让 www.china.com能够访问bbs.china.com设置的cookies，该怎么办? 我们可以把domain属性设置成“china.com”，并把path属性设置成“/”。  
+&emsp;&emsp;**path和domain区别之我见:**  
+&emsp;&emsp;path用于管理路径，专用于设置创建cookie的页面与可以访问到它的拥有各种不同后缀的url的关系。而domain用于跨域，用于设置前缀不同的网页访问cookie。  
+
+&emsp;&emsp;**获取cookie：**  
+```javascript
+$.cookie('cookieName');  //如果存在则返回cookieValue，否则返回null。
+```
+&emsp;&emsp;**删除cookie：**  
+```javascript
+$.cookie('cookieName',null);
+```
+
+
+* log日志的处理方法  
+* nodepdf转换模型  
+* formidable图片上传模块  
+
 ###express
 >精简的、灵活的Node.js Web 程序框架，为构建单页、多页及混合的Web 程序提供了一系列健壮的功能特性  
 
