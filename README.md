@@ -356,8 +356,156 @@ $.cookie('cookieName',null);
 
 
 * log日志的处理方法  
+
 * nodepdf转换模型  
+**相关配置文件**  
+&emsp;&emsp;1. 首先需要下载phantomjs(通过npm下载)，电脑也需下载了phantomjs。  
+&emsp;&emsp;2. 在C:\Users\zhanglele\AppData\Local\Temp\phantomjs路径下放置phantomjs-2.1.1-windows.zip  
+&emsp;&emsp;3. 可能需要npm install phantomjs -g(全局安装)  
+&emsp;&emsp;*完成这个三点基本就完成通过nodejs转换pdf的配置(真坑)*  
+**app.js部分代码**
+```javascript
+app.use('/pdf', require('./routes/pdf'));												//设置./routes文件夹下的pdf.js为接受/pdf网址的路由的中间件
+```  
+&emsp;&emsp;**前端html代码**
+```html
+<a href="/pdf/{{_id}}" class="btn btn-primary btn-sm">导出pdf</a>						//采用相对地址的方法，将网站地址改为http://localhost:3000/pdf/_id
+```
+&emsp;&emsp;**pdf.js部分代码**
+```javascript
+var fs = require('fs');																	//（文件系统）模块								
+var NodePDF = require('nodepdf');														//生成pdf模块
+router.get('/:id', function (req, res, next) {
+
+  var id = req.params.id;
+  var host = req.protocol + '://' + req.get('host') + '/pdf/blogPdf/' + id;
+  var pdffile = config.site.path + '\\pdf\\news-' + Date.now() + '.pdf';
+
+  NodePDF.render(host, pdffile, function(err, filePath){								//第一个参数为需要截取为pdf的完整地址，第二个参数为存储pdf文件的地址，回调函数
+    if (err) {																			//用来读取已经保存的pdf文件并且用以展示
+      console.log(err);
+    }else{
+      fs.readFile(pdffile , function (err,data){										//用异步的方式读取文件
+        res.contentType("application/pdf");												//响应头为pdf格式
+        res.send(data);							
+      });
+    }
+  });
+})
+```
 * formidable图片上传模块  
+**前端html代码**
+```html
+	<input type="file" id="uploadFile" multiple="multiple"  accept="image/*">			//type="file" 用于文件上传。 accept="image/*" 不限制图像的格式 multiple="multiple"
+																						//属性规定输入字段可选择多个值
+	<a class="btn btn-primary"><i class="fa fa-camera fa-fw"></i> 选择文件</a>			//单纯只是为了覆盖原来丑陋的上传文件的难看的图标
+	<a class="btn btn-primary disabled" id="UploadBtn"><i class="fa fa-upload fa-fw"></i> 上传</a>	//在`id="uploadFile"`这个东西选择文件后，移除disabled类，点击该按钮上传
+```
+**关键ajax代码**
+```javascript
+
+function doUpload() {
+
+  $(".pg-wrapper").show();		
+
+  var file = $("#uploadFile")[0].files[0];						//var file = $("#uploadFile")[0].files[0];用于提取uploadFile的内容files[0]表示提取第一个(
+  																//输入确实可以有多个，如果将0改为1那就提取第二张图片)
+  var form = new FormData();									//var form = new FormData(); FormData是一个对象 
+  form.append("file", file);									// form.append("file", file); append用于向对象添加字段 然后通过ajax发送数据到服务器
+
+  $.ajax({
+    url: "/admin/uploadImg",
+    type: "POST",
+    data: form,
+    async: true,
+    processData: false,
+    contentType: false,
+    success: function(result) {
+      startReq = false;
+      if (result.code == 0) {
+
+        var picUrl = $.format("![Alt text]({0})",result.data)	//应用jQuery.validator.format( template, [argument], [argumentN...] )函数，用参数来填充{n}占位符
+        $("#newsContent").insertAtCaret(picUrl);
+        $(".pg-wrapper").hide();
+        // console.log(result.data);
+      }
+    }
+  });
+}
+```
+**路由admin.js部分代码**
+```javascript
+//上传图片
+var formidable = require('formidable');
+
+router.post('/uploadImg', function(req, res, next) {
+
+  var io = global.io;
+
+  var form = new formidable.IncomingForm();							//创建Formidable.IncomingForm对象
+  var path = "";													//path储存文件地址，将被塞入回调函数的entries值中
+  var fields = [];
+
+  form.encoding = 'utf-8';											//设置表单域的编码
+  form.uploadDir = "upload";										//设置上传文件存放的文件夹，默认为系统的临时文件夹，可以使用fs.rename()来改变上传文件的存放位置和文件名
+  form.keepExtensions = true;										//设置该属性为true可以使得上传的文件保持原来的文件的扩展名
+  form.maxFieldsSize = 30000 * 1024 * 1024;							//限制所有存储表单字段域的大小（除去file字段），如果超出，则会触发error事件，默认为2M
+
+
+  var uploadprogress = 0;
+  console.log("start:upload----"+uploadprogress);
+
+  form.parse(req);													//该方法会转换请求中所包含的表单数据，callback会包含所有字段域和文件信息
+
+  form.on('field', function(field, value) {							//每当一个字段/值对已经收到时会触发该事件
+    console.log(field + ":" + value);
+  })
+      .on('file', function(field, file) {							//每当有一对字段/文件已经接收到，便会触发该事件
+        path = '\\' + file.path;									
+      })
+      .on('progress', function(bytesReceived, bytesExpected) {		//当有数据块被处理之后会触发该事件，对于创建进度条非常有用
+
+        uploadprogress = (bytesReceived / bytesExpected * 100).toFixed(0);
+        console.log("upload----"+ uploadprogress);
+        io.sockets.in('sessionId').emit('uploadProgress', uploadprogress);
+      })
+      .on('end', function() {										//当所有的请求已经接收到，并且所有的文件都已上传到服务器中，该事件会触发。此时可以发送请求到客户端
+
+        console.log('-> upload done\n');
+        entries.code = 0;
+        entries.data = path;
+        res.writeHead(200, {
+          'content-type': 'text/json'
+        });
+        res.end(JSON.stringify(entries));
+      })
+      .on("err",function(err){										//当上传流中出现错误便会触发该事件，当出现错误时，若想要继续触发request的data事件，则必须手动调用request.resume()
+      																//方法
+        var callback="<script>alert('"+err+"');</script>";
+        res.end(callback);//这段文本发回前端就会被同名的函数执行
+      }).on("abort",function(){										//当用户中止请求时会触发该事件，socket中的timeout和close事件也会触发该事件，当该事件触发之后，error事件也会触发
+        var callback="<script>alert('"+ttt+"');</script>";
+        res.end(callback);
+      });
+
+});
+```
+**其余上文代码并未用到的相关Formidable模块的使用**
+form.type 只读，根据请求的类型，取值'multipart' or 'urlencoded'  
+form.maxFields = 1000 设置可以转换多少查询字符串，默认为1000  
+form.hash = false; 设置上传文件的检验码，可以有两个取值'sha1' or 'md5'.  
+form.multiples = false; 开启该功能，当调用form.parse()方法时，回调函数的files参数将会是一个file数组，数组每一个成员是一个File对象，此功能需要 html5中multiple特性支持。  
+
+**详情见链接**  
+[Node.js的Formidable模块的使用](http://www.cnblogs.com/yuanke/archive/2016/02/26/5221853.html)
+
+
+`jQuery.validator.format( template, [argument], [argumentN...] )`详解  
+返回:String  
+参数 template&emsp;&emsp;类型：String&emsp;&emsp;要格式化的字符串  
+参数 argument (Optional)&emsp;&emsp;类型：String, Array<String>&emsp;&emsp;用字符串或字符串数组(对应索引的元素)填充第一个占位符  
+参数 argumentN... (Optional)&emsp;&emsp;类型：String&emsp;&emsp;填充第二个或之后的占位符。  
+说明：用参数来填充{n}占位符。除template外的一个或多个参数都可以用来填充相应的占位符。
 
 ###express
 >精简的、灵活的Node.js Web 程序框架，为构建单页、多页及混合的Web 程序提供了一系列健壮的功能特性  
@@ -729,6 +877,172 @@ app.use('/users',users);
 * 错误处理与防治服务器崩溃
 &ensp;  
 &ensp;  
+
+###handlebar  
+**Handlebars**是另一个流行的模板引擎**Mustac**的扩展   
+
+* 在app.js里相关配置  
+```javascript
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
+
+//配置hbs基础模板和分块模板
+var hbs = exphbs.create({
+  partialsDir: 'views/partials',
+  layoutsDir: "views/layouts/",
+  defaultLayout: 'main',
+  extname: '.hbs',
+  helpers: hbsHelper
+});
+app.engine('hbs', hbs.engine);
+```
+
+* 了解handlebar的基本处理方法{{v}},{{{v}}},{{>v}}  
+**{{v}}**  
+{{和}}之间的v为handlebars的变量  
+**{{{v}}}**  
+与{{}}的区别是{{{}}}里面的变量的字符串不会被转义(可以直接传html)  
+**{{>v}}**  
+可以让你在视图中包含一个局部文件。express-handlebars 会在views/partials 中寻找一个叫作partial_name.handle-bars 的视图  
+
+* 视图与布局  
+>视图通常表现为网站上的各个页面（它也可以表现为页面中AJAX 局部加载的内容，或一封电子邮件，或页面上的任何东西）。默认情况下，Express 会在views 子目录中查找视图。
+布局是一种特殊的视图，事实上，它是一个用于模板的模板。  
+
+&emsp;&emsp;基本的布局文件：  
+```html
+<!doctype>
+<html>
+	<head>
+		<title>Meadowlark Travel</title>
+		<link rel="stylesheet" href="/css/main.css">
+	</head>
+	<body>
+		{{{body}}}
+	</body>
+</html>
+```
+
+请注意`<body>`标记内的文本：`{{{body}}}`。这样视图引擎就知道在哪里渲染你的内容了。一定要用三重大括号而不是两个，因为视图很可能包含HTML，我们并不想让Handlebars试图去转义它。  
+>图展示了模板引擎是怎样结合视图、布局和上下文来完成渲染的。重要的是，此图解
+释了运行的顺序。视图首先被渲染，之后是布局。起初这看似是反常的：视图是在布局
+中渲染的，所以不应该是布局首先被渲染吗？虽然从技术上讲可以这么做，但是逆向运行
+是有优势的。特别是，它允许视图本身进一步自定义布局。  
+
+![shitu](./markdownImg/handlebars.png)
+
+* 了解Partials模型，掌握组织页面结构  
+>很多时候，有些组成部分（在前端界通常称为“组件”）需要在不同的页面重复使用。使
+用模板来实现这一目标的唯一方法是使用局部文件（partial，如此命名是因为它们并不渲
+染整个视图或整个网页）。  
+语法{{> partial_name}} 可以让你在视图中包含一个局部文件。express-handlebars 会
+在views/partials 中寻找一个叫作partial_name.handle-bars 的视图  
+express-handlebars 支持子目录，所以如果你有大量的局部文件，可以将它
+们组织在一起。例如，你有一些社交媒体局部文件，可以将它们放在views/
+partials/social 目录下面， 然后使用{{> social/facebook}}、{{> social/
+twitter}} 等来引入它们。  
+
+
+
+* 了解基本块的处理方法，with/each/list/if  
+**if**  
+`{{#if}}`就你使用JavaScript一样，你可以指定条件渲染DOM，如果它的参数返回false，undefined, null, "" 或者 [] (a "falsy" value),Handlebar将不会渲染DOM，如果存在`{{#else}}`则执行`{{#else}}`后面的渲染  
+**例如:**  
+```html
+{{#if list}}
+ <ul id="list"> 
+	 {{#each list}} 
+		 <li>{{this}}</li> 
+	 {{/each}} 
+ </ul> 
+ {{else}} 
+	 <p>{{error}}</p> 
+ {{/if}}
+```
+&emsp;&emsp;**对应适用json数据**
+```javascript
+var data = { 
+	info:['HTML5','CSS3',"WebGL"], 
+	"error":"数据取出错误" 
+}
+```
+&emsp;&emsp;这里`{{#if}}`判断是否存在list数组，如果存在则遍历list，如果不存在输出错误信息  
+
+&emsp;&emsp;**each**  
+&emsp;&emsp;你可以使用内置的`{{#each}}` helper遍历列表块内容，用`this`来引用遍历的元素  
+&emsp;&emsp;**例如:**  
+```html
+<ul> 
+	{{#each name}} 
+		<li>{{this}}</li> 
+	{{/each}} 
+</ul>
+```
+&emsp;&emsp;**对应适用json数据**  
+```javascript
+{ 
+	name: ["html","css","javascript"] 
+};
+```
+&emsp;&emsp;这里的this指的是数组里的每一项元素，这里的name是数组，而内置的each就是为了遍历数组用的，更复杂的数据也同样适用。  
+
+&emsp;&emsp;**with**  
+&emsp;&emsp;`{{#with}}`在模板的某个区域切换上下文  
+```html
+<div class="entry"> 
+	<h1>{{title}}</h1> 
+	{{#with author}} 
+		<h2>By {{firstName}} {{lastName}}</h2> 
+	{{/with}} 
+</div>
+```
+&emsp;&emsp;**对应适用json数据**  
+```javascript
+{ 
+	title: "My first post!", 
+	author: { firstName: "Charles", lastName: "Jolley" } 
+}
+```
+
+* 了解如何使用Helper  
+>块级表达式允许你定义一个helpers，并使用一个不同于当前的上下文（context）来调用你模板的一部分。现在考虑下这种情况，你需要一个helper来生成一段 HTML 列表：  
+
+```html
+{{#list people}}{{firstName}} {{lastName}}{{/list}}
+```
+>并使用下面的上下文（数据）：  
+
+```javascript
+{
+  people: [
+    {firstName: "Yehuda", lastName: "Katz"},
+    {firstName: "Carl", lastName: "Lerche"},
+    {firstName: "Alan", lastName: "Johnson"}
+  ]
+}
+```
+>此时需要创建一个 名为 list 的 helper 来生成这段 HTML 列表。这个 helper 使用 people 作为第一个参数，还有一个 options 对象（hash哈希）作为第二个参数。这个 options 对象有一个叫 fn 的属性，你可以传递一个上下文给它（fn），就跟执行一个普通的 Handlebars 模板一样：  
+
+```javascript
+Handlebars.registerHelper('list', function(items, options) {
+  var out = "<ul>";
+
+  for(var i=0, l=items.length; i<l; i++) {
+    out = out + "<li>" + options.fn(items[i]) + "</li>";
+  }
+  return out + "</ul>";
+});
+```
+>执行之后，这个模板就会渲染出：
+```html
+<ul>
+  <li>Yehuda Katz</li>
+  <li>Carl Lerche</li>
+  <li>Alan Johnson</li>
+</ul>
+```
+
 
 
 
