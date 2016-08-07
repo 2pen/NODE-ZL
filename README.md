@@ -1690,5 +1690,9 @@ res.end(JSON.stringify(entries)); 将entries转换为json数据并触发ajax的s
 
 在admin.js中貌似还需要require('formidable');
 ###心得
-这一段代码看下来收获不少，对于nodejs的web编程的理解更上一层楼。
+这一段代码看下来收获不少，对于nodejs的web编程的理解更上一层楼。  
+
+###2016-07-20
+###关于用flex重构页面布局与移动端自适应  
+撑着flex重构整个页面的时候，我准备大略自己调试屏幕自适应。首先决定wrapper设为flex，在屏幕width变小时可以重新设置sidebar和contentbar的flex值，以达到屏幕自适应。
 

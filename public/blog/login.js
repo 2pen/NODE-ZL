@@ -17,6 +17,7 @@ function doLogin() {
         success:function (result) {
             if(result.code==99){
                 $(".login-box-msg").text(result.msg);
+                $(".login-box-msg").css('padding-bottom','0');
             }else{
                 $.cookie('username', result.data.username, {expires:30});
                 $.cookie('password', result.data.password, {expires:30});
