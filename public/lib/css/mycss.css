@@ -113,9 +113,16 @@ h1,h2,h3,h4{
     text-decoration: none;
     display: inline-block;
 }
+.user-block{
+    display: flex;
+    flex-wrap: wrap;
+}
 .content-header{
     position: relative;
-    padding: 15px 15px 0 15px
+    padding: 15px 15px 0 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 .content-header > h1 {
     margin: 0;
@@ -151,6 +158,10 @@ h1,h2,h3,h4{
     float: right;
     font: 12px/1.5 'microsoft yahei';
     color: #aaa;
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
+
 }
 .no-margin {
     margin: 0 !important
@@ -225,10 +236,12 @@ h1,h2,h3,h4{
     margin-bottom: 0;
     font-size: 12px;
     padding: 7px 5px;
-    position: absolute;
     top: 15px;
     right: 10px;
     border-radius: 2px;
+    display: flex;
+    justify-content:flex-end;
+    flex-grow: 1;
 }
 .essaybar{
     position: relative;

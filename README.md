@@ -1043,7 +1043,61 @@ Handlebars.registerHelper('list', function(items, options) {
 </ul>
 ```
 
+###Flex布局  
+详细解释网址  
+[Flex 布局教程：语法篇](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html?utm_source=tuicool)  
 
+* Flex布局是什么  
+Flex是Flexible Box的缩写，意为"弹性布局"，用来为盒状模型提供最大的灵活性。  
+任何一个容器都可以指定为Flex布局。  
+```css
+.box{
+  display: flex;
+}
+```
+行内元素也可以使用Flex布局
+```css
+.box{
+  display: inline-flex;
+}
+```
+注意，设为Flex布局以后，子元素的`float`、`clear`和`vertical-align`属性将失效。
+
+
+* 基本概念  
+采用Flex布局的元素，称为Flex容器（flex container），简称"容器"。它的所有子元素自动成为容器成员，称为Flex项目（flex item），简称"项目"。  
+容器默认存在两根轴：水平的主轴（main axis）和垂直的交叉轴（cross axis）。主轴的开始位置（与边框的交叉点）叫做`main start`，结束位置叫做`main end`；交叉轴的开始位置叫做`cross start`，结束位置叫做`cross end`。
+项目默认沿主轴排列。单个项目占据的主轴空间叫做`main size`，占据的交叉轴空间叫做`cross size`。    
+![flexcontainer](./markdownImg/flexcontainer.png)  
+
+
+
+* 容器的属性  
+&emsp;&emsp;**flex-direction**  
+&emsp;&emsp;&emsp;&emsp;`flex-direction`属性决定主轴的方向（即项目的排列方向）。  
+&emsp;&emsp;**flex-wrap**  
+&emsp;&emsp;&emsp;&emsp;默认情况下，项目都排在一条线（又称"轴线"）上。`flex-wrap`属性定义，如果一条轴线排不下，如何换行。  
+&emsp;&emsp;**flex-flow**  
+&emsp;&emsp;&emsp;&emsp;`flex-flow`属性是`flex-direction`属性和`flex-wrap`属性的简写形式，默认值为`row nowrap`  
+&emsp;&emsp;**justify-content**  
+&emsp;&emsp;&emsp;&emsp;justify-content属性定义了项目在主轴上的对齐方式。  
+&emsp;&emsp;**align-items**  
+&emsp;&emsp;&emsp;&emsp;`align-items`属性定义项目在交叉轴上如何对齐。  
+&emsp;&emsp;**align-content**  
+&emsp;&emsp;&emsp;&emsp;`align-content`属性定义了多根轴线(就是指flex容器内有多行的情况下)的对齐方式。如果项目只有一根轴线，该属性不起作用。  
+* 项目的属性  
+&emsp;&emsp;**order**  
+&emsp;&emsp;&emsp;&emsp;`order`属性定义项目的排列顺序。数值越小，排列越靠前，默认为`0`。  
+&emsp;&emsp;**flex-grow**  
+&emsp;&emsp;&emsp;&emsp;`flex-grow`属性定义项目的放大比例，默认为`0`，即如果存在剩余空间，也不放大。  
+&emsp;&emsp;**flex-shrink**  
+&emsp;&emsp;&emsp;&emsp;`flex-shrink`属性定义了项目的缩小比例，默认为`1`，即如果空间不足，该项目将缩小。  
+&emsp;&emsp;**flex-basis**  
+&emsp;&emsp;&emsp;&emsp;`flex-basis`属性定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为`auto`，即项目的本来大小。  
+&emsp;&emsp;**flex**  
+&emsp;&emsp;&emsp;&emsp;`flex`属性是`flex-grow`, `flex-shrink` 和 `flex-basis`的简写，默认值为`0 1 auto`。后两个属性可选。  
+&emsp;&emsp;**align-self**  
+&emsp;&emsp;&emsp;&emsp;`align-self`属性允许单个项目有与其他项目不一样的对齐方式，可覆盖`align-items`属性。默认值为`auto`，表示继承父元素的`align-items`属性，如果没有父元素，则等同于`stretch`。  
 
 
 # NODE-ZL
@@ -1692,7 +1746,27 @@ res.end(JSON.stringify(entries)); 将entries转换为json数据并触发ajax的s
 ###心得
 这一段代码看下来收获不少，对于nodejs的web编程的理解更上一层楼。  
 
-###2016-07-20
+###2016-08-07
 ###关于用flex重构页面布局与移动端自适应  
 撑着flex重构整个页面的时候，我准备大略自己调试屏幕自适应。首先决定wrapper设为flex，在屏幕width变小时可以重新设置sidebar和contentbar的flex值，以达到屏幕自适应。
+###2016-08-08
+###flex心得  
+不得不说flex布局简单易上手，用起来手感特别好，老师老师推荐的好顶赞好吧。通过flex重构大部分页面布局，使页面在屏幕很小的情况下也能自适应而不需要设置@media属性。如果遇到一个布局是这样要求的：当宽度足够时，两个子元素分别处于左右两侧。当宽度不够时，两个子元素分占两行，处于左上和右下两个位置。  
+父元素的部分css设置为：
+```css
+.father{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+```
+右子元素设置为：
+```css
+.right{
+    display: flex;
+    justify-content:flex-end;
+    flex-grow: 1;
+}
+```
+
 
