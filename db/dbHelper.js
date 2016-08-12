@@ -2,7 +2,7 @@ var entries = require('./jsonRes');
 var mongoose = require('./db.js');
 var User = require('./schema/user');
 var News = require('./schema/news');
-
+var Mooc = require('./schema/mooc');
 var webHelper = require('../lib/webHelper');
 var config = require('../config')
 var async = require('async');
@@ -133,7 +133,18 @@ exports.deleteNews = function(id, cb) {
 }
 
 
-
+exports.findMooc = function(req, cb) {
+    var page = req.query.page || 1 ;
+    this.pageQuery(page, PAGE_SIZE, Mooc, 'author', {}, {
+        created_time: 'desc'
+    }, function(error, data){
+        if(error){
+            next(error);
+        }else{
+            cb(true,data);
+        }
+    });
+};
 
 exports.pageQuery = function (page, pageSize, Model, populate, queryParams, sortParams, callback) {
     var start = (page - 1) * pageSize;

@@ -50,6 +50,20 @@ router.get('/newsDelete/:id', function(req, res, next) {
   })
 });
 
+router.get('/moocList',function (req,res,next) {
+
+  dbHelper.findMooc(req, function (success, data) {
+
+    res.render('./admin/moocList', {
+      entries: data.results,
+      pageCount: data.pageCount,
+      pageNumber: data.pageNumber,
+      count: data.count,
+      layout: 'admin'
+    });
+  })
+
+});
 
 //上传图片
 router.post('/uploadImg', function(req, res, next) {

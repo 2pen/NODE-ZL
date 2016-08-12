@@ -1768,5 +1768,27 @@ res.end(JSON.stringify(entries)); 将entries转换为json数据并触发ajax的s
     flex-grow: 1;
 }
 ```
+###2016-08-12
+###设置文字长度溢出末尾以省略号显示  
+```css
+.h1{
+	white-space: nowrap;				//设置文字不换行
+	text-overflow: ellipsis;			//设置文字溢出以省略号显示，与overflow搭配使用
+	overflow: hidden;					//文字超过一定长度就隐藏
+	width: 200px;						//设置h1元素的长度
+}
+```
+###box-shadow属性  
+`box-shadow: h-shadow v-shadow blur spread color inset;`  
+
+| 值	        | 描述          |
+| ------------- |:-------------:|
+| h-shadow      | 必需。水平阴影的位置。允许负值(向右为正)。 |
+| v-shadow      | 必需。垂直阴影的位置。允许负值(向下为正)。      |
+| blur | 可选。模糊距离。      |
+|spread|可选。阴影尺寸(阴影拓展距离)|
+|color|可选。阴影的颜色|
+|inset|可选。将外部阴影(outset)改为内部阴影|
+
 
 
