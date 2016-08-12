@@ -56,6 +56,11 @@ function notifyInfo(info) {
     // alertify.success(info);
     toastr["success"](info)
 }
+function notifyInfoError(info) {
+    // alertify.set({ delay: 5000 });
+    // alertify.success(info);
+    toastr["error"](info)
+}
 
 function errorInfo(info) {
     alertify.set({ delay: 5000 });

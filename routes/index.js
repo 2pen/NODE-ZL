@@ -46,6 +46,18 @@ router.post('/login', function(req, res, next) {
     })
 });
 
+router.get('/moocs', function(req, res, next) {
+    dbHelper.findMooc(req, function (success, data) {
+
+        res.render('./moocs', {
+            entries: data.results,
+            pageCount: data.pageCount,
+            pageNumber: data.pageNumber,
+            count: data.count,
+            layout: 'main'
+        });
+    })
+});
 
 router.get('/blog', function(req, res, next) {
     dbHelper.findNews(req, function (success, data) {

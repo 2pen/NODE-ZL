@@ -65,6 +65,19 @@ router.get('/moocList',function (req,res,next) {
 
 });
 
+
+//渲染新建慕课页面
+router.get('/moocCreate', function(req, res, next) {
+  res.render('./admin/moocCreate', { layout: 'admin' });
+});
+
+router.post('/moocCreate', function(req, res, next) {
+  dbHelper.addMooc(req.body, function (success, doc) {
+    res.send(doc);
+  })
+});
+
+
 //上传图片
 router.post('/uploadImg', function(req, res, next) {
 

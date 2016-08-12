@@ -107,7 +107,13 @@ a:hover,a:focus{
     margin-left: auto;
     margin-right: auto;
 }
-
+.form-thumb > img {
+    height: 100%;
+    min-width: 200px;
+}
+.form-thumb {
+    height: 200px;
+}
 .center{
     z-index: -1;
     height:100%;

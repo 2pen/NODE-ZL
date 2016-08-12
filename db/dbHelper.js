@@ -146,6 +146,38 @@ exports.findMooc = function(req, cb) {
     });
 };
 
+exports.addMooc = function(data, cb) {
+    if(data.weekCount<0){
+        entries.code = 99;
+        entries.msg='学期周数不可小于0！';
+        cb(false,entries);
+    }else if(data.classHour<0){
+        entries.code = 99;
+        entries.msg='每周课时不可小于0！';
+        cb(false,entries);
+    }else {
+        var mooc = new Mooc({
+            moocName: data.moocName,
+            teacher: data.teacher,
+            moocThumb: data.moocThumb
+        });
+        for (var i = 0; i < data.weekCount; i++) {
+            for (var j = 0; j < data.classHour; j++) {
+                mooc.children.push({
+                    content: ' ',
+                    title: 'XXXX',
+                    week: i,
+                    chapter: j
+                });
+            }
+        }
+        mooc.save(function (err, doc) {
+            cb(err, doc);
+        })
+    }
+};
+
+
 exports.pageQuery = function (page, pageSize, Model, populate, queryParams, sortParams, callback) {
     var start = (page - 1) * pageSize;
     var $page = {
@@ -176,3 +208,4 @@ exports.pageQuery = function (page, pageSize, Model, populate, queryParams, sort
         callback(err, $page);
     });
 };
+

@@ -12,7 +12,7 @@ var Config = {
     },
     site: {
         path:'',
-        pagesize: 6
+        pagesize: 8
     }
 };
 module.exports = Config;
