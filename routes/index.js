@@ -59,6 +59,15 @@ router.get('/moocs', function(req, res, next) {
     })
 });
 
+router.get('/mooc/:id', function(req, res, next) {
+
+    var id = req.params.id;
+    dbHelper.findMoocOne( id,  function (success, doc) {
+        res.render('./mooc', { entries: doc, layout: 'main' });
+    })
+});
+
+
 router.get('/blog', function(req, res, next) {
     dbHelper.findNews(req, function (success, data) {
         res.render('blog', {

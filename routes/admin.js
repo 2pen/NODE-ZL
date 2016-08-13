@@ -64,7 +64,14 @@ router.get('/moocList',function (req,res,next) {
   })
 
 });
+//渲染编辑慕课页面
+router.get('/moocEdit/:id', function(req, res, next) {
 
+  var id = req.params.id;
+  dbHelper.findMoocOne( id,  function (success, doc) {
+    res.render('./admin/moocEdit', { entries: doc, layout: 'admin' });
+  })
+});
 
 //渲染新建慕课页面
 router.get('/moocCreate', function(req, res, next) {
@@ -129,6 +136,57 @@ router.post('/uploadImg', function(req, res, next) {
   });
 
 });
+router.post('/moocDownChap', function(req, res, next) {
 
+  var moocId    = req.body.moocId;
+  var chapId    = req.body.chapId;
+
+  dbHelper.MoocChap( moocId, chapId, function (err, doc) {
+    if(err) {
+      return next(err);
+    }else{
+      res.send(doc);
+    }
+  })
+});
+
+router.post('/moocSetChapTitle', function(req, res, next) {
+
+  var moocId    = req.body.moocId;
+  var chapTitle = req.body.chapTitle;
+  var chapId    = req.body.chapId;
+
+  dbHelper.updateMoocChapTitle( moocId, chapId, chapTitle, function (success, doc) {
+    res.send(doc);
+  })
+});
+router.post('/moocDeleteChap', function(req, res, next) {
+
+  var moocId    = req.body.moocId;
+  var chapId    = req.body.chapId;
+
+  dbHelper.deleteMoocChap( moocId, chapId, function (err, doc) {
+    if(err) {
+      return next(err);
+    }else{
+      res.send(doc);
+    }
+  })
+});
+
+
+router.post('/moocUpChap', function(req, res, next) {
+
+  var moocId    = req.body.moocId;
+  var chapId    = req.body.chapId;
+
+  dbHelper.upMoocChap( moocId, chapId, function (err, doc) {
+    if(err) {
+      return next(err);
+    }else{
+      res.send(doc);
+    }
+  })
+});
 
 module.exports = router;
