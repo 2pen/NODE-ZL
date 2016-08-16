@@ -431,7 +431,7 @@ exports.downMoocChap = function( moocId, chapId, cb) {
 
             var nextIndex;
 
-            var curChap = (chap+1>chapCount)?chapCount:(chap+1);
+            var curChap = (chap>chapCount-2)?chapCount-1:(chap+1);
 
             for(var i =0;i<doc.children.length;i++) {
                 var item = doc.children[i];
