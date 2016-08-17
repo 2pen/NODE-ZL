@@ -2,7 +2,7 @@ html,body{
     min-height: 100%;
 }
 body{
-    position: relative;
+    position: absolute;
     min-width: 100%;
 }
 h1,h2,h3,h4{

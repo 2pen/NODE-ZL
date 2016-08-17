@@ -8,6 +8,7 @@ var exphbs      = require('express-handlebars');
 var hbsHelper = require('./lib/hbsHelper');
 var dbHelper = require('./db/dbHelper')
 var session     = require('express-session');
+var authority = require('./db/authority');
 
 
 var config = require('./config');
@@ -57,11 +58,10 @@ app.use(session({
   saveUninitialized: false
 }));
 
-
-
-app.use('/', routes);
-app.use('/admin', admin);
-app.use('/pdf',require('./routes/pdf'));
+app.use('/login',require('./routes/login'));
+app.use('/',authority.isAuthenticated,require('./routes/index'));
+app.use('/admin', authority.isAuthenticated,require('./routes/admin'));
+app.use('/pdf',authority.isAuthenticated,require('./routes/pdf'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -34,17 +34,7 @@ User1.save(function (err) {
 })
  */
 
-router.get('/login',function (req,res,next) {
-   res.render('login',{layout:'lg'}); 
-});
 
-/* GET home page. */
-
-router.post('/login', function(req, res, next) {
-    dbHelper.findUsr(req.body, function (success, doc) {
-        res.send(doc);
-    })
-});
 
 router.get('/moocs', function(req, res, next) {
     dbHelper.findMooc(req, function (success, data) {

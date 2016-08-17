@@ -9,7 +9,7 @@ module.exports = {
         if(typeof(req.session.user) != 'undefined') {
             return next();
         }else{
-            res.redirect('/');
+            res.redirect('/login');
         }
     }
 };
