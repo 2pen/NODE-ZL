@@ -1788,7 +1788,205 @@ res.end(JSON.stringify(entries)); 将entries转换为json数据并触发ajax的s
 | blur | 可选。模糊距离。      |
 |spread|可选。阴影尺寸(阴影拓展距离)|
 |color|可选。阴影的颜色|
-|inset|可选。将外部阴影(outset)改为内部阴影|
+|inset|可选。将外部阴影(outset)改为内部阴影|  
+
+###2016-08-17
+###mocc模块  
+* mooc创建  
+html部分代码
+```html
+<div class="form-group">
+    <label>慕课名称</label>
+    <input type="text" class="form-control" id="moocName" placeholder="慕课名称" required>		//required表示属性规定必需在提交之前填写输入字段
+</div>
+```
+js主要代码
+```javascript
+function init() {
+
+  var socket = io();
+  socket.on('uploadProgress' , function(percent){								//上传图片用的进度条
+    console.log(percent);
+    $(".pg-bar").progressbar( "option", "value", parseInt(percent));			//设置与指定的 optionName 关联的 progressbar 选项的值。将parseInt(percent)赋值到value属性上
+    $(".pg-info").text( percent + '%');
+  });
+
+  $("#defaultForm").validate({													//jQuery Validate 插件，
+    wrapper:"span",																//用什么标签再把上边的 errorELement 包起来。
+    onfocusout:false,															//失去焦点时验证（不包括复选框/单选按钮）。默认为true
+    submitHandler:function(form) {
+      doAddMooc();  //验证成功，调用添加慕课函数								//通过验证后运行的函数，里面要加上表单提交的函数，否则表单不会提交。
+    }
+  })
+
+
+  $(".pg-bar").progressbar({value: 0});
+  $(".pg-bar").progressbar( "option", "max", 100 );
+
+  $("body").on('click', '#UploadBtn', doUpload);
+  $("body").on('change', '#uploadFile', preUpload);
+}
+
+
+```
+* mooc课程操作  
+html主要代码  
+```html
+<div class="mooc-bar">
+  <div class="bar-line"></div>
+  {{#each entries.children}}
+      <li data-toggle="select" class="mooc-week">
+          <i>{{addOne @index}}</i><span>第{{addOne @index}}章</span>									//数据从服务器传过来之前经过分组，所以可以直接@index来赋值
+          <a href="#" class="mooc-button" data-button="add"><i class="fa fa-plus"></i></a>
+      </li>
+      {{#each this}}
+          <li data-toggle="select" data-id="{{_id}}">
+              <span>{{addOne @index}}. {{title}}</span>
+                <div class="btn-wrapper-l">
+                    <a href="#" class="mooc-button mooc-button-s pull-left" data-button="up"><i class="fa fa-arrow-up"></i></a>			//点击按钮使相关chapter上升一行
+                    <a href="#" class="mooc-button mooc-button-s pull-left" data-button="down"><i class="fa fa-arrow-down"></i></a>
+                </div>
+              <div class="btn-wrapper-r">
+                  <a href="#" class="mooc-button" data-button="del"><i class="fa fa-times"></i></a>
+                  <a href="#" class="mooc-button" data-button="edit"><i class="fa fa-pencil"></i></a>
+              </div>
+          </li>
+      {{/each}}
+  {{/each}}
+</div>
+```
+dbHelper.js中关于分组的代码
+```javascript
+var _ = require('underscore');											//你懂的
+
+exports.findMoocOne = function(id, cb) {
+
+    Mooc.findOne({_id: id}, function(err, docs) {
+        var mooc = docs.toObject() || '';
+
+        mooc.children = _.sortBy( mooc.children , "chapter");			//按照chapter升序排序
+        mooc.children = _.groupBy( mooc.children , "week" )				//按照week进行分组
+        cb(true,mooc);
+    });
+};
+```
+moocEdit.js对于chapter操作的代码  
+```javascript
+//上移章节
+$('[data-button="up"]').on('click', function (e) {
+  e.preventDefault();													//防止链接打开URL
+  e.stopPropagation();													//不再派发事件
+  var $this = $(this);
+
+  doUpChap($this.parent().parent().data('id'));							//把父节点的父节点的data-id中的值作为参数传入
+});
+
+function doUpChap(id) {
+
+  jsonData = JSON.stringify({ 'moocId': moocId, 'chapId': id });
+  postData(urlMoocUpChap, jsonData, cbReload);							//urlMoocUpChap就是"/admin/moocUpChap";
+}
+
+function postData(url, data, cb) {
+
+  $('body').append(LOAD_WRAPPER);	
+  $(".loader-wrapper").show();											//感觉这两句没什么卵用，但是保存着也无所谓
+
+  var promise = $.ajax({												//ajax传输数据
+    type: "post",
+    url: url,
+    dataType: "json",
+    contentType: "application/json",
+    data:data
+  });
+  promise.done(cb);														//数据传送完毕后重新打开页面
+}
+
+function cbReload() {
+  // $(".loader-wrapper").remove();
+  location.href = moocId;
+}
+```
+dbHelper.js中的服务器端对于数据的操作  
+```javascript
+
+exports.upMoocChap = function( moocId, chapId, cb) {										//这些东西都看得懂，不需要注释
+
+    Mooc.findOne({"_id": moocId, "children._id": chapId },function(err,doc){				//"children._id": chapId这一栏参数没什么意义
+        var week,chap,index,chapCount = 0,pos = 0;	
+
+        //计算当前chap的位置index
+        for( index =0;index<doc.children.length;index++) {
+            var item = doc.children[index];
+            if(item._id.toString() == chapId){
+                week = item.week;
+                chap = item.chapter;
+                break;
+            }
+        }
+
+        //计算当前chap的位置pos  以及该chap的总章节数量count
+        for(var i =0;i<doc.children.length;i++) {
+            var item = doc.children[i];
+            if ( parseInt(item.week) == week ) {
+                chapCount++;
+            }
+        }
+
+        var preWeek = _.filter(doc.children , function (item) {
+            if ( parseInt(item.week) === week-1 )
+                return item;
+        });
+
+        // console.log(preWeek.length);
+
+        if (( parseInt(chap) === 0 )&&( parseInt(week) !== 0 )) {  //头节点
+
+            if( chapCount > 1 ) { //有后续兄弟节点
+                for(var i =0;i<doc.children.length;i++) {
+                    var item = doc.children[i];
+                    if (( parseInt(item.week) == week )&&( parseInt(item.chapter) > chap )) {
+                        doc.children[i].chapter--;
+                    }
+                }
+            }else{
+                for(var i =0;i<doc.children.length;i++) {
+                    var item = doc.children[i];
+                    if ( parseInt(item.week) > week ) {
+                        doc.children[i].week--;
+                    }
+                }
+            }
+
+            doc.children[index].week = week-1;
+            doc.children[index].chapter = preWeek.length;
+        }else{
+
+            var preIndex;
+
+            var curChap = (chap-1>0)?(chap-1):0;
+
+            for(var i =0;i<doc.children.length;i++) {
+                var item = doc.children[i];
+                if (( parseInt(item.week) === week )&&( parseInt(item.chapter) === curChap )) {
+                    preIndex = i;
+                }
+            }
+
+            doc.children[preIndex].chapter++;
+            doc.children[index].chapter--;
+        }
+
+
+
+        // console.log("index:" + index + " subling:" +count + " sIndex:" + pos);
+
+        doc.save(function(err) {
+            cb(err, doc);
+        });
+    })
+};
+```
 
 
 

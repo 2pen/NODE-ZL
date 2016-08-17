@@ -6,3 +6,4 @@ function init() {
 
     $(".uig").attr("src",imgUrl);
 }
+

@@ -57,6 +57,7 @@ router.get('/moocList',function (req,res,next) {
     res.render('./admin/moocList', {
       entries: data.results,
       pageCount: data.pageCount,
+      
       pageNumber: data.pageNumber,
       count: data.count,
       layout: 'admin'
