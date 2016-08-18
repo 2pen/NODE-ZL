@@ -1,6 +1,17 @@
 var mongoose = require('../db');
 var Schema = mongoose.Schema;
 
+var commentSchema = new Schema({
+    content:String,
+    author:{
+        type:Schema.Types.ObjectId,
+        ref:'User'
+    },
+    meta:{
+        updateAt:{type:Date,default:Date.now()},
+        createAt:{type:Date,default:Date.now()}
+    }
+})
 
 /* 用户定义*/
 var newsSchema = new Schema({
@@ -10,6 +21,7 @@ var newsSchema = new Schema({
         updateAt:{type:Date,default:Date.now()},
         createAt:{type:Date,default:Date.now()}
     },
+    children: [commentSchema],
     author:{
         type:Schema.Types.ObjectId,
         ref:'User'

@@ -52,7 +52,7 @@ config.site.path = path.join(__dirname, 'public');
 //加入session支持
 app.use(session({
   name:'blogOfLiyang',
-  maxAge: 30 * 1000,
+  maxAge: 1000*60*60,
   secret: 'liyang-web-node-secret-key',
   resave: false,
   saveUninitialized: false

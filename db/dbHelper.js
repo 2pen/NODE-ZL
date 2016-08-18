@@ -9,6 +9,7 @@ var async = require('async');
 var md = webHelper.Remarkable();
 var PAGE_SIZE = config.site.pagesize;
 var _ = require('underscore');
+var dbHelper = require('../db/dbHelper');
 
 exports.findUsr = function (data,cb) {
     User.findOne({
@@ -34,6 +35,9 @@ exports.findUsr = function (data,cb) {
 
     })
 }
+
+
+
 
 exports.addUser = function (data,cb) {
     var user = new User({
@@ -61,7 +65,12 @@ exports.addNews = function(data, cb) {
         content: data.content,
         author:data.id
     });
-
+    for (var i = 0; i < 5; i++) {
+            news.children.push({
+                author:data.id,
+                content: '这里就是内容你服不服！！！！！'
+            });
+    }
     news.save(function(err,doc){
         if (err) {
             entries.code = 99;
@@ -97,15 +106,26 @@ exports.findNews = function(req, cb) {
     //         }
     //         cb(true,newsList);
     //     });
-
     var page = req.query.page || 1 ;
     this.pageQuery(page, 5, News, 'author', {}, {
         created_time: 'desc'
     }, function(error, data){
+
         if(error){
             next(error);
         }else{
-            // console.log(data.results)
+            for(var i=0;i<data.results.length;++i) {
+                for(var j=0;j<data.results[i].children.length;++j){
+                    (function (i,j) {
+                        dbHelper.findUsr('tom', function (err, entries) {
+                            data.results[i].children[j].author.imgUrl=entries.data.imgUrl;
+                            //console.log(i+' '+j);
+                        });
+                    })(i,j);
+
+                }
+            }
+
             cb(true,data);
         }
     });
@@ -247,7 +267,7 @@ exports.deleteMoocChap = function( moocId, chapId, cb) {
 
         //删除选中chap
         doc.children = _.filter(doc.children, function (item) {
-            return item._id.toString() !== chapId;
+            return item._id.toString() !== chapId;                                      //将与chaoId不一样的过滤出来
         })
 
         // console.log("index:" + index + " subling:" +count + " sIndex:" + pos);

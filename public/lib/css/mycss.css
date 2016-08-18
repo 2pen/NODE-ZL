@@ -2,15 +2,12 @@ html,body{
     min-height: 100%;
 }
 body{
-    position: absolute;
     min-width: 100%;
 }
 h1,h2,h3,h4{
     margin: 0;
 }
-.flex-nav{
 
-}
 .flex-nav ul{
     border: 1px solid black;
     list-style:none;
@@ -684,4 +681,36 @@ li.user-header {
     height: 175px;
     padding: 10px;
     text-align: center;
+}
+.box-comment{
+    padding: 10px;
+    border-top: 1px dashed #dbdbdb;
+    display: flex;
+    flex-direction: row;
+}
+.box-comment img {
+    width: 40px;
+    height: 40px;
+}
+.comment-info span{
+
+}
+.comment-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 120px;
+}
+.comment-content{
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    justify-content: space-around;
+}
+.postdate {
+    font: 12px/1.5 'microsoft yahei';
+    color: #aaa;
+}
+.comment-content span{
+    align-self: end;
 }

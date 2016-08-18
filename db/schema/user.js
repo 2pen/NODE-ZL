@@ -8,7 +8,6 @@ var userSchema = new Schema({
     address:  String,
     imgUrl:String,
     meta: {
-        
         updateAt: {type:Date, default: Date.now()},
         createAt: {type:Date, default: Date.now()}
     }

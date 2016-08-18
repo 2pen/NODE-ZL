@@ -42,7 +42,18 @@
                     <a href="/pdf/{{_id}}" class="btn btn-primary btn-sm">导出pdf</a>
                     <a href="/pdf/readPdf/{{_id}}" class="btn btn-primary btn-sm">Read More</a>
                 </div>
-
+                {{#each children}}
+                    <div class="box-comment">
+                        <div class="comment-info">
+                            <img class="img-circle" src="{{author.imgUrl}}">
+                            <span>这里是名字</span>
+                        </div>
+                        <div class="comment-content">
+                            <p>{{content}}</p>
+                            <span class="postdate">发布于 {{formatDate meta.createAt}}</span>
+                        </div>
+                    </div>
+                {{/each}}
             </div>
         {{/each}}
 
