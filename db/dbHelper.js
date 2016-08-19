@@ -65,12 +65,7 @@ exports.addNews = function(data, cb) {
         content: data.content,
         author:data.id
     });
-    for (var i = 0; i < 5; i++) {
-            news.children.push({
-                author:data.id,
-                content: '这里就是内容你服不服！！！！！'
-            });
-    }
+
     news.save(function(err,doc){
         if (err) {
             entries.code = 99;
@@ -95,6 +90,7 @@ exports.findNewsOne = function(req, id, cb) {
 };
 
 
+
 exports.findNews = function(req, cb) {
     // News.find()
     //     .populate('author')
@@ -106,25 +102,19 @@ exports.findNews = function(req, cb) {
     //         }
     //         cb(true,newsList);
     //     });
+
     var page = req.query.page || 1 ;
-    this.pageQuery(page, 5, News, 'author', {}, {
+    this.pageQuery(page, 5, News, [
+        {path:'author',select:'imgUrl'},
+        {path:'children.author',select:'imgUrl'}
+    ], {}, {
         created_time: 'desc'
     }, function(error, data){
 
         if(error){
             next(error);
         }else{
-            for(var i=0;i<data.results.length;++i) {
-                for(var j=0;j<data.results[i].children.length;++j){
-                    (function (i,j) {
-                        dbHelper.findUsr('tom', function (err, entries) {
-                            data.results[i].children[j].author.imgUrl=entries.data.imgUrl;
-                            //console.log(i+' '+j);
-                        });
-                    })(i,j);
-
-                }
-            }
+            //console.log(data.results[0].children);
 
             cb(true,data);
         }
