@@ -6,6 +6,7 @@ var urlMoocDownChap     =  "/admin/moocDownChap";
 var urlMoocGetChapTitle = "/admin/moocGetChapTitle";
 var urlMoocGetChapCont  = "/admin/moocGetChapContent";
 var urlMoocGetChapContOnly  = "/p/moocGetChapContentOnly";
+var addCommentComtent = "/addComment"
 
 
 var LOAD_WRAPPER = "<div class='loader-wrapper'><div class='loader'><div class='loader-inner ball-spin-fade-loader'><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div></div>";

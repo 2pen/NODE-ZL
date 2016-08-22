@@ -714,3 +714,15 @@ li.user-header {
 .comment-content span{
     align-self: end;
 }
+.box-Addcomment{
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+}
+#commentContent{
+    margin-bottom: 5px;
+    resize: none;
+}
+#addComment{
+    align-self: flex-end;
+}

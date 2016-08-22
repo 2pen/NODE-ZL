@@ -58,7 +58,7 @@ router.get('/mooc/:id', function(req, res, next) {
 });
 
 
-router.get('/blog', function(req, res, next) {
+router.get('/', function(req, res, next) {
     dbHelper.findNews(req, function (success, data) {
         res.render('blog', {
             entries: data.results,
@@ -69,5 +69,16 @@ router.get('/blog', function(req, res, next) {
     })
 });
 
+
+router.post('/addComment', function(req, res, next) {
+
+    dbHelper.addComment( req.body, function (err, doc) {
+        if(err) {
+            return next(err);
+        }else{
+            res.send(doc);
+        }
+    })
+});
 
 module.exports = router;

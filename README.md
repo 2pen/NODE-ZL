@@ -1915,13 +1915,13 @@ exports.upMoocChap = function( moocId, chapId, cb) {										//这些东西都�
     Mooc.findOne({"_id": moocId, "children._id": chapId },function(err,doc){				//"children._id": chapId这一栏参数没什么意义
         var week,chap,index,chapCount = 0,pos = 0;	
 
-        //计算当前chap的位置index
+        //计算当前chap的位置index		
         for( index =0;index<doc.children.length;index++) {
             var item = doc.children[index];
             if(item._id.toString() == chapId){
                 week = item.week;
                 chap = item.chapter;
-                break;
+                break;														
             }
         }
 
@@ -1988,5 +1988,70 @@ exports.upMoocChap = function( moocId, chapId, cb) {										//这些东西都�
 };
 ```
 
+###2016-08-22  
 
+###.html(),.text()和.val()的差异总结  
+html(),.text(),.val()三种方法都是用来读取选定元素的内容；只不过.html()是用来读取元素的html内容（包括html标签），.text()用来读取元素的纯文本内容，包括其后代元素，**.val()是用来读取表单元素的"value"值。其中.html()和.text()方法不能使用在表单元素上,而.val()只能使用在表单元素上**；另外.html()方法使用在多个元素上时，只读取第一个元素；.val()方法和.html()相同，如果其应用在多个元素上时，只能读取第一个表单元素的"value"值，但是.text()和他们不一样，如果.text()应用在多个元素上时，将会读取所有选中元素的文本内容。
+###.val()  
+val()方法主要是用于处理表单元素的值，比如 input, select 和 textarea  
+###html()及.text()  
+读取、修改元素的html结构或者元素的文本内容是常见的DOM操作  
+
+###添加评论功能  
+###news.js的主要代码为  
+```javascript
+var commentSchema = new Schema({							//评论
+    content:String,
+    author:{												//引用作者User
+        type:Schema.Types.ObjectId,
+        ref:'User'
+    },
+    meta:{
+        updateAt:{type:Date,default:Date.now()},
+        createAt:{type:Date,default:Date.now()}
+    }
+})
+
+/* 用户定义*/
+var newsSchema = new Schema({
+    title: String,
+    content: String,
+    meta:{
+        updateAt:{type:Date,default:Date.now()},
+        createAt:{type:Date,default:Date.now()}
+    },
+    children: [commentSchema],								//news里面嵌套评论(数组)
+    author:{
+        type:Schema.Types.ObjectId,
+        ref:'User'
+    }
+});
+```
+###如何查出children里面的author的相关信息?  
+将服务器端findNews的部分代码改为  
+```javascript
+    this.pageQuery(page, 5, News, [
+        {path:'author',select:'imgUrl'},							//->原来参数为author
+        {path:'children.author',select:'imgUrl'}
+    ], {}, {
+        created_time: 'desc'
+    }, function(error, data){
+
+        if(error){
+            next(error);
+        }else{
+            //console.log(data.results[0].children);
+
+            cb(true,data);
+        }
+    });
+```
+在pegequery里面有部分代码是这样的  
+```javascript
+Model.find(queryParams).skip(start).limit(pageSize).populate(populate).sort(sortParams).exec(function (err, doc) {
+    done(err, doc);
+});
+```
+populate用于数据的关联，上面的path:'children.author',select:'imgUrl'表示news的children的author进行关联，并且只选择imgUrl这一个元素  
+###非常重要的一点，就是千万不要在for循环里面调用回调函数，绝对会发生可怕的后果！！！
 

@@ -3,6 +3,7 @@ $(init);
 function init() {
     $("body").on('click','#loginBtn',doLogin);
     $("body").css("position","absolute");                   //attr只能给已有的属性赋值，css可以给没有的属性赋值
+
 }
 
 function doLogin() {
@@ -24,7 +25,7 @@ function doLogin() {
                 $.cookie('password', result.data.password, {expires:30});
                 $.cookie('imgurl', result.data.imgUrl, {expires:30});
                 $.cookie('id', result.data._id, {expires:30});
-                location.href = "/blog";
+                location.href = "/";
             }
         }
     })

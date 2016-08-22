@@ -1,7 +1,7 @@
 var entries = require('./jsonRes');
 var mongoose = require('./db.js');
 var User = require('./schema/user');
-var News = require('./schema/news');
+    var News = require('./schema/news');
 var Mooc = require('./schema/mooc');
 var webHelper = require('../lib/webHelper');
 var config = require('../config')
@@ -162,6 +162,9 @@ exports.findMoocOne = function(id, cb) {
     });
 };
 
+
+
+
 exports.findMooc = function(req, cb) {
     var page = req.query.page || 1 ;
     this.pageQuery(page, PAGE_SIZE, Mooc, 'author', {}, {
@@ -174,6 +177,7 @@ exports.findMooc = function(req, cb) {
         }
     });
 };
+
 
 exports.addMooc = function(data, cb) {
     if(data.weekCount<0){
@@ -205,7 +209,18 @@ exports.addMooc = function(data, cb) {
         })
     }
 };
-
+exports.addComment = function (data,cb) {
+    News.findOne({"_id":data.esseyId},function (err,doc) {
+            doc.children.push({
+                content:data.commentContent,
+                author:data.id
+            })
+            doc.save(function(err) {
+                cb(err,doc );
+            });
+        }
+    )
+}
 
 exports.deleteMoocChap = function( moocId, chapId, cb) {
 
