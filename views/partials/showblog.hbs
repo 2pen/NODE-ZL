@@ -12,8 +12,28 @@
             <div class="box-body">
                 <p> {{{entries.content}}}</p>
             </div>
+            {{#each entries.children}}
+                <div class="box-comment">
+                    <div class="comment-info">
+                        <img class="img-circle" src="{{author.imgUrl}}">
+                        <span>这里是名字</span>
+                    </div>
+                    <div class="comment-content">
+                        <p>{{content}}</p>
+                        <span class="postdate">发布于 {{formatDate meta.createAt}}</span>
+                    </div>
+                </div>
+            {{/each}}
+            <div class="box-Addcomment" >
+                <div class="commentId" style="display: none">{{entries._id}}</div>
+                <textarea class="textarea" id="commentContent" placeholder="评论一下" required></textarea>
+                <button class="btn btn-primary pull-right" id="addComment">发表</button>
+            </div>
         </div>
+
     </section>
 </div>
+
+<script src="/blog/blog.js"></script>
 
 

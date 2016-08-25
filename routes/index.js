@@ -69,6 +69,14 @@ router.get('/', function(req, res, next) {
     })
 });
 
+router.get('/personInfo', function(req, res, next) {
+
+        res.render('personInfo', {
+            layout: 'mainWithoutHeader'
+        });
+});
+
+
 
 router.post('/addComment', function(req, res, next) {
 

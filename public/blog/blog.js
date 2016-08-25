@@ -31,7 +31,7 @@ function postData(url, data, cb) {
 
 function cbReload() {
 
-    location.href = "/";
+    location.href = window.location.href;
 }
 
 

@@ -82,7 +82,10 @@ exports.addNews = function(data, cb) {
 
 exports.findNewsOne = function(req, id, cb) {
     News.findOne({_id: id})
-        .populate('author')
+        .populate([
+            {path:'author',select:'imgUrl'},
+            {path:'children.author',select:'imgUrl'}
+        ])
         .exec(function(err, docs) {
             var docs = (docs !== null) ? docs.toObject() : '';
             cb(true,docs);

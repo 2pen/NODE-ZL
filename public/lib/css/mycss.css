@@ -726,3 +726,31 @@ li.user-header {
 #addComment{
     align-self: flex-end;
 }
+.box-personInfoHead{
+    padding: 20px;
+    display: flex;
+}
+.box-personInfoHead img {
+    width: 100px;
+    height: 100px;
+    border: 3px solid #ffffff;
+    flex: 0 0 100px;
+    margin-right: 15px;
+}
+.nameAndSummary>.name{
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 20px;
+}
+.nameAndSummary>.summary{
+    color: #ffffff;
+    font-weight: 500;
+    font-family: "楷体","楷体_GB2312";
+    align-self: flex-end;
+}
+.nameAndSummary{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex: 1 1 auto;
+}
