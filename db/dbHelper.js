@@ -105,12 +105,14 @@ exports.findNews = function(req, cb) {
     //         }
     //         cb(true,newsList);
     //     });
-
+    var params = req.query.params|| '';
+    var query={};
+    query['title']={$regex:params,$options:"$i"};
     var page = req.query.page || 1 ;
     this.pageQuery(page, 5, News, [
         {path:'author',select:'imgUrl'},
         {path:'children.author',select:'imgUrl'}
-    ], {}, {
+    ],query, {
         created_time: 'desc'
     }, function(error, data){
 
@@ -118,8 +120,9 @@ exports.findNews = function(req, cb) {
             next(error);
         }else{
             //console.log(data.results[0].children);
-
+            data.searchParams=params;
             cb(true,data);
+            
         }
     });
 

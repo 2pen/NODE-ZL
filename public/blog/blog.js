@@ -2,10 +2,16 @@ $(init);
 
 
 
-$("#addComment").on('click', function (e) {
+$(".addComment").on('click', function (e) {
 
     var $this = $(this);
-    addComment($this.siblings('.commentId').text(),$this.siblings("#commentContent").val());
+    $($this.parent()).validate({
+        wrapper:"span",
+        onfocusout:false,
+        submitHandler:function(form) {
+            addComment($this.siblings('.commentId').text(),$this.siblings("#commentContent").val());
+        }
+    })
 
 });
 

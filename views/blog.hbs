@@ -30,7 +30,7 @@
                 <div class="box-header with-border">
                     <div class="user-block">
                         <img class="img-circle" src="{{author.imgUrl}}" alt="User Image">
-                        <span class="title"><a href="#">{{title}}</a></span>
+                        <span class="title"><a href="/pdf/readPdf/{{_id}}">{{title}}</a></span>
                         <span class="postdate"><b>发布于 {{formatDate meta.createAt}}</b><i>{{timeFromNow meta.createAt}}</i></span>
                     </div>
                 </div>
@@ -54,11 +54,11 @@
                         </div>
                     </div>
                 {{/each}}
-                <div class="box-Addcomment" >
+                <form class="box-Addcomment" >
                     <div class="commentId" style="display: none">{{_id}}</div>
                     <textarea class="textarea" id="commentContent" placeholder="评论一下" required></textarea>
-                    <button class="btn btn-primary pull-right" id="addComment">发表</button>
-                </div>
+                    <button class="btn btn-primary pull-right addComment" >发表</button>
+                </form>
             </div>
         {{/each}}
 
@@ -66,18 +66,18 @@
             <nav>
                 <ul class="pagination">
                     <li>
-                        <a href="{{#le pageNumber 1}}?{{else}}?page={{reduce pageNumber 1}}{{/le}}"
+                        <a href="{{#le pageNumber 1}}?{{else}}?page={{reduce pageNumber 1}}{{/le}}&params={{searchParams}}"
                            aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     {{#times pageCount 1 pageCount}}
                         <li {{#equals pageNumber this.step}}class="active" {{/equals}}>
-                            <a href="?page={{step}}{{#if recommend}}&recommend={{recommend}}{{/if}}{{#if type}}&type={{type}}{{/if}}">{{step}}</a>
+                            <a href="?page={{step}}&params={{searchParams}}{{#if recommend}}&recommend={{recommend}}{{/if}}{{#if type}}&type={{type}}{{/if}}">{{step}}</a>
                         </li>
                     {{/times}}
                     <li>
-                        <a href="{{#ge pageNumber pageCount}}?page={{pageCount}}{{else}}?page={{add pageNumber 1}}{{/ge}}"
+                        <a href="{{#ge pageNumber pageCount}}?page={{pageCount}}{{else}}?page={{add pageNumber 1}}{{/ge}}&params={{searchParams}}"
                            aria-label="Previous">
                             <span aria-hidden="true">&raquo;</span>
                         </a>

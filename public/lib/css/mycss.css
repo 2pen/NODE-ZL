@@ -178,6 +178,11 @@ a:hover,a:focus{
     height: 100%;
     z-index: 9999;
 }
+#search{
+    float: right;
+    margin-top: 12px;
+    margin-right: 5px;
+}
 .mooc-bar>li>i {
     width: 20px;
     height: 20px;
@@ -723,7 +728,7 @@ li.user-header {
     margin-bottom: 5px;
     resize: none;
 }
-#addComment{
+.addComment{
     align-self: flex-end;
 }
 .box-personInfoHead{

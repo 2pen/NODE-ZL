@@ -24,11 +24,12 @@
                     </div>
                 </div>
             {{/each}}
-            <div class="box-Addcomment" >
+
+            <form class="box-Addcomment" >
                 <div class="commentId" style="display: none">{{entries._id}}</div>
                 <textarea class="textarea" id="commentContent" placeholder="评论一下" required></textarea>
-                <button class="btn btn-primary pull-right" id="addComment">发表</button>
-            </div>
+                <button class="btn btn-primary pull-right addComment" >发表</button>
+            </form>
         </div>
 
     </section>

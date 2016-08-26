@@ -65,6 +65,7 @@ router.get('/', function(req, res, next) {
             pageCount: data.pageCount,
             pageNumber: data.pageNumber,
             count: data.count,
+            searchParams:data.searchParams,
         });
     })
 });
