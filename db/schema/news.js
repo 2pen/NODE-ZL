@@ -28,6 +28,14 @@ var newsSchema = new Schema({
     }
 });
 
+commentSchema.pre('save',function (next) {
+    if(this.isNew){
+        this.meta.createAt=this.meta.updateAt=Date.now();
+    }else{
+        this.meta.updateAt=Date.now();
+    }
+    next();
+})
 newsSchema.pre('save',function (next) {
     if(this.isNew){
         this.meta.createAt=this.meta.updateAt=Date.now();

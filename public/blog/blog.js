@@ -1,8 +1,17 @@
 $(init);
 
 
+$(document).ready(function(){
+    if($.cookie('isReload')==1) {
+        $("html,body").scrollTop($.cookie('blogScrollTop'));
+        $.cookie('isReload',0);
+    }
+
+});
 
 $(".addComment").on('click', function (e) {
+
+
 
     var $this = $(this);
     $($this.parent()).validate({
@@ -17,8 +26,9 @@ $(".addComment").on('click', function (e) {
 
 function addComment(id,data) {
 
+    $.cookie('blogScrollTop', $("html,body").scrollTop());
+    $.cookie('isReload',1);
     var jsonData = JSON.stringify({ 'esseyId': id,'commentContent':data,'id': $.cookie('id') });
-
     postData("/addComment", jsonData, cbReload);
 }
 
@@ -38,6 +48,7 @@ function postData(url, data, cb) {
 function cbReload() {
 
     location.href = window.location.href;
+    
 }
 
 

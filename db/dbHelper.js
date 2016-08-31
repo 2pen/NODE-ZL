@@ -113,7 +113,7 @@ exports.findNews = function(req, cb) {
         {path:'author',select:'imgUrl'},
         {path:'children.author',select:'imgUrl'}
     ],query, {
-        created_time: 'desc'
+        'meta.createAt': '1'
     }, function(error, data){
 
         if(error){
@@ -121,6 +121,13 @@ exports.findNews = function(req, cb) {
         }else{
             //console.log(data.results[0].children);
             data.searchParams=params;
+            for(var i=0;i<data.results.length;++i){
+                    data.results[i].children = _.sortBy( data.results[i].children ,function (n) {
+                        return -n.meta.createAt;
+                    } );
+            }
+
+
             cb(true,data);
             
         }
