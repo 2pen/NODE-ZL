@@ -183,6 +183,11 @@ a:hover,a:focus{
     margin-top: 12px;
     margin-right: 5px;
 }
+.commentDivide{
+    display: flex;
+    padding: 15px;
+    flex-direction: row-reverse;
+}
 .mooc-bar>li>i {
     width: 20px;
     height: 20px;

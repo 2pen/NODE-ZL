@@ -105,6 +105,7 @@ exports.findNews = function(req, cb) {
     //         }
     //         cb(true,newsList);
     //     });
+    var cmtPgCt;//commentPageCount
     var params = req.query.params|| '';
     var query={};
     query['title']={$regex:params,$options:"$i"};
@@ -122,9 +123,13 @@ exports.findNews = function(req, cb) {
             //console.log(data.results[0].children);
             data.searchParams=params;
             for(var i=0;i<data.results.length;++i){
-                    data.results[i].children = _.sortBy( data.results[i].children ,function (n) {
-                        return -n.meta.createAt;
-                    } );
+                cmtPgCt = data.results[i].children.length/5;
+                cmtPgCt =  Math.ceil(cmtPgCt);
+                data.results[i].cmtPgCt=cmtPgCt;
+                data.results[i].CommentNow=1;
+                data.results[i].children = _.sortBy( data.results[i].children ,function (n) {
+                    return -n.meta.createAt;
+                } );
             }
 
 

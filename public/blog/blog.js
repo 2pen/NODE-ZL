@@ -9,6 +9,19 @@ $(document).ready(function(){
 
 });
 
+$(".divide").on('click',function (e) {
+    if($(this).parent().hasClass('active')){
+
+    }else{
+        $(this).parent().siblings().removeClass('active');
+        $(this).parent().addClass('active');
+        $(this).parents('.commentDivide').siblings('.box-comment').hide();
+        for(var i=($(this).text()-1)*5;i<$(this).text()*5;++i){
+            $(this).parents('.commentDivide').siblings('.box-comment').eq(i).show();
+        }
+    }
+});
+
 $(".addComment").on('click', function (e) {
 
 

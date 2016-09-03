@@ -43,17 +43,39 @@
                     <a href="/pdf/readPdf/{{_id}}" class="btn btn-primary btn-sm">Read More</a>
                 </div>
                 {{#each children}}
-                    <div class="box-comment">
-                        <div class="comment-info">
-                            <img class="img-circle" src="{{author.imgUrl}}">
-                            <span>这里是名字</span>
+                    {{#display @index ../CommentNow}}
+                        <div class="box-comment">
+                            <div class="comment-info">
+                                <img class="img-circle" src="{{author.imgUrl}}">
+                                <span>这里是名字</span>
+                            </div>
+                            <div class="comment-content">
+                                <p>{{content}}</p>
+                                <span class="postdate">发布于 {{formatDate meta.createAt}}</span>
+                            </div>
                         </div>
-                        <div class="comment-content">
-                            <p>{{content}}</p>
-                            <span class="postdate">发布于 {{formatDate meta.createAt}}</span>
-                        </div>
-                    </div>
+                    {{else}}
+                            <div class="box-comment" style="display: none">
+                                <div class="comment-info">
+                                    <img class="img-circle" src="{{author.imgUrl}}">
+                                    <span>这里是名字</span>
+                                </div>
+                                <div class="comment-content">
+                                    <p>{{content}}</p>
+                                    <span class="postdate">发布于 {{formatDate meta.createAt}}</span>
+                                </div>
+                            </div>
+                    {{/display}}
                 {{/each}}
+                <div class="commentDivide">
+                    <ul class="pagination">
+                        {{#times cmtPgCt 1 cmtPgCt}}
+                            <li {{#equals CommentNow this.step}}class="active" {{/equals}}>
+                                <a class="divide">{{step}}</a>
+                            </li>
+                        {{/times}}
+                    </ul>
+                </div>
                 <form class="box-Addcomment" >
                     <div class="commentId" style="display: none">{{_id}}</div>
                     <textarea class="textarea" id="commentContent" placeholder="评论一下" required></textarea>
