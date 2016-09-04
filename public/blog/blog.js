@@ -13,10 +13,10 @@ $(".divide").on('click',function (e) {
     if($(this).parent().hasClass('active')){
 
     }else{
-        $(this).parent().siblings().removeClass('active');
-        $(this).parent().addClass('active');
-        $(this).parents('.commentDivide').siblings('.box-comment').hide();
-        for(var i=($(this).text()-1)*5;i<$(this).text()*5;++i){
+        $(this).parent().siblings().removeClass('active');                  //先将父元素的active全部移除
+        $(this).parent().addClass('active');                                //当前父元素增加active
+        $(this).parents('.commentDivide').siblings('.box-comment').hide();//隐藏全部评论
+        for(var i=($(this).text()-1)*5;i<$(this).text()*5;++i){             //显示符合条件的评论
             $(this).parents('.commentDivide').siblings('.box-comment').eq(i).show();
         }
     }

@@ -125,6 +125,9 @@ exports.findNews = function(req, cb) {
             for(var i=0;i<data.results.length;++i){
                 cmtPgCt = data.results[i].children.length/5;
                 cmtPgCt =  Math.ceil(cmtPgCt);
+                if(cmtPgCt==0){
+                    cmtPgCt=1;
+                }
                 data.results[i].cmtPgCt=cmtPgCt;
                 data.results[i].CommentNow=1;
                 data.results[i].children = _.sortBy( data.results[i].children ,function (n) {

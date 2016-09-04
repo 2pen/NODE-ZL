@@ -2055,3 +2055,133 @@ Model.find(queryParams).skip(start).limit(pageSize).populate(populate).sort(sort
 populate用于数据的关联，上面的path:'children.author',select:'imgUrl'表示news的children的author进行关联，并且只选择imgUrl这一个元素  
 ###非常重要的一点，就是千万不要在for循环里面调用回调函数，绝对会发生可怕的后果！！！
 
+###2016-09-04  
+###保存scrollTop值  
+将scrollTop的值保存于cookie中，实现评论提交页面刷新后滚动条还保留在原来的位置。  
+```javascript
+function addComment(id,data) {
+
+    $.cookie('blogScrollTop', $("html,body").scrollTop());				//$("html,body").scrollTop()，在firefox浏览器中是没有body的scrollTop值，所以需要如此书写
+    $.cookie('isReload',1);												//用于页面刷新后判断是否跳转
+    var jsonData = JSON.stringify({ 'esseyId': id,'commentContent':data,'id': $.cookie('id') });
+    postData("/addComment", jsonData, cbReload);
+}
+
+$(document).ready(function(){
+    if($.cookie('isReload')==1) {
+        $("html,body").scrollTop($.cookie('blogScrollTop'));			//完成跳转
+        $.cookie('isReload',0);											//将isReload的值重新置为0
+    }
+
+});
+```
+###通过sortby按照评论的日期对评论进行排序
+评论的日期`data.results[i].children = _.sortBy( data.results[i].children , "meta.createAt");`无法按照该格式进行排序，所以需要改为以下代码  
+```javascript
+    data.results[i].children = _.sortBy( data.results[i].children ,function (n) {
+        return -n.meta.createAt;
+    } );
+						
+```
+-表示按照逆序排列  
+
+###模糊搜索功能  
+header.hbs代码  
+```html
+<form id="search">
+    <input id="params" placeholder="输入关键字搜索" type="text">
+    <button type="submit" id="putParams"><i class="fa fa-search"></i></button>
+</form>
+```
+head.js代码
+```javascript
+$("#search").validate({
+    wrapper:"span",
+    onfocusout:false,
+    submitHandler:function(form) {
+        doSearch($('#params').val());  
+    }
+})
+
+function doSearch(params) {
+    var url = "?page=1&params="+params;				//使用get方法，参数一page默认为第一页，参数二params为搜索的关键词
+    location.href = url;
+
+}
+```
+dbHelper.js部分代码  
+```javascript
+var params = req.query.params|| '';					//通过query方法获取params的值
+var query={};
+query['title']={$regex:params,$options:"$i"};		//`$regex`表示使用正则，查询包含params的文章名
+```
+
+###评论分页
+服务器端对数据进行操作
+```javascript
+var cmtPgCt;				//commentPageCount
+for(var i=0;i<data.results.length;++i){
+    cmtPgCt = data.results[i].children.length/5;
+    cmtPgCt =  Math.ceil(cmtPgCt);					//向上取值评论页面总数
+    if(cmtPgCt==0){
+        cmtPgCt=1;
+    }
+    data.results[i].cmtPgCt=cmtPgCt;
+    data.results[i].CommentNow=1;					//将默认页面设为1
+    data.results[i].children = _.sortBy( data.results[i].children ,function (n) {
+        return -n.meta.createAt;
+    } );
+}
+```
+blog.hbs相关代码  
+```html
+{{#each children}}
+{#display @index ../CommentNow}                                          //通过@index取当前评论的序号值，../CommentNow取出父元素所存的当前页面值
+    <div class="box-comment">
+        <div class="comment-info">
+            <img class="img-circle" src="{{author.imgUrl}}">
+            <span>这里是名字</span>
+        </div>
+        <div class="comment-content">
+            <p>{{content}}</p>
+            <span class="postdate">发布于 {{formatDate meta.createAt}}</span>
+        </div>
+    </div>
+{{else}}
+        <div class="box-comment" style="display: none">
+            <div class="comment-info">
+                <img class="img-circle" src="{{author.imgUrl}}">
+                <span>这里是名字</span>
+            </div>
+            <div class="comment-content">
+                <p>{{content}}</p>
+                <span class="postdate">发布于 {{formatDate meta.createAt}}</span>
+            </div>
+        </div>
+{{/display}}
+{{/each}}
+<div class="commentDivide">
+<ul class="pagination">
+    {{#times cmtPgCt 1 cmtPgCt}}
+        <li {{#equals CommentNow this.step}}class="active" {{/equals}}>
+            <a class="divide">{{step}}</a>
+        </li>
+    {{/times}}
+</ul>
+</div>
+```
+前端js的代码
+```javascript
+$(".divide").on('click',function (e) {
+    if($(this).parent().hasClass('active')){
+
+    }else{
+        $(this).parent().siblings().removeClass('active');                  //先将父元素的active全部移除
+        $(this).parent().addClass('active');                                //当前父元素增加active
+        $(this).parents('.commentDivide').siblings('.box-comment').hide();//隐藏全部评论
+        for(var i=($(this).text()-1)*5;i<$(this).text()*5;++i){             //显示符合条件的评论
+            $(this).parents('.commentDivide').siblings('.box-comment').eq(i).show();
+        }
+    }
+});
+```
