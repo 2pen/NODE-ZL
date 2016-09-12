@@ -24,23 +24,29 @@
                 <table class="table table-hover">
                     <tbody>
                     <tr>
-                        <th>标题</th>
-                        <th>作者</th>
-                        <th>发布时间</th>
-                        <th>功能</th>
+                        <th style="width:5%;"></th>
+                        <th style="width: 25%;">标题</th>
+                        <th style="width: 15%;">作者</th>
+                        <th style="width: 40%;">发布时间</th>
+                        <th>删除</th>
                     </tr>
                     {{#each entries}}
-                        <tr>
-                            <td><a href="/pdf/blogPdf/{{_id}}">{{title}}</a></td>
-                            <td>{{author.username}}</td>
-                            <td>{{formatDate meta.createAt}}</td>
-                            <td><a href="/admin/newsDelete/{{_id}}" class="btn btn-block btn-primary btn-xs" data-toggle="confirm"
-                                   data-message="确认要删除此文章吗">删除</a></td>
-                        </tr>
+                    <tr>
+                        <td><input class="whetherDelete" type="checkbox" data-arctleid="{{_id}}"></td>
+                        <td><a href="/pdf/blogPdf/{{_id}}">{{title}}</a></td>
+                        <td>{{author.username}}</td>
+                        <td>{{formatDate meta.createAt}}</td>
+                        <td><a href="/admin/newsDelete/{{_id}}" class="button button-primary button-pill button-small" data-toggle="confirm"
+                               data-message="确认要删除此文章吗">删除</a></td>
+                    </tr>
                     {{/each}}
                     </tbody>
                 </table>
             </div>
+            <div class="box-button">
+                <button id="groupDelete" class="button button-large button-plain button-border button-square"><i class="fa fa-trash-o"></i></button>
+            </div>
+
             <div class="box-footer clearfix">
                 <ul class="pagination pagination-sm no-margin pull-right">
                     <li>
@@ -61,6 +67,7 @@
                 </ul>
             </div>
         </div>
+        <div id="caosini" data-fuck="你麻痹"></div>
 
 
 
@@ -74,6 +81,6 @@
 
 
 </div>
-
+<script src="/lib/javascripts/myjs.js"></script>
 <script src="/blog/common.js"></script>
 <script src="/blog/newsListAdmin.js"></script>

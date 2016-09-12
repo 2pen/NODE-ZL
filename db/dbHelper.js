@@ -114,7 +114,7 @@ exports.findNews = function(req, cb) {
         {path:'author',select:'imgUrl'},
         {path:'children.author',select:'imgUrl'}
     ],query, {
-        'meta.createAt': '1'
+        'meta.createAt': '-1'
     }, function(error, data){
 
         if(error){

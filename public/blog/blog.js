@@ -13,6 +13,7 @@ $(".divide").on('click',function (e) {
     if($(this).parent().hasClass('active')){
 
     }else{
+        
         $(this).parent().siblings().removeClass('active');                  //先将父元素的active全部移除
         $(this).parent().addClass('active');                                //当前父元素增加active
         $(this).parents('.commentDivide').siblings('.box-comment').hide();//隐藏全部评论

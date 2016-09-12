@@ -15,6 +15,11 @@ h1,h2,h3,h4{
     padding: 0;
     display: flex;
 }
+
+.box-button{
+    background: #229ffd;
+    display: inline-block;
+}
 .flex-nav>ul>li>a{
     color: white;
     font-weight: 100;
