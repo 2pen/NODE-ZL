@@ -4,10 +4,25 @@ $("#groupDelete").on('click',function () {
 
     $(".whetherDelete").each(function () {
         if($(this).is(':checked')) {
-            alert($(this).data('arctleid'));
             array.push($(this).data('arctleid'));
         }
-
+        
     });
-    console.log(array);
+    var data = JSON.stringify({ 'main': array,'pageNumber':$(".pagenumber").text()});
+    groupsDelete(data);
 });
+
+function groupsDelete(data) {
+    var promise = $.ajax({
+        type: "post",
+        url: "/admin/groupDelete",
+        dataType: "json",
+        contentType: "application/json",
+        data:data
+    });
+    promise.done(function () {
+        location.href = window.location.href;
+    });
+}
+
+

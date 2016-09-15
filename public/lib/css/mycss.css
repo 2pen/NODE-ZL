@@ -761,11 +761,17 @@ li.user-header {
     font-weight: 700;
     font-size: 20px;
 }
+.pagenumber{
+    display: none;
+}
 .nameAndSummary>.summary{
     color: #ffffff;
     font-weight: 500;
     font-family: "楷体","楷体_GB2312";
     align-self: flex-end;
+}
+.box-body img{
+    max-width: 35%;
 }
 .nameAndSummary{
     display: flex;

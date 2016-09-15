@@ -50,6 +50,12 @@ router.get('/newsDelete/:id', function(req, res, next) {
   })
 });
 
+router.post('/groupDelete',function (req,res,next) {
+  dbHelper.groupDelete( req.body, function (err, doc) {
+      res.send(doc);
+  })
+})
+
 router.get('/moocList',function (req,res,next) {
 
   dbHelper.findMooc(req, function (success, data) {

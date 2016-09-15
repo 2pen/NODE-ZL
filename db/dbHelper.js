@@ -184,6 +184,14 @@ exports.findMoocOne = function(id, cb) {
 };
 
 
+exports.groupDelete =function (data,cb) {
+
+    News.remove({_id:{$in:data.main}},function (err,doc) {
+        cb(err,doc);
+    })
+
+}
+
 
 
 exports.findMooc = function(req, cb) {

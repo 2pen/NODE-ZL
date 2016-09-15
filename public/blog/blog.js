@@ -1,6 +1,9 @@
 $(init);
 
 
+
+
+
 $(document).ready(function(){
     if($.cookie('isReload')==1) {
         $("html,body").scrollTop($.cookie('blogScrollTop'));
