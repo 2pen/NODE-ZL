@@ -95,6 +95,10 @@ a:hover,a:focus{
     padding: 10px 0 10px 10px;
     margin: 0;
     color: #666;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 200px;
+    white-space: nowrap;
 }
 .content-wrapper{
     -webkit-transition: -webkit-transform .3s ease-in-out, margin .3s ease-in-out;
@@ -768,4 +772,14 @@ li.user-header {
     flex-direction: column;
     justify-content: space-around;
     flex: 1 1 auto;
+}
+.sidePreview{
+    padding: 15px;
+    height: 314px;
+}
+.box-preview{
+    height: 100%;
+    background: #ffffff;
+    border: 1px dashed #222222;
+    padding: 10px;
 }

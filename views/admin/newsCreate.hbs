@@ -11,6 +11,10 @@
     </section>
     <!-- Main content -->
     <!-- Main content -->
+    <section class="sidePreview">
+        <div class="box-preview result-html">
+        </div>
+    </section>
     <section class="content">
         <div class="row">
             <div class="col-md-12">
@@ -20,7 +24,7 @@
                             <input type="text" class="form-control" id="newsTitle" placeholder="文章标题" required>
                         </div>
                         <div class="box-body pad">
-                            <textarea class="textarea" id="newsContent" placeholder="文章内容" style="width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea>
+                            <textarea class="textarea source" id="newsContent" placeholder="文章内容" style="width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea>
                         </div>
                         <div class="box-footer">
                             <input type="file" id="uploadFile" multiple="multiple"  accept="image/*">
@@ -35,7 +39,9 @@
         </div>
         <!-- ./row -->
     </section>
+
 </div>
+
 <div class="pg-wrapper">
     <div class="pg-layer">
         <div class="pg-bar"></div>
@@ -46,3 +52,5 @@
 <script src="/lib/socket.io/socket.io.js"></script>
 <script src="/blog/common.js"></script>
 <script src="/blog/newsCreateAdmin.js"></script>
+<script src="/lib/remarkable/remarkable.js"></script>
+<script src="/lib/remarkable/remarkableindex.js"></script>

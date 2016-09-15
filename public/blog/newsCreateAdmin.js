@@ -1,3 +1,4 @@
+
 $(init);
 
 function init() {
@@ -27,7 +28,6 @@ function init() {
 
 
 }
-
 function preUpload() {
     $("#UploadBtn").removeClass('disabled');
 }
@@ -59,6 +59,8 @@ function doUpload() {
         }
     });
 }
+
+
 
 function doAddNews() {
 
