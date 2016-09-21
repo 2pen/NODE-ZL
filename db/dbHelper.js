@@ -95,16 +95,7 @@ exports.findNewsOne = function(req, id, cb) {
 
 
 exports.findNews = function(req, cb) {
-    // News.find()
-    //     .populate('author')
-    //     .exec(function(err, docs) {
-    //
-    //         var newsList=new Array();
-    //         for(var i=0;i<docs.length;i++) {
-    //             newsList.push(docs[i].toObject());
-    //         }
-    //         cb(true,newsList);
-    //     });
+
     var cmtPgCt;//commentPageCount
     var params = req.query.params|| '';
     var query={};

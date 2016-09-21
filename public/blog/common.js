@@ -52,6 +52,7 @@ var LOAD_WRAPPER = "<div class='loader-wrapper'><div class='loader'><div class='
             }
             else
             if ($t.selectionStart || $t.selectionStart == '0') {
+
                 var startPos = $t.selectionStart;
                 var endPos = $t.selectionEnd;
                 var scrollTop = $t.scrollTop;
@@ -62,6 +63,7 @@ var LOAD_WRAPPER = "<div class='loader-wrapper'><div class='loader'><div class='
                 $t.scrollTop = scrollTop;
             }
             else {
+
                 this.value += myValue;
                 this.focus();
             }

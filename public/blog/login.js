@@ -2,7 +2,6 @@ $(init);
 
 function init() {
     $("body").on('click','#loginBtn',doLogin);
-    $("body").css("position","absolute");                   //attr只能给已有的属性赋值，css可以给没有的属性赋值
 
 }
 
