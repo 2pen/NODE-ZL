@@ -1,0 +1,83 @@
+html{
+    min-height: 100%;
+}
+
+body{
+	margin: 0;
+	min-height: 100%
+	position: relative;
+	background: #123456;
+}
+.calculator{
+	display: flex;
+	flex-direction: column;
+	width: 400px;
+	height: 600px;
+	background: #ffffff;
+	position:absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+}
+.row{
+	display: flex;
+	flex-direction: row;
+	height: 100px;
+	border-width: 1px 0;
+	border-style: solid;
+	border-color: grey;
+	background: #dddddd;
+}
+
+.column{
+	height: 100%;
+	flex: 0 0 98px;
+	font-size: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	border-width: 0 1px;
+	border-style: solid;
+	border-color: grey;
+	cursor: default;
+}
+.output{
+	height: 100%;
+	flex: 0 0 98px;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	border-width: 0 1px;
+	border-style: solid;
+	border-color: grey;
+	cursor: default;
+	flex: 0 0 auto;
+	color: #ffffff;
+	font-size: 90px;
+
+}
+.outputBc{
+	padding-right: 15px;
+	flex-direction: row-reverse;
+	background: grey;
+}
+.forthColumn{
+	color: #ffffff;
+	background: orange;
+}
+.zero{
+	flex: 0 0 198px;
+}
+
+.special{
+	height: 100%;
+	flex: 0 0 98px;
+	font-size: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	border-width: 0 1px;
+	border-style: solid;
+	border-color: grey;
+	cursor: default;
+}
