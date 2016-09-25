@@ -499,7 +499,35 @@ a:hover,a:focus{
     white-space: nowrap;
     text-align: center;
 }
+.rightBar{
+    position: fixed;
+    right: 0;
+    height: 300px;
+    top:200px;
+    width: 300px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+.hideTourist{
+    display: inline-block;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color:rgba(0,0,0,0.5) ;
+    cursor: pointer;
+    flex: 0 0 50px;
+}
+.hideTourist i{
+    color: #ffffff;
+}
+.Tourist{
+    display: inline-block;
+    flex: auto;
+    background-color:rgba(255,255,255,0.5) ;
 
+}
 .userName{
     display: block;
     color: #ffffff;
