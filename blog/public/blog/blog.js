@@ -3,6 +3,19 @@ $(init);
 
 
 
+$(".send-message button").on('click', function () {
+    if($(".input-content").val()!=''){
+        var $content=$("<div></div>").text($(".input-content").val());
+        $content.addClass("chat-lineContent");
+        var $image = $("<img>").attr("src","/images/icon.jpg");
+        var $chatLine=$("<div></div>");
+        $chatLine.addClass("chat-line-receiver");
+
+        $chatLine.append($content);
+        $chatLine.prepend($image);
+        $(".chat-content").append($chatLine);
+    }
+});
 
 $(document).ready(function(){
     if($.cookie('isReload')==1) {

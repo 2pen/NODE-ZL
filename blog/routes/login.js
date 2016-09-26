@@ -7,6 +7,7 @@ var config = require('../config');
 
 
 router.get('/', function(req, res, next) {
+  req.session.user = '';
   res.render('login', { layout: 'lg' });
 });
 

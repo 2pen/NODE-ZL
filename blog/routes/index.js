@@ -20,11 +20,11 @@ news.save(function (err) {
 */
 /*
 var User1 = new Users({
-    username     :'tom',
+    username     :'zhangle',
     password      :'a',
     email   :'haha',
     address :'nimabi',
-    imgUrl :'/images/icon.jpg'
+    imgUrl :'/images/zengruiru.jpg'
 })
 User1.save(function (err) {
     if(err){
@@ -32,7 +32,8 @@ User1.save(function (err) {
     }
     console.log('success');
 })
- */
+
+*/
 
 
 
@@ -58,7 +59,9 @@ router.get('/mooc/:id', function(req, res, next) {
 });
 
 
+
 router.get('/', function(req, res, next) {
+    
     dbHelper.findNews(req, function (success, data) {
         res.render('blog', {
             entries: data.results,

@@ -100,6 +100,7 @@ exports.findNews = function(req, cb) {
     var params = req.query.params|| '';
     var query={};
     query['title']={$regex:params,$options:"$i"};
+    query['author']=req.session.user._id;
     var page = req.query.page || 1 ;
     this.pageQuery(page, 5, News, [
         {path:'author',select:'imgUrl'},
@@ -111,7 +112,7 @@ exports.findNews = function(req, cb) {
         if(error){
             next(error);
         }else{
-            //console.log(data.results[0].children);
+            //console.log(data);
             data.searchParams=params;
             for(var i=0;i<data.results.length;++i){
                 cmtPgCt = data.results[i].children.length/5;

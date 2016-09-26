@@ -7,6 +7,9 @@ var userSchema = new Schema({
     email:    String,
     address:  String,
     imgUrl:String,
+    friends:[{type:Schema.Types.ObjectId, ref:'User' }],
+    following:[{type:Schema.Types.ObjectId,ref:'User'}],
+    followed:[{type:Schema.Types.ObjectId,ref:'User'}],
     meta: {
         updateAt: {type:Date, default: Date.now()},
         createAt: {type:Date, default: Date.now()}

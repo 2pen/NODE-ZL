@@ -2194,3 +2194,16 @@ span{
 	word-break:normal;					//使用浏览器默认的换行规则
 }
 ```
+
+###2016-09-26
+###如何用css实现三角形
+.triangle{
+    border-top: 5px solid transparent;      
+    border-right: 8px solid #088cb7;
+    border-bottom: 5px solid transparent;
+}
+###如何通过jquery生成dom元素并转为jquery元素
+```javascript
+var $chatLine=$("<div></div>");
+$chatLine.addClass("chat-line-receiver");
+```

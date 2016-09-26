@@ -509,6 +509,145 @@ a:hover,a:focus{
     flex-direction: row;
     flex-wrap: nowrap;
 }
+.chatWindow{
+    z-index: 1000;
+    position: fixed;
+    left: 50%;
+    top: 100px;
+    transform: translate(-50%,0);
+    width: 600px;
+    height: 600px;
+    background: #ffffff;
+    box-shadow: 0 0 5px 1px #1b5362;
+    display: flex;
+    flex-direction: column;
+}
+.chat-head{
+    padding: 10px;
+    flex:0 0 80px;
+    background: #ffffff;
+    display: flex;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: #bbbbbb;
+    justify-content: space-between;
+
+}
+.chat-close{
+    align-self: flex-start;
+    cursor: pointer;
+}
+.chat-content{
+    flex: 1 0 350px;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: #bbbbbb;
+    padding-left:5px;
+    padding-right: 5px;
+    padding-top: 20px;
+
+    overflow-y: scroll;
+}
+.chat-line .chat-lineContent:before {
+    content: "";
+    width: 0;
+    height: 0;
+    right: 100%;
+    top: 10px;
+    position: absolute;
+    border-top: 5px solid transparent;
+    border-right: 8px solid #088cb7;
+    border-bottom: 5px solid transparent;
+}
+.chat-line-receiver .chat-lineContent:after {
+    content: "";
+    width: 0;
+    height: 0;
+    left: 100%;
+    top: 10px;
+    position: absolute;
+    border-top: 5px solid transparent;
+    border-left: 8px solid orange;
+    border-bottom: 5px solid transparent;
+}
+.chat-line-receiver .chat-lineContent{
+    margin-right: 10px;
+    background: orange;
+
+}
+.chat-lineContent{
+    min-height: 40px;
+    background: #088cb7;
+    position: relative;
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    max-width: 500px;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 16px;
+}
+.chat-line-receiver{
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row-reverse;
+}
+.chat-line-receiver img {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+}
+.chat-input{
+    flex: 0 0 115px;
+    padding: 10px;
+    padding-bottom: 5px;
+}
+.send-message{
+    flex: 0 0 35px;
+    display: flex;
+    flex-direction: row-reverse;
+    padding-right: 10px;
+}
+.input-content{
+    width: 100%;
+    height: 100%;
+}
+.chat-line img{
+
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+}
+.chat-line{
+    margin-bottom: 10px;
+    display: flex;
+}
+.chatPerson{
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+}
+.chatPerson img{
+    width: 50px;
+    height: 50px;
+}
+.chat-name{
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-left: 15px;
+}
+.overhide{
+    font-size: 18px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 200px;
+}
 .hideTourist{
     display: inline-block;
     height: 100%;
