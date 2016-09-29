@@ -33,9 +33,18 @@ User1.save(function (err) {
     console.log('success');
 })
 
-*/
 
-
+var conditions = {username:'zhangle'};
+var update={$set:{friends:'577e4c5fe9d0c23013c20181'}};
+//第一个参数conditions是选择条件，第二个参数update是选择后该如何更改的参数,第三个是回调函数
+Users.update(conditions,update,function (error,data) {
+    if(error){
+        console.log(error);
+    }else{
+        console.log(data);
+    }
+})
+ */
 
 router.get('/moocs', function(req, res, next) {
     dbHelper.findMooc(req, function (success, data) {
@@ -62,6 +71,8 @@ router.get('/mooc/:id', function(req, res, next) {
 
 router.get('/', function(req, res, next) {
     
+
+    
     dbHelper.findNews(req, function (success, data) {
         res.render('blog', {
             entries: data.results,
@@ -69,6 +80,7 @@ router.get('/', function(req, res, next) {
             pageNumber: data.pageNumber,
             count: data.count,
             searchParams:data.searchParams,
+            user:data.user,
         });
     })
 });

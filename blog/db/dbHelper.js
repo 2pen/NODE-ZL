@@ -36,7 +36,18 @@ exports.findUsr = function (data,cb) {
     })
 }
 
+exports.findUsrInfo = function (cb) {
+    User.findOne({username:req.session.user}).populate({path:'friends',select:{$in:['username','imgUrl']}})
+        .exec(function (err,doc) {
+        var doc = (doc !== null) ? doc.toObject() : '';
+        if(err){
+            cb(false,err);
+        }else {
+            cb(true,doc);
+        }
 
+    })
+}
 
 
 exports.addUser = function (data,cb) {
@@ -127,8 +138,14 @@ exports.findNews = function(req, cb) {
                 } );
             }
 
+            User.findOne({username:req.session.user.username}).populate({path:'friends',select:"username imgUrl"})
+                .exec(function (err,doc) {
+                    var doc = (doc !== null) ? doc.toObject() : '';
+                    console.log(doc);
+                    data.user = doc;
+                    cb(true,data);
 
-            cb(true,data);
+            })
             
         }
     });

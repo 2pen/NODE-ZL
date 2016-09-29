@@ -2,7 +2,7 @@ $(init);
 
 
 
-
+/*
 $(".send-message button").on('click', function () {
     if($(".input-content").val()!=''){
         var $content=$("<div></div>").text($(".input-content").val());
@@ -16,7 +16,7 @@ $(".send-message button").on('click', function () {
         $(".chat-content").append($chatLine);
     }
 });
-
+*/
 $(document).ready(function(){
     if($.cookie('isReload')==1) {
         $("html,body").scrollTop($.cookie('blogScrollTop'));

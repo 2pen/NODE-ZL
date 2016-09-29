@@ -51,6 +51,10 @@
         </form>
         <button class="button button-glow button-rounded button-caution linkChat" style="margin-top: 50px;">
             <i class="fa fa-comment-o fa-lg"></i></button>
+        {{#each user.friends}}
+            <div class="selectFri">{{username}}</div>
+            <img src="{{imgUrl}}" style="width:100px; ">
+        {{/each}}
     </nav>
 
 </header>
