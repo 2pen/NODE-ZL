@@ -8,13 +8,13 @@
 
     socket.on("open",function () {
         console.log("与服务器建立连接");
-        socket.emit("addUser",$.cookie('username'));
-        console.log($.cookie('username'));
+        socket.emit("addUser",$("#findName").data('name'));
     })
     
     send.on('click',function () {
         var message = input.val();
-        var receiver = $(".selectFri").text();
+        var receiver = $(".selectFri").children("div").text();
+        console.log(receiver);
         var obj = {
             message:message,
             receiver:receiver

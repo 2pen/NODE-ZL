@@ -18,5 +18,11 @@ $("#search").validate({
 function doSearch(params) {
     var url = "?page=1&params="+params;
     location.href = url;
-
 }
+
+(function ($) {
+    $('.FriList').on('click',function () {
+        $(this).addClass('selectFri');
+        $(this).siblings('.FriList').removeClass('selectFri');
+    })
+})(jQuery);

@@ -141,7 +141,7 @@ exports.findNews = function(req, cb) {
             User.findOne({username:req.session.user.username}).populate({path:'friends',select:"username imgUrl"})
                 .exec(function (err,doc) {
                     var doc = (doc !== null) ? doc.toObject() : '';
-                    console.log(doc);
+                    //console.log(doc);
                     data.user = doc;
                     cb(true,data);
 

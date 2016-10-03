@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var dbHelper = require('../db/dbHelper');
 var fs = require('fs');
-var NodePDF = require('nodepdf');
 var config = require('../config');
 
 

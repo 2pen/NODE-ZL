@@ -2,9 +2,10 @@ var ioServer = function () {
     var io = global.io;
     var client = {};
     io.on('connection', function (socket) {
-
+        var name;
         socket.on("addUser",function (username) {
             client[username] = socket;
+            name = username;
             console.log(username);
         })
 
@@ -15,6 +16,9 @@ var ioServer = function () {
 
             client[obj.receiver].emit('receive',obj.message);
             socket.emit('send',obj.message);
+        })
+        socket.on('disconnect',function () {
+            console.log(name+"disconnected!");
         })
     });
 }

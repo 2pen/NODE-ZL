@@ -20,11 +20,11 @@ news.save(function (err) {
 */
 /*
 var User1 = new Users({
-    username     :'zhangle',
+    username     :'Wallace',
     password      :'a',
     email   :'haha',
     address :'nimabi',
-    imgUrl :'/images/zengruiru.jpg'
+    imgUrl :'/images/Wallace.jpg'
 })
 User1.save(function (err) {
     if(err){
@@ -32,10 +32,10 @@ User1.save(function (err) {
     }
     console.log('success');
 })
-
-
-var conditions = {username:'zhangle'};
-var update={$set:{friends:'577e4c5fe9d0c23013c20181'}};
+*/
+/*
+var conditions = {username:'Wallace'};
+var update={$set:{friends:['57f239247faafd78268ea64e','57e893eed17833211e02b0d5']}};
 //第一个参数conditions是选择条件，第二个参数update是选择后该如何更改的参数,第三个是回调函数
 Users.update(conditions,update,function (error,data) {
     if(error){
@@ -44,7 +44,7 @@ Users.update(conditions,update,function (error,data) {
         console.log(data);
     }
 })
- */
+*/
 
 router.get('/moocs', function(req, res, next) {
     dbHelper.findMooc(req, function (success, data) {

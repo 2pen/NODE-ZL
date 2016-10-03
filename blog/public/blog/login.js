@@ -16,6 +16,7 @@ function doLogin() {
             'pwd':$("#pwd").val()
         }),
         success:function (result) {
+            console.log(result);
             if(result.code==99){
                 $(".login-box-msg").text(result.msg);
                 $(".login-box-msg").css('padding-bottom','0');

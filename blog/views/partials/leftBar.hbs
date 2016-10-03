@@ -4,7 +4,8 @@
     <nav class="navbar navbar-static-top">
             <div class="personInfo">
                 <div class="userImg">
-                    <img  class="img-circle uig" alt="User Image">
+                    <span style="display: none" id="findName" data-name="{{user.username}}"></span>
+                    <img  class="img-circle" src="{{user.imgUrl}}" alt="User Image">
                 </div>
                 <span class="userName">Zhangle</span>
 
@@ -52,8 +53,10 @@
         <button class="button button-glow button-rounded button-caution linkChat" style="margin-top: 50px;">
             <i class="fa fa-comment-o fa-lg"></i></button>
         {{#each user.friends}}
-            <div class="selectFri">{{username}}</div>
-            <img src="{{imgUrl}}" style="width:100px; ">
+            <div class="FriList">
+                <div>{{username}}</div>
+                <img src="{{imgUrl}}" style="width:100px; ">
+            </div>
         {{/each}}
     </nav>
 
