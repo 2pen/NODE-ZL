@@ -50,12 +50,18 @@
             <input id="params" placeholder="输入关键字搜索" type="text">
             <button type="submit" id="putParams"><i class="fa fa-search"></i></button>
         </form>
-        <button class="button button-glow button-rounded button-caution linkChat" style="margin-top: 50px;">
-            <i class="fa fa-comment-o fa-lg"></i></button>
+        <button class="button button-glow button-rounded button-caution GroupChat" style="margin-top: 50px;">
+            开启群聊</button>
         {{#each user.friends}}
-            <div class="FriList">
-                <div>{{username}}</div>
-                <img src="{{imgUrl}}" style="width:100px; ">
+            <div>
+                <div class="FriList">
+                    <div>{{username}}</div>
+                    <img src="{{imgUrl}}" style="width:100px; ">
+                </div>
+                <div class="addToGroup">
+                    <input id="choose-Fri{{@ index}}" type="checkbox">
+                    <label for="choose-Fri{{@ index}}"><span>选择好友</span></label>
+                </div>
             </div>
         {{/each}}
     </nav>

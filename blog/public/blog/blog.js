@@ -1,7 +1,9 @@
 $(init);
 
 
-
+$('.chat-close').on('click',function () {
+    $('.chatWindow').css("display","none");
+})
 /*
 $(".send-message button").on('click', function () {
     if($(".input-content").val()!=''){

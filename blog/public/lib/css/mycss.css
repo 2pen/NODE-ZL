@@ -509,6 +509,7 @@ a:hover,a:focus{
     flex-direction: row;
     flex-wrap: nowrap;
 }
+
 .chatWindow{
     z-index: 1000;
     position: fixed;
@@ -519,8 +520,56 @@ a:hover,a:focus{
     height: 600px;
     background: #ffffff;
     box-shadow: 0 0 5px 1px #1b5362;
-    display: flex;
+    display: none;
     flex-direction: column;
+}
+.groupTalk{
+    z-index: 1000;
+    position: fixed;
+    left: 50%;
+    top: 100px;
+    transform: translate(-50%,0);
+    width: 750px;
+    height: 600px;
+    background: #ffffff;
+    box-shadow: 0 0 5px 1px #1b5362;
+    display: none;
+    flex-direction: column;
+}
+.divide-two{
+    display: flex;
+    flex-direction: row;
+    flex: 1 0 350px;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: #bbbbbb;
+}
+.addToGroup{
+    position: relative;
+    display: inline-block;
+}
+.Fri-list{
+    padding: 10px;
+    flex: 0 0 150px;
+    display: flex;
+    overflow-y: auto;
+    flex-direction: column;
+    height: 370px;
+}
+.singleFri img{
+    width: 30px;
+
+}
+.singleFri{
+    margin-bottom: 10px;
+}
+.divide-two>.chat-content{
+    flex: 1 0 600px;
+    border-width: 0 1px 0 0;
+    border-color: #bbbbbb;
+    border-style: solid;
+    height: 370px;
+
 }
 .selectFri div{
     color: #ffffff;
@@ -536,6 +585,73 @@ a:hover,a:focus{
     justify-content: space-between;
 
 }
+input[type="checkbox"] + label {
+    cursor: pointer;
+    font-size: 1em;
+}
+input[type="checkbox"] {
+    display: none;
+}
+[id^="choose-Fri"] + label {
+    background-color: #FFF;
+    padding: 6px 43px 8px 9px;
+    border-radius: 5px;
+    display: inline-block;
+    position: relative;
+    margin-right: 30px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.3);
+    height: auto;
+    overflow: hidden;
+    font-size: 1em !important;
+    color: #464E50;
+    -webkit-transition: all 0.3s linear, color 0 linear;
+    transition: all 0.3s linear, color 0 linear;
+}
+[id^="choose-Fri"] + label > span {
+    position: relative;
+    z-index: 99999;
+    font-family: 'adelle-sans', sans-serif;
+}
+[id^="choose-Fri"] + label:before {
+    content: ' ';
+    position: absolute;
+    background: #6AC6DD;
+    width: 0%;
+    height: 100%;
+    top: 0;
+    -webkit-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+    left: 0;
+}
+[id^="choose-Fri"]:checked + label:before {
+    content: ' ';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.1);
+    top: 0;
+    left: 0;
+}
+[id^="choose-Fri"] + label:after {
+    content: ' ';
+    position: absolute;
+    background: #FFF;
+    top: 3px;
+    right: 3px;
+    width: 24px;
+    display: block;
+    font-size: 1em !important;
+    height: 16px;
+    border-radius: 3px;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.6), inset 0 -18px 15px -10px rgba(0, 0, 0, 0.05);
+    padding: 4px 0px;
+    text-align: center;
+    color: #496F7A;
+    height: 28px;
+}
+[id^="choose-Fri"]:checked + label:after {
+    content: '\2715';
+}
 .chat-close{
     align-self: flex-start;
     cursor: pointer;
@@ -548,8 +664,7 @@ a:hover,a:focus{
     padding-left:5px;
     padding-right: 5px;
     padding-top: 20px;
-
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .chat-line .chat-lineContent:before {
     content: "";
@@ -608,12 +723,13 @@ a:hover,a:focus{
     padding: 10px;
     padding-bottom: 5px;
 }
-.send-message{
+.send-message,.group-send-message{
     flex: 0 0 35px;
     display: flex;
     flex-direction: row-reverse;
     padding-right: 10px;
 }
+
 .input-content{
     width: 100%;
     height: 100%;
@@ -643,6 +759,9 @@ a:hover,a:focus{
     flex-direction: column;
     justify-content: space-around;
     margin-left: 15px;
+}
+td>input{
+    display: inline-block !important;
 }
 .overhide{
     font-size: 18px;
