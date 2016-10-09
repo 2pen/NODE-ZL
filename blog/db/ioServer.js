@@ -3,6 +3,8 @@ var User = require('./schema/user');
 var ioServer = function () {
     var io = global.io;
     var client = {};
+    var temparray;
+    var tempmemberinfo;
     io.on('connection', function (socket) {
         var name;
         socket.on("addUser",function (username) {
@@ -16,8 +18,8 @@ var ioServer = function () {
         socket.emit('open');//通知客户端已连接
         socket.on('message',function (obj) {
             if(client.hasOwnProperty(obj.receiver)){
-                client[obj.receiver].emit('receive',obj.message);
-                socket.emit('send',obj.message);
+                client[obj.receiver].emit('receive',obj);
+                socket.emit('send',obj);
             }
 
         })
@@ -40,14 +42,25 @@ var ioServer = function () {
                         memberinfo:memberinfo
                     }
                     console.log(obj);
+                    temparray = array;
+                    tempmemberinfo = memberinfo;
                     for(var i=0;i<array.length;++i){
                         client[array[i]].emit('groupInit',obj);
 
                     }
                 }
             });
-
-
+        })
+        socket.on('groupsend',function (obj) {
+            console.log(obj);
+            var info = {
+                message:obj.message,
+                poster:obj.poster,
+                imgUrl:tempmemberinfo[obj.poster]
+            }
+            for(var i=0;i<temparray.length;++i){
+                client[temparray[i]].emit('groupsend',info);
+            }
         })
         socket.on('disconnect',function () {
             console.log(name+"disconnected!");
