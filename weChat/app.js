@@ -12,15 +12,16 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
 
 var hbs = exphbs.create({
   partialsDir:'views/partials',
-  layoutsDir:'views/layouts/',
+  layoutsDir:"views/layouts/",
   defaultLayout:'main',
   extname:'.hbs',
   helpers:hbsHelper
 });
+app.engine('hbs', hbs.engine);      //没这句就跑不起来,设置视图引擎
+app.set('view engine', 'hbs');
 
 
 // uncomment after placing your favicon in /public
@@ -30,6 +31,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/')));
 
 app.use('/', routes);
 app.use('/users', users);
