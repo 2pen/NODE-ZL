@@ -44,6 +44,7 @@ body{
 .rightBar{
     flex: 1 1 780px;
     padding-right: 20px;
+    position: relative;
 }
 .iconLine{
     flex: 0 0 80px;
@@ -359,4 +360,50 @@ body{
     }
 
 
+}
+#addFri{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+#addFriList{
+    position:absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 250px;
+    background: #fff;
+    display: none;
+    flex-direction: column;
+}
+#startSearch{
+    cursor: pointer;
+}
+.addFriInfo{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    justify-content: space-between;
+}
+.addFriInfo img{
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+}
+.addFriInfo span{
+    margin-left: -80px;
+}
+#searchAddFri{
+    height: 25px;
+    margin-top: 5px;
+    padding-left: 30px;
+    width: calc(100% - 29px);
+    color: #fff;
+    background-color: #26292E;
+    border: 0;
+    font-size: 12px;
+}
+.searchline{
+    padding-left: 12px;
+    padding-right: 12px;
 }

@@ -1,9 +1,9 @@
 <div class="outer">
     <div class="main">
         <div class="leftBar">
-            <div class="iconLine">
-                <img src="/images/ppap.jpg">
-                <span>张乐</span>
+            <div class="iconLine" id="getimg">
+                <img src="{{user.imgUrl}}">
+                <span id="findName" data-id="{{user._id}}">{{user.username}}</span>
 
                 <div class="opt">
                     <i class="fa fa-list fa-lg"></i>
@@ -23,25 +23,15 @@
 
             </div>
             <div class="list_out">
-                <div class="Frilist ">
-                    <div class="FriendInfo">
-                        <img src="/images/FriIcon.jpg">
-                        <span>哈哈哈</span>
-                    </div>
-                    <div class="FriendInfo">
-                        <img src="/images/FriIcon.jpg">
-                        <span>哈哈哈</span>
-                    </div>
-                    <div class="FriendInfo">
-                        <img src="/images/FriIcon.jpg">
-                        <span>哈哈哈</span>
-                    </div>
-                    <div class="FriendInfo">
-                        <img src="/images/FriIcon.jpg">
-                        <span>哈哈哈</span>
-                    </div>
-                </div>
-                <div class="chatHistory show">
+                <div class="Frilist show">
+                    {{#each user.friends}}
+                        <div class="FriendInfo">
+                            <img src="{{imgUrl}}">
+                            <span>{{username}}</span>
+                        </div>
+                    {{/each}}
+            </div>
+                <div class="chatHistory ">
                     <div class="historyInfo">
                         <img src="/images/FriIcon.jpg">
                         <div class="nameAndmsg">
@@ -64,7 +54,7 @@
         </div>
         <div class="rightBar">
             <div class="selectFri">
-                <div class="iconLine">
+                <div class="iconLine" id="selfInfo">
                     <span>详细信息</span>
                 </div>
                 <div class="detailedInfo">
@@ -80,18 +70,7 @@
                 <div class="chatWindow">
 
                     <div class="chat-content">
-                        <div class="chat-line-receiver">
-                            <img src="/images/huangyuan.jpg">
-                            <div class="chat-lineContent">
-                                sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-                            </div>
-                        </div>
-                        <div class="chat-line">
-                            <img src="/images/quanguangqing.jpg">
-                            <div class="chat-lineContent">
-                                嘻嘻嘻
-                            </div>
-                        </div>
+
                     </div>
                     <div class="tool_bar">
                         <div class="showemoji"><i class="icon iconfont">&#xe600;</i></div>
@@ -102,8 +81,23 @@
                         <textarea class="textarea input-content" style="resize:none;"></textarea>
                     </div>
                     <div class="send-message">
-                        <button class="button button-raised button-pill button-inverse button-small">发送</button>
+                        <button id="sendMsg" class="button button-raised button-pill button-inverse button-small">发送</button>
                     </div>
+                </div>
+
+            </div>
+            <button id="addFri" class="button button-glow button-border button-rounded button-primary">添加好友</button>
+        </div>
+        <div id="addFriList">
+            <div class="searchline">
+                <i id="startSearch" class="fa fa-search fa-lg" style="position: absolute;top: 13px;left: 19px;color: #fff;font-size: 14px;"></i>
+                <input id="searchAddFri" placeholder="搜索" type="text">
+            </div>
+            <div class="FriInfoList">
+                <div class="addFriInfo" data-id="">
+                    <img src="/images/quanguanqing.jpg">
+                    <span>全冠清</span>
+                    <button  class="mkFri button button-primary button-box button-small"><i class="fa fa-plus"></i></button>
                 </div>
 
             </div>
@@ -111,4 +105,14 @@
     </div>
 </div>
 
+<script>
+    window.scriptData = JSON.stringify({{{scriptData}}});
+    window.scriptData=eval("("+window.scriptData+")");//转换为json对象
+
+
+
+</script>
+
+
 <script src="/lib/myjs/myjs.js"></script>
+<script src="/wechat/chat.js"></script>

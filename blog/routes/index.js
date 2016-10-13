@@ -71,8 +71,6 @@ router.get('/mooc/:id', function(req, res, next) {
 
 router.get('/', function(req, res, next) {
     
-
-    
     dbHelper.findNews(req, function (success, data) {
         res.render('blog', {
             entries: data.results,
