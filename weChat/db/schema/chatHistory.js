@@ -11,6 +11,8 @@ var chatPersonSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'User'
     },
+    personOneNotRead:Number,
+    personTwoNotRead:Number,
     children: [{
         from:{
             type:Schema.Types.ObjectId,

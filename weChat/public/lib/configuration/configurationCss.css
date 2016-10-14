@@ -169,6 +169,7 @@ body{
     align-items: center;
     border-bottom: 1px solid #292C33;
     cursor: pointer;
+    position: relative;
 }
 .chatWindow{
     display: flex;
@@ -406,4 +407,17 @@ body{
 .searchline{
     padding-left: 12px;
     padding-right: 12px;
+}
+.msgOffline{
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+.msgOffline button{
+    width: 25px;
+    padding: 0;
+    height: 25px;
+    line-height: 25px;
+    font-size: 12px;
 }

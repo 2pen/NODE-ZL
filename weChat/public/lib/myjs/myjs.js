@@ -1,7 +1,28 @@
 $(init);
 
 function init() {
+    var index = 0;
+    $(".msgOffline").each(function () {
+        //console.dir(window.scriptData);
+        if(window.scriptData.friends[index].hasOwnProperty('chatHistory')){
 
+            if(window.scriptData.friends[index].chatHistory.personOne.name==$("#findName").text()){
+                if(window.scriptData.friends[index].chatHistory.personOneNotRead>0){
+                    $(this).show();
+
+                    $(this).children("button").text(window.scriptData.friends[index].chatHistory.personOneNotRead);
+                }
+            }else{
+                if(window.scriptData.friends[index].chatHistory.personTwoNotRead>0){
+                    $(this).show();
+
+                    $(this).children("button").text(window.scriptData.friends[index].chatHistory.personTwoNotRead);
+                }
+            }
+        }
+        ++index;
+
+   })
     
 }
 

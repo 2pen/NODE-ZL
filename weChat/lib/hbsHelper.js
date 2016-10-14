@@ -77,6 +77,7 @@ module.exports = {
             return block.inverse(this);
         }
     },
+
     equals: function (value1, value2, block) {
         if(Number(value1))
             value1 = Number(value1);
