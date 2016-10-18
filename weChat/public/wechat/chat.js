@@ -1,94 +1,46 @@
-
-
-
+var input = $(".input-content");                    //输入框内容
+var USER_NAME = $("#findName").text();               //当前用户名字
+var USER_ID = $("#findName").data('id');             //当前用户ID
+var CHAT_PERSON = {};                                 //一个包含聊天对象的对象
+var chatWindow = $(".chatWindow");                  //聊天框
+var ONCHATFRI;
+var FRI_INFO = '<div class="addFriInfo" data-id="{0}"><img src="{1}"><span>{2}</span><button class="mkFri button button-primary button-box button-small"><i class="fa fa-plus"></i></button></div>';
+var MSG_RECEIVE = '<div class="chat-line"><img src="{0}"><div class="chat-lineContent">{1}</div></div>';
+var MSG_SEND = '<div class="chat-line-receiver"><img src="{0}"><div class="chat-lineContent">{1}</div></div>';
+var socket = io.connect('http://localhost:3000');
+var X = window.scriptData;                          //截取服务器发送过来的数据
 (function($){
-    var chatWindow = $(".chatWindow");
-    var chatPerson = $(".chatPerson");
-    var input = $(".input-content");                    //输入框内容
+
     var groupinput = $(".group-input-content");         //群聊
     var send = $(".send-message").children("button");                      //发消息按钮
     var groupsend = $(".group-send-message").children("button");            //群发消息
     var GroupChat = $(".GroupChat");
-    var socket = io.connect('http://localhost:3000');
     var Frilist = $(".Fri-list");
     var startSearch = $("#startSearch");
-    var chatperson = {};
+
     socket.on("open",function () {
-        console.log($("#findName").text()+"与服务器建立连接");
-        socket.emit("addUser",$("#findName").text());
+        socket.emit("addUser",USER_NAME);
     })
+
     startSearch.on('click',function () {
-        if($("#searchAddFri").val()!=''){
-            socket.emit('searchFri',$("#searchAddFri").val());
+        var ADD_FRI = $("#searchAddFri").val();               //搜索框的好友名字
+        if(ADD_FRI!=''){
+            socket.emit('searchFri',ADD_FRI);
         }
     })
+
     $("body").on('click','.FriendInfo',function(e){
-        var obj = {
-            poster:$("#findName").text(),
-            receiver:$(this).children("span").text()
-        }
-        socket.emit('clearNotRead',obj);
-        $(this).children("div").hide();
-        $(this).children("div").children("button").text('0');
-        $(".FriendInfo").removeClass('onChat');
-        $(this).addClass('onChat');
-        $("#selfInfo").children("span").text($(".onChat").children("span").text());
-
-        chatWindow.children(".chat-content").remove();
-        chatWindow.children(".detailedInfo").after(chatperson[$(".onChat").children("span").text()]);
-
-        if(!chatperson.hasOwnProperty($(".onChat").children("span").text())){
-            //console.dir(window.scriptData.friends[1].chatHistory);
-            createChatcontent($(".onChat"));
-
-        }
-        chatWindow.children(".chat-content").remove();
-        chatWindow.children(".tool_bar").before(chatperson[$(".onChat").children("span").text()]);
-
+        displayHis($(this));
     })
-    function createChatcontent(obj) {
-        var chatContent =$('<div class="chat-content"></div>');
-        chatperson[obj.children("span").text()]= chatContent;
-        for(var i = 0;i< window.scriptData.friends.length;++i){
-            if(!window.scriptData.friends[i].chatHistory){
-                console.log("fuck");
-                continue;
-            }
-            if((window.scriptData.friends[i].chatHistory.personOne.username==obj.children("span").text()
-                &&window.scriptData.friends[i].chatHistory.personTwo.username==$("#findName").text())||
-                (window.scriptData.friends[i].chatHistory.personOne.username==$("#findName").text()
-                &&window.scriptData.friends[i].chatHistory.personTwo.username==obj.children("span").text())){
-                var chatContent =$('<div class="chat-content"></div>');
-                chatperson[obj.children("span").text()]= chatContent;
 
-                for(var j=0;j<window.scriptData.friends[i].chatHistory.children.length;++j){
-                    if(window.scriptData.friends[i].chatHistory.children[j].from.username==obj.children("span").text()){
-                        var imgUrl = obj.children("img").attr("src");
-                        var message = '<div class="chat-line"><img src="'+imgUrl+'"'+'><div class="chat-lineContent">'+window.scriptData.friends[i].chatHistory.children[j].message+' </div> </div>';
-                        chatperson[obj.children("span").text()]='<div class="chat-content">'+$(chatperson[obj.children("span").text()]).append(message).html()+'</div>';
-                    }else{
-                        var message = '<div class="chat-line-receiver"><img src="'+$("#getimg").children("img").attr("src")+'"'+'><div class="chat-lineContent">'+window.scriptData.friends[i].chatHistory.children[j].message+' </div> </div>';
-                        chatperson[obj.children("span").text()]='<div class="chat-content">'+$(chatperson[obj.children("span").text()]).append(message).html()+'</div>';
-                    }
-                }
-                console.log(chatperson[obj.children("span").text()]);
-            }
-        }
-
-    }
     $("body").on('click','.mkFri',function(e){
-
         var msg = {
-            inviter: $("#findName").data('id'),       //成为好友的邀请人
+            inviter: USER_ID,       //成为好友的邀请人
             receiver: $(this).parent().data('id')        //成为好友的接收人
         }
-        console.log(msg);
-
         socket.emit('becomeFri',msg);
     });
-    $(".mkFri").on('click',function () {                //这样无法对动态添加的元素进行监听
 
-    })
     GroupChat.on('click',function () {
         var array = new Array();
         $("input[id^='choose-Fri']").each(function () {
@@ -98,46 +50,35 @@
             }
 
         })
-        array.push($("#findName").data("name"));
+        array.push(USER_NAME);
         console.log(array);
         socket.emit("createGroup",array);
     })
+
     socket.on('searchFri',function (user) {
-        var FriInfo = '<div class="addFriInfo" data-id="'+user._id+'">'+
-            '<img src="'+user.imgUrl+'">'+
-            '<span>'+user.username+'</span>'+
-            '<button class="mkFri button button-primary button-box button-small"><i class="fa fa-plus"></i></button>'+
-            '</div>';
+        var FriInfo;
+        FriInfo=$.format(FRI_INFO, user._id, user.imgUrl,user.username);
         $(".FriInfoList").empty().append(FriInfo);
     })
+
     socket.on('groupInit',function (obj) {
         $(".groupTalk").css("display","flex");
-        var Fri = ' <div class="singleFri"><img src="'+$(".userImg").children("img").attr("src")+'"><span>'+$("#findName").data("name")+'</span></div>';
+        var Fri = ' <div class="singleFri"><img src="'+$(".userImg").children("img").attr("src")+'"><span>'+USER_NAME+'</span></div>';
         Frilist.append(Fri);
         for(var i=0;i<obj.array.length;++i){
-            if(obj.array[i]!=$("#findName").data("name")){
+            if(obj.array[i]!=USER_NAME){
                 var Fri = ' <div class="singleFri"><img src="'+obj.memberinfo[obj.array[i]]+'"><span>'+obj.array[i]+'</span></div>';
                 Frilist.append(Fri);
             }
         }
     })
+
     send.on('click',function () {
-        var message = input.val();
-        var receiver = $(".onChat").children("span").text();
-        var poster = $("#findName").text();
-        var obj = {
-            message:message,
-            receiver:receiver,
-            poster:poster
-        }
-        console.log(obj);
-        if(!message)return ;
-        socket.send(obj);
-        input.val('');
+        sendMsg();
     })
     groupsend.on('click',function () {
         var message = groupinput.val();
-        var poster = $("#findName").data('name');
+        var poster = USER_NAME;
         var obj = {
             message:message,
             poster:poster
@@ -147,8 +88,9 @@
         socket.emit('groupsend',obj);
         groupinput.val('');
     })
+
     socket.on('groupsend',function (info) {
-        if(info.poster!=$("#findName").data('name')){
+        if(info.poster!=USER_NAME){
             var message = '<div class="chat-line"><img src="'+info.imgUrl+'"'+'><div class="chat-lineContent">'+info.message+' </div> </div>';
             content.append(message);
         }else{
@@ -156,50 +98,138 @@
             content.append(message);
         }
     })
+
     socket.on('receive',function (obj) {
-        var imgUrl;
-        var objection;
-        $(".FriendInfo").each(function () {
-            if($(this).children("span").text()==obj.poster){
-                objection=$(this);
-                imgUrl = $(this).children("img").attr("src");
-                if(!$(this).hasClass('onChat')){
-                    $(this).children("div").show();
-                    $(this).children("div").children("button").text(parseInt($(this).children("div").children("button").text())+1);
-                }else{
-                    var clearData = {
-                        poster:$("#findName").text(),
-                        receiver:$(".onChat").children("span").text()
-                    }
-                    socket.emit('clearNotRead',clearData);
-                }
-                console.log(imgUrl);
-            }
-        })
-
-        if(!chatperson.hasOwnProperty(obj.poster)){
-            createChatcontent(objection);
-        }
-        var message = '<div class="chat-line"><img src="'+imgUrl+'"'+'><div class="chat-lineContent">'+obj.message+' </div> </div>';
-        chatperson[obj.poster]='<div class="chat-content">'+$(chatperson[obj.poster]).append(message).html()+'</div>';
-
-        if($(".onChat").children("span").text()==obj.poster){
-            chatWindow.children(".chat-content").remove();
-            chatWindow.children(".tool_bar").before(chatperson[obj.poster]);
-        }
-
-
+        receive(obj);
     })
     socket.on('send',function (obj) {
-        if(!chatperson.hasOwnProperty(obj.receiver)){
-            var chatContent =$('<div class="chat-content"></div>');
-            chatperson[obj.receiver]= chatContent;
-        }
-        var message = '<div class="chat-line-receiver"><img src="'+$("#getimg").children("img").attr("src")+'"'+'><div class="chat-lineContent">'+obj.message+' </div> </div>';
-        chatperson[obj.receiver]='<div class="chat-content">'+$(chatperson[obj.receiver]).append(message).html()+'</div>';
-        chatWindow.children(".chat-content").remove();
-        chatWindow.children(".tool_bar").before(chatperson[obj.receiver]);
+        send(obj);
+
     })
 
 
 })(jQuery);
+
+function send(obj) {
+    if(!CHAT_PERSON.hasOwnProperty(obj.receiver)){
+        var chatContent =$('<div class="chat-content"></div>');
+        CHAT_PERSON[obj.receiver]= chatContent;
+    }
+    var message;
+    message = $.format(MSG_SEND,$("#getimg").children("img").attr("src"),obj.message);
+    CHAT_PERSON[obj.receiver]='<div class="chat-content">'+$(CHAT_PERSON[obj.receiver]).append(message).html()+'</div>';
+    chatWindow.children(".chat-content").remove();
+    chatWindow.children(".tool_bar").before(CHAT_PERSON[obj.receiver]);
+}
+
+function receive(obj) {
+    var imgUrl;
+    var objection;
+    $(".FriendInfo").each(function () {
+        if($(this).children("span").text()==obj.poster){
+            objection=$(this);
+            imgUrl = objection.children("img").attr("src");
+            if(!objection.hasClass('onChat')){
+                objection.children("div").show();
+                objection.children("div").children("button").text(parseInt($(this).children("div").children("button").text())+1);
+            }else{
+                var clearData = {
+                    poster:USER_NAME,
+                    receiver:ONCHATFRI
+                }
+                socket.emit('clearNotRead',clearData);
+            }
+            console.log(imgUrl);
+        }
+    })
+
+    if(!CHAT_PERSON.hasOwnProperty(obj.poster)){
+        createChatcontent(objection);
+    }
+    var message;
+    message=$.format(MSG_RECEIVE,imgUrl,obj.message);
+
+    CHAT_PERSON[obj.poster]='<div class="chat-content">'+$(CHAT_PERSON[obj.poster]).append(message).html()+'</div>';
+
+    if(ONCHATFRI==obj.poster){
+        chatWindow.children(".chat-content").remove();
+        chatWindow.children(".tool_bar").before(CHAT_PERSON[obj.poster]);
+    }
+
+}
+
+function sendMsg() {
+    var message = input.val();
+    var receiver = ONCHATFRI;
+    var poster = USER_NAME;
+    var obj = {
+        message:message,
+        receiver:receiver,
+        poster:poster
+    }
+    console.log(obj);
+    if(!message)return ;
+    socket.send(obj);
+    input.val('');
+}
+
+function displayHis($this) {
+    $this.children("div").hide();
+    $this.children("div").children("button").text('0');
+    $(".FriendInfo").removeClass('onChat');
+    $this.addClass('onChat');
+    ONCHATFRI = $('.onChat').children("span").text();         //正在聊天的好友的信息
+    var obj = {
+        poster:USER_NAME,
+        receiver:ONCHATFRI
+    }
+    socket.emit('clearNotRead',obj);
+
+    $("#selfInfo").children("span").text(ONCHATFRI);
+
+    chatWindow.children(".chat-content").remove();
+    chatWindow.children(".detailedInfo").after(CHAT_PERSON[ONCHATFRI]);
+
+    if(!CHAT_PERSON.hasOwnProperty(ONCHATFRI)){
+        //console.dir(window.scriptData.friends[1].chatHistory);
+        createChatcontent($(".onChat"));
+
+    }
+    chatWindow.children(".chat-content").remove();
+
+    chatWindow.children(".tool_bar").before(CHAT_PERSON[ONCHATFRI]);
+}
+
+function createChatcontent(obj) {
+    var chatContent =$('<div class="chat-content"></div>');
+    CHAT_PERSON[obj.children("span").text()]= chatContent;
+
+    for(var i = 0;i< X.friends.length;++i){
+        if(!X.friends[i].chatHistory){
+            console.log("fuck");
+            continue;
+        }
+        if((X.friends[i].chatHistory.personOne.username==obj.children("span").text()
+            &&X.friends[i].chatHistory.personTwo.username==USER_NAME)||
+            (X.friends[i].chatHistory.personOne.username==USER_NAME
+            &&X.friends[i].chatHistory.personTwo.username==obj.children("span").text())){
+            var chatContent =$('<div class="chat-content"></div>');
+            CHAT_PERSON[obj.children("span").text()]= chatContent;
+
+            for(var j=0;j<X.friends[i].chatHistory.children.length;++j){
+                if(X.friends[i].chatHistory.children[j].from.username==obj.children("span").text()){
+                    var imgUrl = obj.children("img").attr("src");
+                    var message;
+                    message = $.format(MSG_RECEIVE,imgUrl,X.friends[i].chatHistory.children[j].message);
+                    CHAT_PERSON[obj.children("span").text()]='<div class="chat-content">'+$(CHAT_PERSON[obj.children("span").text()]).append(message).html()+'</div>';
+                }else{
+                    var message;
+                    message = $.format(MSG_SEND,$("#getimg").children("img").attr("src"),X.friends[i].chatHistory.children[j].message);
+                    CHAT_PERSON[obj.children("span").text()]='<div class="chat-content">'+$(CHAT_PERSON[obj.children("span").text()]).append(message).html()+'</div>';
+                }
+            }
+            console.log(CHAT_PERSON[obj.children("span").text()]);
+        }
+    }
+
+}

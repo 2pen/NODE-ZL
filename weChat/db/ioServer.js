@@ -20,7 +20,7 @@ var ioServer = function () {
         //console.log('open');
         socket.on('message',function (obj) {
             var id1,id2;        //id1为posterid,id2为receivererid
-            async.series({
+            async.parallel({
                 fuck1:function(done){
                     User.findOne({username:obj.poster},function(error,doc){
                         if(!error){
@@ -81,17 +81,6 @@ var ioServer = function () {
                                 console.log('success');
                             })
                         }else{
-                            /*
-                            var opts = [
-                                {path:'personOne',select:"username"},
-                                {path:'personTwo',select:"username"},
-                                {path:'children.from',select:"username"},
-                                {path:'children.to',select:"username"}
-                            ];
-                            doc.populate(opts, function(err, fuckyoubitch) {
-                                console.log("fuckyou!");
-                            });
-                            */
                             chatPerson.update({$or: [
                                 { personOne: result.fuck1, personTwo: result.fuck2},
                                 { personOne: result.fuck2, personTwo: result.fuck1}]}, {$addToSet:{'children':
