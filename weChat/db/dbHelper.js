@@ -95,8 +95,8 @@ exports.findUsrInfo = function (req, cb) {
                                 //console.log(fuckyoubitch);
                                 if(fuckyoubitch!=null){
                                     doc.friends[index].chatHistory=fuckyoubitch;
-                                    console.log("dbhelper"+index);
-                                    console.log("dbhelper"+fuckyoubitch);
+                                    //console.log("dbhelper"+index);
+                                    //console.log("dbhelper"+fuckyoubitch);
                                 }
                                 ++index;
                                 done(null, '');

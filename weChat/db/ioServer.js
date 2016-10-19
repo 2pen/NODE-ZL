@@ -56,6 +56,7 @@ var ioServer = function () {
                     chatPerson.findOne({$or: [
                         { personOne: result.fuck1, personTwo: result.fuck2},
                         { personOne: result.fuck2, personTwo: result.fuck1}]}).exec(function (err,doc) {
+
                         if(doc==null){
                             var shit = new chatPerson({
                                 personOne:result.fuck1,
@@ -89,8 +90,11 @@ var ioServer = function () {
                                 to:id2,
                                 message:obj.message,
                                 time:Date.now()
-                            }} },function (err,doc) {
-                                if(doc.personOne==id2){
+                            }} },function (err,nouse) {
+
+
+                                if(doc.personOne.toString()==id2.toString()){
+                                    console.log('true');
                                     chatPerson.update({$or: [
                                         { personOne: result.fuck1, personTwo: result.fuck2},
                                         { personOne: result.fuck2, personTwo: result.fuck1}]},{$inc:{'personOneNotRead':1}},

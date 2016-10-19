@@ -15,10 +15,10 @@
             </div>
             <div class="chooseScrren">
                 <div id="history">
-                    <i class="fa fa-comment-o fa-lg""></i>
+                    <i class="fa fa-comment-o fa-lg"></i>
                 </div>
                 <div id="chooseFrilist">
-                    <i class="fa fa-user fa-lg""></i>
+                    <i class="fa fa-user fa-lg"></i>
                 </div>
 
             </div>
@@ -81,7 +81,7 @@
                         <div class="uploadFile"><i class="icon iconfont">&#xe604;</i></div>
                     </div>
                     <div class="chat-input">
-                        <textarea class="textarea input-content" style="resize:none;"></textarea>
+                        <textarea class="textarea input-content emojis-wysiwyg" style="resize:none;"></textarea>
                     </div>
                     <div class="send-message">
                         <button id="sendMsg" class="button button-raised button-pill button-inverse button-small">发送</button>
@@ -112,7 +112,7 @@
     window.scriptData = JSON.stringify({{{scriptData}}});
     window.scriptData=eval("("+window.scriptData+")");//转换为json对象
 
-
+    var $wysiwyg = $('.emojis-wysiwyg').emojiarea({wysiwyg: true,button: '.showemoji'});
 
 </script>
 

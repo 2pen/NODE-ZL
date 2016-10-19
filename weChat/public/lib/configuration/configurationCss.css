@@ -404,6 +404,10 @@ body{
     border: 0;
     font-size: 12px;
 }
+.chat-lineContent img{
+    width: 20px;
+    height: 20px;
+}
 .searchline{
     padding-left: 12px;
     padding-right: 12px;

@@ -74,7 +74,10 @@ var X = window.scriptData;                          //截取服务器发送过�
     })
 
     send.on('click',function () {
+
         sendMsg();
+        $(".emoji-wysiwyg-editor").text('');
+
     })
     groupsend.on('click',function () {
         var message = groupinput.val();
@@ -103,20 +106,21 @@ var X = window.scriptData;                          //截取服务器发送过�
         receive(obj);
     })
     socket.on('send',function (obj) {
-        send(obj);
+        socketsend(obj);
 
     })
 
 
 })(jQuery);
 
-function send(obj) {
+function socketsend(obj) {
     if(!CHAT_PERSON.hasOwnProperty(obj.receiver)){
         var chatContent =$('<div class="chat-content"></div>');
         CHAT_PERSON[obj.receiver]= chatContent;
     }
     var message;
     message = $.format(MSG_SEND,$("#getimg").children("img").attr("src"),obj.message);
+    message = $.insertEmoji(message);
     CHAT_PERSON[obj.receiver]='<div class="chat-content">'+$(CHAT_PERSON[obj.receiver]).append(message).html()+'</div>';
     chatWindow.children(".chat-content").remove();
     chatWindow.children(".tool_bar").before(CHAT_PERSON[obj.receiver]);
@@ -148,7 +152,7 @@ function receive(obj) {
     }
     var message;
     message=$.format(MSG_RECEIVE,imgUrl,obj.message);
-
+    message = $.insertEmoji(message);
     CHAT_PERSON[obj.poster]='<div class="chat-content">'+$(CHAT_PERSON[obj.poster]).append(message).html()+'</div>';
 
     if(ONCHATFRI==obj.poster){
@@ -221,10 +225,14 @@ function createChatcontent(obj) {
                     var imgUrl = obj.children("img").attr("src");
                     var message;
                     message = $.format(MSG_RECEIVE,imgUrl,X.friends[i].chatHistory.children[j].message);
+
+                    message = $.insertEmoji(message);
+
                     CHAT_PERSON[obj.children("span").text()]='<div class="chat-content">'+$(CHAT_PERSON[obj.children("span").text()]).append(message).html()+'</div>';
                 }else{
                     var message;
                     message = $.format(MSG_SEND,$("#getimg").children("img").attr("src"),X.friends[i].chatHistory.children[j].message);
+                    message = $.insertEmoji(message);
                     CHAT_PERSON[obj.children("span").text()]='<div class="chat-content">'+$(CHAT_PERSON[obj.children("span").text()]).append(message).html()+'</div>';
                 }
             }

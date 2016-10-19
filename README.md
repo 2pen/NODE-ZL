@@ -2207,3 +2207,36 @@ span{
 var $chatLine=$("<div></div>");
 $chatLine.addClass("chat-line-receiver");
 ```
+###2016-10-19
+###$.extend()方法解析
+一般用于:
+```javascript
+var newSrc=$.extend({},src1,src2,src3...)//它的含义是将src1,src2,src3...合并到{}中
+```
+在写emoji功能的一个插件函数中,它的用法是
+```javascript
+options = $.extend({}, $.emojiarea.defaults, options);
+```
+其中`$.emojiarea.defaults`为储存的一些默认的数据,而`options`的数据为`{wysiwyg: true,button: '.showemoji'}`,用于绑定`button`
+###如何在使用闭包函数里的数据与函数
+可以在闭包里面写一个自己的函数,然后就可以调用里面的参数了
+```javascript
+(function() {
+  $.insertEmoji = function (message) {
+    var html = message;
+    var emojis = $.emojiarea.icons;
+    for (var key in emojis) {
+      if (emojis.hasOwnProperty(key)) {
+        html = html.replace(new RegExp(util.escapeRegex(key), 'g'), EmojiArea.createIcon(key));
+      }
+    }
+    return html;
+  }
+})();
+```
+###$.fx与$.fn.fx 区别
+$.fx是类级别的插件开发，即给jQuery添加新的全局函数，相当于给jQuery类本身添加方法，jQuery的全局函数就是属于jQuery命名空间的函数。调用：$.fx('#id');  
+$.fn.fx是对象级别的插件开发，即给jQuery对象添加方法。 调用：$('#id').fx();
+
+
+
