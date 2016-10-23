@@ -34,6 +34,7 @@ function doUpload() {
   $(".pg-wrapper").show();
 
   var file = $("#uploadFile")[0].files[0];
+  console.dir(file);
   var form = new FormData();
   form.append("file", file);
 
@@ -46,6 +47,7 @@ function doUpload() {
     contentType: false,
     success: function(result) {
       startReq = false;
+      console.log(result.data);
       if (result.code == 0) {
         $("#moocThumb").attr("src",result.data);
         $(".pg-wrapper").hide();

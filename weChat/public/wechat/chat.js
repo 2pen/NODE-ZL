@@ -31,6 +31,8 @@ var X = window.scriptData;                          //截取服务器发送过�
 
     $("body").on('click','.FriendInfo',function(e){
         displayHis($(this));
+        $(".chat-content").scrollTop($('.chat-content')[0].scrollHeight-$('.chat-content')[0].clientHeight);
+
     })
 
     $("body").on('click','.mkFri',function(e){
@@ -124,6 +126,8 @@ function socketsend(obj) {
     CHAT_PERSON[obj.receiver]='<div class="chat-content">'+$(CHAT_PERSON[obj.receiver]).append(message).html()+'</div>';
     chatWindow.children(".chat-content").remove();
     chatWindow.children(".tool_bar").before(CHAT_PERSON[obj.receiver]);
+    $(".chat-content").scrollTop($('.chat-content')[0].scrollHeight-$('.chat-content')[0].clientHeight);
+
 }
 
 function receive(obj) {
@@ -158,6 +162,9 @@ function receive(obj) {
     if(ONCHATFRI==obj.poster){
         chatWindow.children(".chat-content").remove();
         chatWindow.children(".tool_bar").before(CHAT_PERSON[obj.poster]);
+
+        $(".chat-content").scrollTop($('.chat-content')[0].scrollHeight-$('.chat-content')[0].clientHeight);
+
     }
 
 }
@@ -199,6 +206,7 @@ function displayHis($this) {
         createChatcontent($(".onChat"));
 
     }
+
     chatWindow.children(".chat-content").remove();
 
     chatWindow.children(".tool_bar").before(CHAT_PERSON[ONCHATFRI]);
@@ -239,5 +247,6 @@ function createChatcontent(obj) {
             console.log(CHAT_PERSON[obj.children("span").text()]);
         }
     }
+
 
 }

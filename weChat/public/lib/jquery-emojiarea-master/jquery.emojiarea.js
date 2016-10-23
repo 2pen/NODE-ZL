@@ -49,7 +49,7 @@
 		options = $.extend({}, $.emojiarea.defaults, options);
 		return this.each(function() {
 			var $textarea = $(this);
-			if ('contentEditable' in document.body && options.wysiwyg !== false) {
+			if ('contentEditable' in document.body && options.wysiwyg !== false) {			//表示可编辑属性是否在document.body里
 				new EmojiArea_WYSIWYG($textarea, options);
 			} else {
 				new EmojiArea_Plain($textarea, options);
@@ -260,7 +260,7 @@
 		this.$editor = $('<div>').addClass('emoji-wysiwyg-editor');
 		this.$editor.text($textarea.val());
 		this.$editor.attr({contenteditable: 'true'});
-		this.$editor.on('blur keyup paste', function() { return self.onChange.apply(self, arguments); });
+		this.$editor.on('blur keyup', function() { return self.onChange.apply(self, arguments); });
 		this.$editor.on('mousedown focus', function() { document.execCommand('enableObjectResizing', false, false); });
 		this.$editor.on('blur', function() { document.execCommand('enableObjectResizing', true, true); });
 

@@ -116,6 +116,7 @@ router.post('/uploadImg', function(req, res, next) {
     console.log(field + ":" + value);
   })
       .on('file', function(field, file) {
+        console.log(file);
         path = '\\' + file.path;
       })
       .on('progress', function(bytesReceived, bytesExpected) {

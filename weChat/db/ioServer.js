@@ -171,7 +171,7 @@ var ioServer = function () {
                             if(doc!=null){
                             //console.log(doc);
                             doc=doc.toObject();
-                            if(doc.personOne==id1){
+                            if(doc.personOne.toString()==id1.toString()){
                                 chatPerson.update({$or: [
                                         { personOne: result.fuck1, personTwo: result.fuck2},
                                         { personOne: result.fuck2, personTwo: result.fuck1}]},{$set:{'personOneNotRead':0}},
