@@ -21,7 +21,7 @@
 	var TAGS_BLOCK = ['p', 'div', 'pre', 'form'];
 	var KEY_ESC = 27;
 	var KEY_TAB = 9;
-
+	var CONST;
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
@@ -42,6 +42,10 @@
 				html = html.replace(new RegExp(util.escapeRegex(key), 'g'), EmojiArea.createIcon(key));
 			}
 		}
+		html = html.replace(/:\\upload.*?:/g,function (url) {
+			url = url.substring(1,url.length-1);
+			return EmojiArea.createImage(url);
+		})
 		return html;
 	}
 
@@ -213,6 +217,12 @@
 		return '<img src="' + path + filename + '" alt="' + util.htmlEntities(emoji) + '">';
 	};
 
+	//添加的方法，用于添加图片
+	EmojiArea.createImage = function (url) {
+		var path = url;
+		return '<img src="' + path + '" alt="' + util.htmlEntities(':'+path+':') + '">';
+	}
+
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	/**
@@ -254,13 +264,13 @@
 
 	var EmojiArea_WYSIWYG = function($textarea, options) {
 		var self = this;
-
+		CONST = this;
 		this.options = options;
 		this.$textarea = $textarea;
 		this.$editor = $('<div>').addClass('emoji-wysiwyg-editor');
 		this.$editor.text($textarea.val());
 		this.$editor.attr({contenteditable: 'true'});
-		this.$editor.on('blur keyup', function() { return self.onChange.apply(self, arguments); });
+		this.$editor.on('blur keyup paste', function() { return self.onChange.apply(self, arguments); });
 		this.$editor.on('mousedown focus', function() { document.execCommand('enableObjectResizing', false, false); });
 		this.$editor.on('blur', function() { document.execCommand('enableObjectResizing', true, true); });
 
@@ -297,11 +307,34 @@
 		
 		this.$editor.trigger('focus');
 		if (this.selection) {
+			console.log("fuck1");
+
 			util.restoreSelection(this.selection);
 		}
 		try { util.replaceSelection($img[0]); } catch (e) {}
 		this.onChange();
 	};
+
+
+
+
+	$.Insetimage = function (url) {
+		if (CONST.hasFocus) {
+			CONST.selection = util.saveSelection();
+		}
+		var $img = $(EmojiArea.createImage(url));
+		if ($img[0].attachEvent) {
+			$img[0].attachEvent('onresizestart', function(e) { e.returnValue = false; }, false);
+		}
+		console.dir(CONST.$editor+"这里是const");
+		CONST.$editor.trigger('focus');
+		if (CONST.selection) {
+			console.log("fuck2");
+			util.restoreSelection(CONST.selection);
+		}
+		try { util.replaceSelection($img[0]); } catch (e) {}
+		CONST.onChange();
+	}
 
 	EmojiArea_WYSIWYG.prototype.val = function() {
 		var lines = [];
@@ -408,6 +441,8 @@
 		this.hide();
 	};
 
+
+
 	EmojiMenu.prototype.load = function() {
 		var html = [];
 		var options = $.emojiarea.icons;
@@ -425,7 +460,7 @@
 
 		this.$items.html(html.join(''));
 	};
-
+	//reposition:根据用户自定义的button设置emojis展示界面的位置
 	EmojiMenu.prototype.reposition = function() {
 		var $button = this.emojiarea.$button;
 		var offset = $button.offset();

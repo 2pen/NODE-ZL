@@ -72,15 +72,14 @@ $("body").on('paste','.emoji-wysiwyg-editor',function(event){
             // console.log( 'items[1] MIME type:', items[1].type );
 
             //阻止默认行为即不让剪贴板内容在div中显示出来
-            event.preventDefault();
+
 
             //在items里找粘贴的image,据上面分析,需要循环
             for (var i = 0; i < len; i++) {
                 console.log(items[i]);
                 console.log( items[i].type);
                 if (items[i].type.indexOf("image") !== -1) {
-
-
+                    event.preventDefault();
                     //getAsFile() 此方法只是living standard firefox ie11 并不支持
                     blob = items[i].getAsFile();
                 }
@@ -91,7 +90,7 @@ $("body").on('paste','.emoji-wysiwyg-editor',function(event){
                 reader.onload = function (event) {
                     // event.target.result 即为图片的Base64编码字符串
                     var base64_str = event.target.result;
-                    console.log(base64_str);
+                    //console.log(base64_str);
                     //可以在这里写上传逻辑 直接将base64编码的字符串上传（可以尝试传入blob对象，看看后台程序能否解析）
                     doUpload(blob, 'paste', isChrome);
                 }
@@ -149,9 +148,9 @@ function doUpload(file, type, isChrome) {
         processData: false,
         contentType: false,
         success: function(result) {
-            startReq = false;
-            console.log("success");
-            console.log(result.data);
+            $.Insetimage(result.data);
+
+
         }
     });
 }
