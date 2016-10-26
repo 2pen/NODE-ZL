@@ -42,7 +42,7 @@
 				html = html.replace(new RegExp(util.escapeRegex(key), 'g'), EmojiArea.createIcon(key));
 			}
 		}
-		html = html.replace(/:\\upload.*?:/g,function (url) {
+		html = html.replace(/(:\\upload.*?:)|(:\.\/upload\/.*?:)/g,function (url) {
 			url = url.substring(1,url.length-1);
 			return EmojiArea.createImage(url);
 		})
@@ -316,7 +316,9 @@
 	};
 
 
-
+	$.constChange = function () {
+		CONST.onChange();
+	}
 
 	$.Insetimage = function (url) {
 		if (CONST.hasFocus) {

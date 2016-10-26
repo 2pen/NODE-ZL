@@ -98,19 +98,16 @@ $("body").on('paste','.emoji-wysiwyg-editor',function(event){
             }
         } else {
             //for firefox
+            //console.log("firefox");
             setTimeout(function () {
                 //设置setTimeout的原因是为了保证图片先插入到div里，然后去获取值
-                var imgList = document.querySelectorAll('#tar_box img'),
-                    len = imgList.length,
-                    src_str = '',
-                    i;
-                for ( i = 0; i < len; i ++ ) {
-                    if ( imgList[i].className !== 'my_img' ) {
-                        //如果是截图那么src_str就是base64 如果是复制的其他网页图片那么src_str就是此图片在别人服务器的地址
-                        src_str = imgList[i].src;
+                $(".emoji-wysiwyg-editor img").each(function () {
+                    if($(this).attr("src").toString().match(/base64/)){
+                        var base64_str = $(this).attr("src");
+                        doUploadFF(base64_str);
+
                     }
-                }
-                uploadImgFromPaste(src_str, 'paste', isChrome);
+                })
             }, 1);
         }
     } else {
@@ -131,6 +128,33 @@ $("body").on('paste','.emoji-wysiwyg-editor',function(event){
 
 })
 
+function doUploadFF(base64_str) {
+
+    console.log(base64_str);
+
+    $.ajax({
+        url: "/uploadImgFF",
+        type: "POST",
+        data:JSON.stringify({
+            'base64':base64_str,
+        }),
+        async: true,
+        processData: false,
+        contentType:"application/json",
+        success: function(result) {
+            //$.Insetimage(result.data);
+            $(".emoji-wysiwyg-editor img").each(function () {
+                if($(this).attr("src").toString().match(/base64/)){
+                    $(this).attr({src:result.store_path,alt:":"+result.store_path+":"});
+                    $.constChange();
+                }
+            })
+
+        }
+    });
+
+}
+
 function doUpload(file, type, isChrome) {
 
     $(".pg-wrapper").show();
@@ -140,6 +164,8 @@ function doUpload(file, type, isChrome) {
     var form = new FormData();
     form.append("file", file);
     form.append("filetype",file.type);
+    console.log(form);
+
     $.ajax({
         url: "/uploadImg",
         type: "POST",
