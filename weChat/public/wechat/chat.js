@@ -5,8 +5,8 @@ var CHAT_PERSON = {};                                 //一个包含聊天对象
 var chatWindow = $(".chatWindow");                  //聊天框
 var ONCHATFRI;
 var FRI_INFO = '<div class="addFriInfo" data-id="{0}"><img src="{1}"><span>{2}</span><button class="mkFri button button-primary button-box button-small"><i class="fa fa-plus"></i></button></div>';
-var MSG_RECEIVE = '<div class="chat-line"><img src="{0}"><div class="chat-lineContent">{1}</div></div>';
-var MSG_SEND = '<div class="chat-line-receiver"><img src="{0}"><div class="chat-lineContent">{1}</div></div>';
+var MSG_RECEIVE = '<div class="chat-line"><img class="avatar" src="{0}"><div class="chat-lineContent">{1}</div></div>';
+var MSG_SEND = '<div class="chat-line-receiver"><img class="avatar" src="{0}"><div class="chat-lineContent">{1}</div></div>';
 var socket = io.connect('http://localhost:3000');
 var X = window.scriptData;                          //截取服务器发送过来的数据
 (function($){

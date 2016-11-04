@@ -214,13 +214,13 @@
 		if (path.length && path.charAt(path.length - 1) !== '/') {
 			path += '/';
 		}
-		return '<img src="' + path + filename + '" alt="' + util.htmlEntities(emoji) + '">';
+		return '<img src="' + path + filename + '"class="'+'emoji' +'" alt="' + util.htmlEntities(emoji) + '">';
 	};
 
 	//添加的方法，用于添加图片
 	EmojiArea.createImage = function (url) {
 		var path = url;
-		return '<img src="' + path + '" alt="' + util.htmlEntities(':'+path+':') + '">';
+		return '<img src="' + path + '"class="'+'Notemoji' + '" alt="' + util.htmlEntities(':'+path+':') + '">';
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -277,6 +277,7 @@
 		var html = this.$editor.text();
 		var emojis = $.emojiarea.icons;
 		for (var key in emojis) {
+			//console.log(key);
 			if (emojis.hasOwnProperty(key)) {
 				html = html.replace(new RegExp(util.escapeRegex(key), 'g'), EmojiArea.createIcon(key));
 			}

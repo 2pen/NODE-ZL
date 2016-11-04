@@ -96,7 +96,7 @@ $("body").on('paste','.emoji-wysiwyg-editor',function(event){
                 }
                 reader.readAsDataURL(blob);
             }
-        } else {
+    } else {
             //for firefox
             //console.log("firefox");
             setTimeout(function () {
@@ -105,25 +105,14 @@ $("body").on('paste','.emoji-wysiwyg-editor',function(event){
                     if($(this).attr("src").toString().match(/base64/)){
                         var base64_str = $(this).attr("src");
                         doUploadFF(base64_str);
-
+                    }else if($(this).attr("alt")===undefined||!$(this).attr("alt").toString().match(/^:.+:$/))
+                    {
+                        var base64_str = $(this).attr("src");
+                        doUploadFF(base64_str);
                     }
                 })
             }, 1);
         }
-    } else {
-        //for ie11
-        setTimeout(function () {
-            var imgList = document.querySelectorAll('#tar_box img'),
-                len = imgList.length,
-                src_str = '',
-                i;
-            for ( i = 0; i < len; i ++ ) {
-                if ( imgList[i].className !== 'my_img' ) {
-                    src_str = imgList[i].src;
-                }
-            }
-            uploadImgFromPaste(src_str, 'paste', isChrome);
-        }, 1);
     }
 
 })
@@ -142,10 +131,17 @@ function doUploadFF(base64_str) {
         processData: false,
         contentType:"application/json",
         success: function(result) {
+            console.log(result.store_path);
             //$.Insetimage(result.data);
             $(".emoji-wysiwyg-editor img").each(function () {
                 if($(this).attr("src").toString().match(/base64/)){
                     $(this).attr({src:result.store_path,alt:":"+result.store_path+":"});
+                    $(this).addClass("Notemoji");
+                    $.constChange();
+                }else if($(this).attr("alt")===undefined||!$(this).attr("alt").toString().match(/^:.+:$/))
+                {
+                    $(this).attr({src:result.store_path,alt:":"+result.store_path+":"});
+                    $(this).addClass("Notemoji");
                     $.constChange();
                 }
             })

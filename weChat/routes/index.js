@@ -4,6 +4,7 @@ var dbHelper = require('../db/dbHelper');
 var formidable = require('formidable');
 var entries = require('../db/jsonRes');
 var fs = require('fs');
+var request = require('request');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   dbHelper.findUsrInfo(req, function (success, data) {
@@ -45,22 +46,26 @@ router.post('/uploadImgFF',function (req,res,next) {
       } else {
         res.json({'store_path': store_path});
       }
-    });
-  } else {// 处理非chrome的网页图片 src_str为图片地址
-    var temp_array = src_str.split('.'),
-        pic_suffix = temp_array[temp_array.length - 1],
-        store_path = 'public/images/test_' + timestamp + '.' + pic_suffix,
-        wstream = fs.createWriteStream(store_path);
+  });
+} else {// 处理非chrome的网页图片 src_str为图片地址
+  console.log("网页图片"+src_str);
+  var temp_array = src_str.split('.'),
+      pic_suffix = temp_array[temp_array.length - 1],
+      store_path = './upload/' + timestamp + '.' + pic_suffix,
+      wstream = fs.createWriteStream(store_path);
+  console.log(store_path);
+  request(src_str).pipe(wstream);
+  wstream.on('finish', function (err) {
+    console.log("进入finish");
+    if( err ) {
+      throw err;
+    } else {
+      res.json({'store_path': store_path});
+    }
+  });
 
-    request(src_str).pipe(wstream);
-    wstream.on('finish', function (err) {
-      if( err ) {
-        throw err;
-      } else {
-        res.json({"store_path": store_path});
-      }
-    });
-  }
+
+}
 })
 
 router.post('/uploadImg', function(req, res, next) {

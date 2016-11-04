@@ -11,7 +11,50 @@ body{
     background-size: cover;
     position: relative;
 }
+.bc{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background: #eee;
+    position: relative;
+}
+.user{
+    height: 400px;
+    width: 100%;
+    min-width: 1000px;
+    position: absolute;
+    bottom: 0;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+}
+.cardsLine{
+    flex: 0 0 200px;
+    background: #eee;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.showCardLine{
+    flex: 0 0 200px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.card{
+    width: 90px;
+    height: 120px;
+    background-image: url(/images/cards.png);
+    background-repeat: no-repeat;
 
+    margin-left: -70px;
+}
+.cards{
+    display: flex;
+    flex-direction: row;
+    height: 200px;
+    align-items: center;
+}
 .main{
     display: flex;
     max-width: 1000px;
@@ -193,6 +236,9 @@ body{
     margin-left: 10px;
     color: #ffffff;
 }
+.select{
+    margin-bottom: 30px;
+}
 .selectFri{
     display: flex;
     flex-direction: column;
@@ -339,7 +385,41 @@ body{
     height: 40px;
     border-radius: 5px;
 }
+.avatar{
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+    background-color: coral;
+    border-radius: 20px;
+    position: absolute;
+    top: 25px;
+    left: 200px;
 
+}
+.sendCards{
+    width: 150px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border: 2px solid #1B9AF7;
+    border-radius: 20px;
+    position: absolute;
+    top: 25px;
+    right: 200px;
+}
+.sendCards button{
+    width: 120px;
+}
+.avatar img{
+    width: 125px;
+    height: 125px;
+    border-radius: 20px;
+
+}
 .chat-line .avatar{
 
     width: 40px;
