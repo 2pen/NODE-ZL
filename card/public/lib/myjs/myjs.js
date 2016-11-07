@@ -2,8 +2,9 @@ function Person() {
     this.imgUrl = "/images/doge.jpg";
     this.name = "zhangle";
 }
+var MODAL;
 window.onload = function () {
-    new modal();
+     MODAL = new modal();
     
 }
 var modal = function () {
@@ -78,6 +79,7 @@ var modal = function () {
             $(".cardsLine .card").each(function () {
                 if($(this).hasClass("select")){
                     array.push($(this).attr("index"));
+                    $(this).remove();
                 }
             })
             ptrThis.cardsSort(array);
@@ -86,12 +88,60 @@ var modal = function () {
         clearCards:function () {
             $(".showCardLine").empty();
         },
+        drawothers:function () {
+            var content = [
+            '    <div class="others">',
+            '        <div class="player leftPlayer">',
+            '            <div class="otherPlayer">',
+            '                <img src="/images/leftIcon.jpg">',
+            '            </div>',
+            '            <div class="otherCards">',
+            '            </div>',
+            '       </div>',
+            '       <div class="player rightPlayer">',
+            '            <div class="otherCards">',
+            '            </div>',
+            '            <div class="otherPlayer">',
+            '                <img src="/images/rightIcon.jpg">',
+            '            </div>',
+            '        </div>',
+            '    </div>'
+            ].join("");
+            var $others = $(content);
+            $(".bc").append($others);
+        },
+        drawuser:function () {
+            var content = [
+            '    <div class="user">',
+            '        <div class="avatar">',
+            '            <img src="/images/doge.jpg">',
+            '        </div>',
+            '        <div class="twoCards">',
+            '           <div class="showCardLine">',
+            '            </div>',
+            '            <div class="cardsLine">',
+            '            </div>',
+            '        </div>',
+            '        <div class="sendCards">',
+            '           <button  id="sendCards" class="button button-glow button-rounded button-primary">出牌</button>',
+            '           <button  id="clearCards" class="button button-glow button-rounded button-primary">清空</button>',
+            '        </div>',
+            '    </div>',
+            ].join("");
+            var $user = $(content);
+            $(".bc").append($user);
+        },
         init:function () {
+            
+        },
+        initPlay:function () {
             ptrThis = this;
             var isDrag;
             var overCount = 0;
             var index = [0,0,0];
             this.cardsSort(this.default.cards);                                       //按照花色,牌大小排序
+            this.drawothers();
+            this.drawuser();
             this.placeCards($(".cardsLine"),this.default.cards,true);                                      //放置扑克
             $("body").on("mousedown",".cardsLine .cards .card",function (e) {
                 e.preventDefault();
@@ -99,7 +149,6 @@ var modal = function () {
                 index[overCount-1] = $(this).index();
                 if(e.which==1){
                     isDrag = true;
-                    ableOut = true;
                 }
                 ptrThis.toggleCard($(this));
             })

@@ -15,28 +15,115 @@ body{
     display: flex;
     height: 100%;
     width: 100%;
-    background: #eee;
     position: relative;
+    flex-direction: column;
+}
+.selectTable{
+    position:absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 250px;
+    height: 250px;
+    border: 5px solid #f22c40;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.table{
+    width: 0;
+    height: 0;
+    border-width:0 30px 51px;
+    border-style:solid;
+    border-color:transparent transparent #777;
+    position:absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+.seats{
+    width: 180px;
+    height: 180px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+}
+.seat{
+    width: 90px;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.place{
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border-radius:10px;
+    border: 5px solid #666;
 }
 .user{
-    height: 400px;
+    flex:0 0 300px;
     width: 100%;
     min-width: 1000px;
-    position: absolute;
-    bottom: 0;
-    background: #fff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.twoCards{
+    width: 800px;
     display: flex;
     flex-direction: column;
 }
+.others{
+    flex:1 0 500px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.otherPlayer{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex: 0 1 200px;
+    justify-content: space-around;
+}
+.otherCards{
+    display: flex;
+    align-items: center;
+    flex: 1 0 300px;
+}
+.otherPlayer img{
+    width: 125px;
+    height: 125px;
+}
+.leftPlayer .otherCards{
+    flex-direction: row-reverse;
+}
+.rightPlayer .otherCards{
+    flex-direction: row;
+}
+.rightPlayer .otherCards .cards .card{
+    margin-left: 0;
+    margin-right: -70px;
+}
+.player{
+    width: 500px;
+    height: 100%;
+    display: flex;
+}
 .cardsLine{
-    flex: 0 0 200px;
-    background: #eee;
+    flex: 0 0 150px;
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 .showCardLine{
-    flex: 0 0 200px;
+    flex: 0 0 150px;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -52,7 +139,7 @@ body{
 .cards{
     display: flex;
     flex-direction: row;
-    height: 200px;
+    height: 150px;
     align-items: center;
 }
 .main{
@@ -393,9 +480,8 @@ body{
     align-items: center;
     background-color: coral;
     border-radius: 20px;
-    position: absolute;
-    top: 25px;
-    left: 200px;
+    margin-top: 50px;
+    margin-left: 100px;
 
 }
 .sendCards{
@@ -407,9 +493,8 @@ body{
     align-items: center;
     border: 2px solid #1B9AF7;
     border-radius: 20px;
-    position: absolute;
-    top: 25px;
-    right: 200px;
+    margin-top: 50px;
+    margin-right: 100px;
 }
 .sendCards button{
     width: 120px;

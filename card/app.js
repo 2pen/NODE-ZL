@@ -7,6 +7,9 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var exphbs = require('express-handlebars');
 var hbsHelper = require('./lib/hbsHelper');
+var authority = require('./db/authority');
+var routes = require('./routes/index');
+var session     = require('express-session');
 
 var app = express();
 
@@ -32,7 +35,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '/')));
 
-app.use('/', index);
+app.use(session({
+  name:'blogOfLiyang',
+  maxAge: 1000*60*60,
+  secret: 'liyang-web-node-secret-key',
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use('/login',require('./routes/login'));
+app.use('/', authority.isAuthenticated,routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
