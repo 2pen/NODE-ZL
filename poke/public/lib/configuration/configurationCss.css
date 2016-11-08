@@ -50,6 +50,10 @@ body{
     justify-content: center;
     margin-top: 30px;
 }
+.place img {
+    width: 100%;
+    height: 100%;
+}
 .seat{
     width: 90px;
     height: 90px;

@@ -3,16 +3,34 @@ function Person() {
     this.name = "zhangle";
 }
 var MODAL;
-window.onload = function () {
-     MODAL = new modal();
-    
+$(init);
+function init() {
+    new modal();
+    $("body").on("click",statusMachine);
+}
+function statusMachine(e) {
+    var tag = e.target;
+    switch(MODAL.default.status){
+        case "INIT":
+            MODAL.init(tag);
+            break;
+        case "DISCARD":
+            MODAL.initPlay(tag);
+            break;
+        case "GAMEOVER":
+            MODAL.end(tag);
+            break;
+        default:
+            break;
+    }
 }
 var modal = function () {
     var user = new Person();
     var ptrThis;
     var modalBox = {
         default:{
-            cards:[52,0,1,16,25,37,3,29,42]
+            cards:[52,0,1,16,25,37,3,29,42],
+            status:"INIT",
         },
         placeCards:function ($goal,cardArray,isDelay) {
             var $cards = $("<div>").addClass("cards");
@@ -131,11 +149,31 @@ var modal = function () {
             var $user = $(content);
             $(".bc").append($user);
         },
-        init:function () {
-            
+        insertImg:function ($this) {
+            var $img = $("<img>");
+            $img.attr({
+                src:window.scriptData.imgUrl
+            });
+            $this.empty();
+            $this.append($img);
+        },
+        init:function (tag) {
+            ptrThis = this;
+            var $tag = $(tag);
+            switch ($tag.data("tag")){
+                case "place":
+                    ptrThis.insertImg($tag);
+                    break;
+                default:
+                    console.log("吃屎去吧！");
+                    break;
+            }
+        },
+        end:function () {
+
         },
         initPlay:function () {
-            ptrThis = this;
+
             var isDrag;
             var overCount = 0;
             var index = [0,0,0];
@@ -212,6 +250,7 @@ var modal = function () {
 
         }
     }
+    MODAL = modalBox;
     return modalBox.init();
 
 }

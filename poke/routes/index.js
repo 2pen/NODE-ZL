@@ -8,9 +8,13 @@ var request = require('request');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('card', {
-
-  });
+  dbHelper.findUsrInfo(req, function (success, data) {
+    //console.log(data.friends);
+    res.render('card', {
+      user:data,
+      scriptData:JSON.stringify(data)
+    });
+  })
 });
 
 module.exports = router;

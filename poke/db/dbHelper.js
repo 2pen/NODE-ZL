@@ -68,63 +68,7 @@ exports.findUsrInfo = function (req, cb) {
         .exec(function (err,doc) {
         var doc = (doc !== null) ? doc.toObject() : '';
             //console.log(doc);
-        if(err){
-            cb(true,err);
-        }else {
-            //console.log(doc);
-            var index = 0;              //friends下标
-            async.eachSeries(doc.friends, function (item,callback) {
-                async.waterfall([
-
-
-                    function (done) {
-                        chatPerson.findOne({ $or: [{ personOne: doc._id, personTwo: item._id},  { personOne: item._id, personTwo: doc._id}] },
-                            function (err,history) {
-                                done(null, history);
-                            })
-                    },
-                    function (history, done) {
-                        if(history!=null){
-                            var opts = [
-                                {path:'personOne',select:'username'},
-                                {path:'personTwo',select:'username'},
-                                {path:'children.from',select:'username'},
-                                {path:'children.to',select:'username'}
-                            ];
-                            history.populate(opts, function(err, fuckyoubitch) {
-                                //console.log(fuckyoubitch);
-                                if(fuckyoubitch!=null){
-                                    doc.friends[index].chatHistory=fuckyoubitch;
-                                    //console.log("dbhelper"+index);
-                                    //console.log("dbhelper"+fuckyoubitch);
-                                }
-                                ++index;
-                                done(null, '');
-                            });
-                        }else{
-                            console.log("dbhelper"+index);
-                            ++index;
-                            done(null, '');
-                        }
-
-
-                    },
-
-                ], function (error, result) {
-                    callback();
-                })
-
-
-            },function (err) {
-                if(err){
-
-                }else{
-                    //console.log(doc);
-                    cb(true,doc);
-                }
-            });
-
-        }
+        cb(true,doc);
 
     })
 }
