@@ -149,20 +149,24 @@ var modal = function () {
             var $user = $(content);
             $(".bc").append($user);
         },
-        insertImg:function ($this) {
+        insertImg:function ($this,obj) {
             var $img = $("<img>");
             $img.attr({
-                src:window.scriptData.imgUrl
+                src:obj.imgUrl,
             });
+            $this.attr("data-id",obj.id);
             $this.empty();
             $this.append($img);
+        },
+        removeImg:function ($this) {
+            $this.empty();
         },
         init:function (tag) {
             ptrThis = this;
             var $tag = $(tag);
             switch ($tag.data("tag")){
                 case "place":
-                    ptrThis.insertImg($tag);
+                    socketFun.sit($tag);
                     break;
                 default:
                     console.log("吃屎去吧！");

@@ -63,6 +63,15 @@ exports.registerUsr = function (data,cb) {
     })
 
 }
+exports.findUsrById = function (id, cb) {
+    console.log(id);
+    User.findOne({_id:id}).exec(function (err,doc) {
+        //console.log(doc);
+        var doc = (doc !== null) ? doc.toObject() : '';
+        cb(true,doc);
+    })
+}
+
 exports.findUsrInfo = function (req, cb) {
     User.findOne({username:req.session.user.username}).populate({path:'friends',select:"username imgUrl"})
         .exec(function (err,doc) {
