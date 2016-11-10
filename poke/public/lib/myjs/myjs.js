@@ -6,7 +6,7 @@ var MODAL;
 $(init);
 function init() {
     new modal();
-    $("body").on("click",statusMachine);
+    //$("body").on("click",statusMachine);
 }
 function statusMachine(e) {
     var tag = e.target;
@@ -106,7 +106,7 @@ var modal = function () {
         clearCards:function () {
             $(".showCardLine").empty();
         },
-        drawothers:function () {
+        drawothers:function (objLeft,objRight) {
             var content = [
             '    <div class="others">',
             '        <div class="player leftPlayer">',
@@ -126,9 +126,15 @@ var modal = function () {
             '    </div>'
             ].join("");
             var $others = $(content);
+            $others.children(".leftPlayer").children(".otherPlayer").children().attr({
+                src:objLeft.imgUrl
+            });
+            $others.children(".rightPlayer").children(".otherPlayer").children().attr({
+                src:objRight.imgUrl
+            });
             $(".bc").append($others);
         },
-        drawuser:function () {
+        drawuser:function (obj) {
             var content = [
             '    <div class="user">',
             '        <div class="avatar">',
@@ -147,6 +153,9 @@ var modal = function () {
             '    </div>',
             ].join("");
             var $user = $(content);
+            $user.children(".avatar").children().attr({
+                src:obj.imgUrl
+            })
             $(".bc").append($user);
         },
         insertImg:function ($this,obj) {
@@ -161,8 +170,26 @@ var modal = function () {
         removeImg:function ($this) {
             $this.empty();
         },
-        init:function (tag) {
+        startGame:function (seats) {
+            MODAL.default.status = "DISCARD";
+            $(".bc").empty();
+            var myIndex;
+            for(var i = 0;i<3;++i){
+                if(seats[i].id==X._id){
+                   myIndex = i;
+                }
+            }
+            var leftIndex = ((myIndex-1)<0)?2:myIndex-1;
+            var rightIndex = ((myIndex+1)>2)?0:myIndex+1;
+            this.cardsSort(this.default.cards);                                       //按照花色,牌大小排序
+            this.drawothers(seats[leftIndex],seats[rightIndex]);
+            this.drawuser(seats[myIndex]);
+            this.placeCards($(".cardsLine"),this.default.cards,true);                                      //放置扑克
+            this.initPlay();
+        },
+        init:function () {
             ptrThis = this;
+            /*
             var $tag = $(tag);
             switch ($tag.data("tag")){
                 case "place":
@@ -172,6 +199,10 @@ var modal = function () {
                     console.log("吃屎去吧！");
                     break;
             }
+            */
+            $("body").on("click",".place",function (e) {
+                socketFun.sit($(this));
+            })
         },
         end:function () {
 
@@ -181,10 +212,10 @@ var modal = function () {
             var isDrag;
             var overCount = 0;
             var index = [0,0,0];
-            this.cardsSort(this.default.cards);                                       //按照花色,牌大小排序
-            this.drawothers();
-            this.drawuser();
-            this.placeCards($(".cardsLine"),this.default.cards,true);                                      //放置扑克
+
+
+
+
             $("body").on("mousedown",".cardsLine .cards .card",function (e) {
                 e.preventDefault();
                 overCount = 1;

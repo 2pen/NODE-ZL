@@ -6,17 +6,17 @@ body{
     margin: 0;
     font-family: "Helvetica Neue",Helvetica,"Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
     height: 100%;
-    background: url(/images/bizhi.jpeg) no-repeat center;
     -webkit-background-size: cover;
     background-size: cover;
     position: relative;
 }
 .bc{
     display: flex;
-    height: 100%;
     width: 100%;
     position: relative;
     flex-direction: column;
+    min-height: 100%;
+    background: url(/images/bizhi.jpeg) no-repeat center;
 }
 .selectTable{
     position:absolute;
