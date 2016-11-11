@@ -6,20 +6,18 @@ var MODAL;
 $(init);
 function init() {
     new modal();
-    //$("body").on("click",statusMachine);
+    $("body").on("click","#sendCards",statusMachine);
 }
-function statusMachine(e) {
-    var tag = e.target;
+function statusMachine() {
     switch(MODAL.default.status){
-        case "INIT":
-            MODAL.init(tag);
-            break;
         case "DISCARD":
-            MODAL.initPlay(tag);
+            MODAL.preSend();
+            break;
+        case "WAITNG":
+            MODAL.notYourTurn();
             break;
         case "GAMEOVER":
-            MODAL.end(tag);
-            break;
+            MODAL.readyGame();
         default:
             break;
     }
@@ -27,10 +25,15 @@ function statusMachine(e) {
 var modal = function () {
     var user = new Person();
     var ptrThis;
+    
     var modalBox = {
         default:{
             cards:[52,0,1,16,25,37,3,29,42],
-            status:"INIT",
+            status:"",
+            myIndex:0,
+            leftIndex:0,
+            rightIndex:0,
+            turn:0
         },
         placeCards:function ($goal,cardArray,isDelay) {
             var $cards = $("<div>").addClass("cards");
@@ -46,7 +49,7 @@ var modal = function () {
                             $card.attr({
                                 index:array[i]
                             });
-                            console.log("x坐标:"+array[i]%13+"   y坐标"+Math.floor(array[i]/13));
+                            //console.log("x坐标:"+array[i]%13+"   y坐标"+Math.floor(array[i]/13));
 
                             $cards.append($card);
                         },i*300);
@@ -58,7 +61,7 @@ var modal = function () {
                         $card.attr({
                             index:array[i]
                         });
-                        console.log("x坐标:"+array[i]%13+"   y坐标"+Math.floor(array[i]/13));
+                        //console.log("x坐标:"+array[i]%13+"   y坐标"+Math.floor(array[i]/13));
 
                         $cards.append($card);
                     }
@@ -66,6 +69,7 @@ var modal = function () {
                 })(i);
 
             }
+            $goal.empty();
             $goal.append($cards);
         },
         comp:function (a,b) {
@@ -91,17 +95,52 @@ var modal = function () {
         cardsSort:function (cards) {
             cards.sort(this.comp);
         },
-        sendCards:function () {
-            var array = new Array();
-            $(".showCardLine").empty();
+        removeCards:function () {
+
             $(".cardsLine .card").each(function () {
                 if($(this).hasClass("select")){
-                    array.push($(this).attr("index"));
                     $(this).remove();
                 }
             })
-            ptrThis.cardsSort(array);
-            ptrThis.placeCards($(".showCardLine"),array,false);
+
+
+        },
+        justifyWhich:function (obj) {
+            var $goal;
+            console.log("posterIndex"+obj.posterIndex);
+            console.log("array"+obj.array);
+
+            switch(obj.posterIndex){
+                case MODAL.default.myIndex:
+                    ptrThis.removeCards();
+                    $goal = $(".showCardLine");
+                    break;
+                case MODAL.default.leftIndex:
+                    $goal = $(".leftPlayer").children(".otherCards");
+                    break;
+                case MODAL.default.rightIndex:
+                    $goal = $(".rightPlayer").children(".otherCards");
+                    break;
+                default:
+                    break;
+            }
+
+            ptrThis.placeCards($goal,obj.array,false);
+            MODAL.default.turn = (MODAL.default.turn+1)%3;
+            console.log("Now turn is"+MODAL.default.turn);
+            if(MODAL.default.turn==MODAL.default.myIndex){
+                MODAL.default.status = "DISCARD";
+            }else{
+                MODAL.default.status = "WAITNG"
+            }
+            if(obj.sendOut){
+                if(obj.posterIndex==MODAL.default.myIndex){
+                    ptrThis.end(true);
+                }else{
+                    ptrThis.end(false);
+                }
+
+            }
         },
         clearCards:function () {
             $(".showCardLine").empty();
@@ -171,21 +210,40 @@ var modal = function () {
             $this.empty();
         },
         startGame:function (seats) {
-            MODAL.default.status = "DISCARD";
+
             $(".bc").empty();
-            var myIndex;
+
+
             for(var i = 0;i<3;++i){
                 if(seats[i].id==X._id){
-                   myIndex = i;
+                   MODAL.default.myIndex = i;
                 }
             }
-            var leftIndex = ((myIndex-1)<0)?2:myIndex-1;
-            var rightIndex = ((myIndex+1)>2)?0:myIndex+1;
+            if(MODAL.default.myIndex==0){
+                MODAL.default.status = "DISCARD";
+            }else{
+                MODAL.default.status = "WAITNG"
+            }
+            MODAL.default.leftIndex = ((MODAL.default.myIndex-1)<0)?2:MODAL.default.myIndex-1;
+            MODAL.default.rightIndex = ((MODAL.default.myIndex+1)>2)?0:MODAL.default.myIndex+1;
             this.cardsSort(this.default.cards);                                       //按照花色,牌大小排序
-            this.drawothers(seats[leftIndex],seats[rightIndex]);
-            this.drawuser(seats[myIndex]);
+            this.drawothers(seats[MODAL.default.leftIndex],seats[MODAL.default.rightIndex]);
+            this.drawuser(seats[MODAL.default.myIndex]);
             this.placeCards($(".cardsLine"),this.default.cards,true);                                      //放置扑克
             this.initPlay();
+        },
+        preSend:function () {
+            var array  = new Array();
+            $(".cardsLine .card").each(function () {
+                if($(this).hasClass("select")){
+                    array.push($(this).attr("index"));
+                }
+            })
+            socketFun.sendCards(array);
+            //ptrThis.sendCards();
+        },
+        notYourTurn:function () {
+            alert("Not Your Turn!Please Wait!");
         },
         init:function () {
             ptrThis = this;
@@ -204,9 +262,61 @@ var modal = function () {
                 socketFun.sit($(this));
             })
         },
-        end:function () {
-
+        end:function (isWin) {
+            MODAL.default.status = "GAMEOVER";
+            ptrThis.gameover(isWin);
         },
+        reStart:function (array) {
+            this.default.cards = array;
+            this.cardsSort(this.default.cards);                                       //按照花色,牌大小排序
+            this.placeCards($(".cardsLine"),this.default.cards,true);                                      //放置扑克
+            this.default.turn = 0;
+            if(MODAL.default.myIndex==0){
+                MODAL.default.status = "DISCARD";
+            }else{
+                MODAL.default.status = "WAITNG"
+            }
+            $("#sendCards").removeClass("ready");
+            $("#sendCards").removeClass("button-highlight");
+            $("#sendCards").addClass("button-primary");
+            $("#sendCards").text("出牌");
+        },
+        readyGame:function () {
+            if(!$("#sendCards").hasClass("ready")){
+                $("#sendCards").addClass("ready");
+                $("#sendCards").addClass("button-highlight");
+                $("#sendCards").removeClass("button-primary");
+                $("#sendCards").text("取消");
+                var obj = {
+                    index:MODAL.default.myIndex,
+                    isReady:true
+                }
+                socketFun.readyMsg(obj);
+            }else{
+                $("#sendCards").removeClass("ready");
+                $("#sendCards").removeClass("button-highlight");
+                $("#sendCards").addClass("button-primary");
+                $("#sendCards").text("准备");
+                var obj = {
+                    index:MODAL.default.myIndex,
+                    isReady:false
+                }
+                socketFun.readyMsg(obj);
+            }
+        },
+        gameover:function (isWin) {
+            $("#sendCards").text("准备");
+            if(isWin){
+                alert("You Win!");
+            }else{
+                alert("You Lose!");
+            }
+            $(".showCardLine").empty();
+            $(".cardsLine").empty();
+            $(".leftPlayer").children(".otherCards").empty();
+            $(".rightPlayer").children(".otherCards").empty();
+        },
+
         initPlay:function () {
 
             var isDrag;
@@ -225,10 +335,9 @@ var modal = function () {
                 }
                 ptrThis.toggleCard($(this));
             })
-            $("body").on("click","#sendCards",function () {
-                ptrThis.sendCards();
-            })
+
             $("body").on("click","#clearCards",function () {
+
                 ptrThis.clearCards();
             })
             $("body").mousedown(function (e) {
@@ -278,7 +387,7 @@ var modal = function () {
                     ptrThis.toggleCard($(this));
                 }
 
-                console.log($(this).index());
+                //console.log($(this).index());
 
             })
 

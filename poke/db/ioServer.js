@@ -20,8 +20,8 @@ var ioServer = function () {
                             imgUrl:doc.imgUrl,
                             index:item
                         }
-                        console.log(item);
-                        console.log(obj);
+                        //console.log(item);
+                        //console.log(obj);
                         callback();
                     })
                 }else{
@@ -45,7 +45,8 @@ var ioServer = function () {
                     seats[obj.index] = {
                         isSit:1,
                         id:obj.id,
-                        imgUrl:doc.imgUrl
+                        imgUrl:doc.imgUrl,
+                        isReady:false
                     };
                     socket.broadcast.emit("playerSit",msg);
                     socket.emit("playerSit",msg);
@@ -70,7 +71,7 @@ var ioServer = function () {
                         ++count;
                     }
                 }
-                console.log(users);
+                //console.log(users);
 
                 if(count==3){
                     for(var i = 0;i<3;++i){
@@ -78,9 +79,35 @@ var ioServer = function () {
                     }
 
                 }
-                console.log(seats);
+                //console.log(seats);
 
             })
+        })
+        socket.on("postCards",function (obj) {
+            console.log(obj);
+            if(obj.sendOut){
+                for(var i = 0;i<3;++i){
+                    seats[i].isReady=false;
+                }
+            }
+            for(var i = 0;i<3;++i){
+                    users[seats[i].id].emit("postCards",obj);
+            }
+        })
+        socket.on("readyMsg",function (obj) {
+            seats[obj.index].isReady = obj.isReady;
+            var count = 0;
+            for(var i = 0;i<3;++i){
+                if(seats[i].isReady==true){
+                    ++count;
+                }
+            }
+            if(count==3){
+                for(var i = 0;i<3;++i){
+                    users[seats[i].id].emit("reStart",[52,0,1,16,25,37,3,29,42]);
+                }
+            }
+            console.log(seats);
         })
     })
 }

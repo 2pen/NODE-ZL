@@ -20,6 +20,13 @@ var X = window.scriptData;                          //截取服务器发送过�
     socket.on("gameStart",function (seats) {
         MODAL.startGame(seats);
     })
+    socket.on("postCards",function (obj) {
+
+        MODAL.justifyWhich(obj);
+    })
+    socket.on("reStart",function (array) {
+        MODAL.reStart(array);
+    })
 var socketFun = {
     sit:function ($this) {
         /*
@@ -37,6 +44,23 @@ var socketFun = {
         console.log(obj);
         socket.emit("sitSeat",obj);
     },
-
+    sendCards:function (array) {
+        var sendOut;
+        if(($(".cardsLine .cards").children().length-array.length)==0){
+            sendOut = true;
+        }else{
+            sendOut = false;
+        }
+        var obj = {
+            array:array,
+            posterIndex:MODAL.default.myIndex,
+            sendOut:sendOut
+        }
+        socket.emit("postCards",obj);
+    },
+    readyMsg:function (obj) {
+        socket.emit("readyMsg",obj);
+    }
+    
 }
     
