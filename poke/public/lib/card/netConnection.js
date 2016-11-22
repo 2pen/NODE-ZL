@@ -17,15 +17,21 @@ var X = window.scriptData;                          //截取服务器发送过�
             MODAL.insertImg($(".seat").eq(obj[key].index).children(),obj[key]);
         }
     })
-    socket.on("gameStart",function (seats) {
-        MODAL.startGame(seats);
+    socket.on("gameStart",function (obj,turn) {
+        MODAL.startGame(obj,turn);
     })
     socket.on("postCards",function (obj) {
 
         MODAL.justifyWhich(obj);
     })
-    socket.on("reStart",function (array) {
-        MODAL.reStart(array);
+    socket.on("reStart",function (array,turn) {
+        MODAL.reStart(array,turn);
+    })
+    socket.on("giveup",function (giupCount) {
+        MODAL.giveUpReply(giupCount);
+    })
+    socket.on("renshu",function (seats) {
+        MODAL.someOneTouXiang(seats);
     })
 var socketFun = {
     sit:function ($this) {
@@ -60,6 +66,12 @@ var socketFun = {
     },
     readyMsg:function (obj) {
         socket.emit("readyMsg",obj);
+    },
+    giveUp:function () {
+        socket.emit("giveup");
+    },
+    touxiang:function (index) {
+        socket.emit("touxiang",index)
     }
     
 }

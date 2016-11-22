@@ -95,6 +95,13 @@ body{
     align-items: center;
     flex: 0 1 200px;
     justify-content: space-around;
+    flex-direction: column;
+    justify-content: center;
+}
+.otherPlayer span{
+    color: white;
+    font-weight: 900;
+    margin-top: 20px;
 }
 .otherCards{
     display: flex;
@@ -486,11 +493,15 @@ body{
     border-radius: 20px;
     margin-top: 50px;
     margin-left: 100px;
-
+    flex-direction: column;
+}
+.avatar span{
+    font-weight: 900;
+    color: white;
 }
 .sendCards{
     width: 150px;
-    height: 150px;
+    height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
