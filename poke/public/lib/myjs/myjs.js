@@ -1,7 +1,4 @@
-function Person() {
-    this.imgUrl = "/images/doge.jpg";
-    this.name = "zhangle";
-}
+
 var MODAL;
 $(init);
 function init() {
@@ -24,7 +21,6 @@ function statusMachine() {
     }
 }
 var modal = function () {
-    var user = new Person();
     var ptrThis;
     
     var modalBox = {
