@@ -7,10 +7,12 @@ var async = require('async');
 var md = webHelper.Remarkable();
 var _ = require('underscore');
 var dbHelper = require('../db/dbHelper');
+var Answers = require('../db/schema/answers');
+var Subjects = require('../db/schema/subjects');
 
 exports.findUsr = function (data,cb) {
     User.findOne({
-        username:data.usr
+        userId:data.usrId
     },function (err,doc) {
         var user = (doc!==null)? doc.toObject() : '';
 
@@ -18,13 +20,18 @@ exports.findUsr = function (data,cb) {
             console.log(err)
         }else if(doc===null){
             entries.code = 99;
-            entries.msg='用户名错误！';
+            entries.msg='学号错误！';
             cb(false,entries);
         }else if(user.password!==data.pwd){
             entries.code = 99;
             entries.msg='密码错误！';
             cb(false,entries);
-        }else if(user.password===data.pwd){
+        }else if(user.identity!==data.identify){
+            entries.code = 99;
+            entries.msg='身份错误！';
+            cb(false,entries);
+        }
+        else if(user.password===data.pwd){
             entries.data = user;
             entries.code=0;
             cb(true,entries);
@@ -34,7 +41,7 @@ exports.findUsr = function (data,cb) {
 }
 exports.registerUsr = function (data,cb) {
     User.findOne({
-        username:data.usr
+        userId:data.usrId
     },function (err,doc) {
         if(doc){
             entries.code = 99;
@@ -42,7 +49,7 @@ exports.registerUsr = function (data,cb) {
             cb(true,entries);
         }else{
             var User1 = new User({
-                username     :data.usr,
+                userId     :data.usrId,
                 password      :data.pwd,
 
             })
@@ -72,13 +79,30 @@ exports.findUsrById = function (id, cb) {
 }
 
 exports.findUsrInfo = function (req, cb) {
-    User.findOne({username:req.session.user.username}).populate({path:'friends',select:"username imgUrl"})
-        .exec(function (err,doc) {
-        var doc = (doc !== null) ? doc.toObject() : '';
-            //console.log(doc);
-        cb(true,doc);
-
+    Subjects.findOne({course:"JAVA"}).exec(function (err,doc) {
+        Answers.findOne({user:req.session.user._id,subject:doc._id}).exec(function (err,answer) {
+            var data={};
+            data.identify = "student";
+            data.subject = doc;
+            data.answer = answer;
+            cb(true,data)
+        })
     })
+}
+exports.findStudentsInfo = function (req,cb) {
+    Answers.find({}).populate({path:'user',select:"userId username status"})
+        .exec(function (err,doc) {
+            var data = {};
+
+            data.students = doc;
+            Subjects.findOne({}).exec(function (err,doc) {
+                data.subject = doc;
+                data.identify = "teacher";
+                cb(true,data);
+                console.log(data);
+            })
+
+        })
 }
 
 

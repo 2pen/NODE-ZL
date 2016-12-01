@@ -1,0 +1,25 @@
+<div class="navBar">
+    <div class="navBar-Content">
+        <span>Online Test Site</span>
+        <span style="align-self: flex-end;font-size:16px;margin-bottom: 10px;">For Student</span>
+    </div>
+</div>
+<div class="bc">
+    <div class="studentViews">
+    {{#each students}}
+        <div class="studentInfo {{user.status}}">
+            <span class="studentName">{{user.username}}</span>
+            <span class="studentId">{{user.userId}}</span>
+        </div>
+    {{/each}}
+
+    </div>
+</div>
+<script>
+    window.scriptData = JSON.stringify({{{scriptData}}});
+    window.scriptData=eval("("+window.scriptData+")");//转换为json对象
+    console.log(window.scriptData);
+</script>
+<script src="/lib/netConnection/netConnection.js"></script>
+<script src="/lib/myjs/mainjs.js"></script>
+<script src="/lib/myjs/teacherjs.js"></script>

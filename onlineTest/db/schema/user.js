@@ -2,14 +2,11 @@ var mongoose = require('../db');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
+    userId:String,
     username: String,
     password: String,
-    email:    String,
-    address:  String,
-    imgUrl:String,
-    friends:[{type:Schema.Types.ObjectId, ref:'User' }],
-    following:[{type:Schema.Types.ObjectId,ref:'User'}],
-    followed:[{type:Schema.Types.ObjectId,ref:'User'}],
+    status:String,
+    identity:String,
     meta: {
         updateAt: {type:Date, default: Date.now()},
         createAt: {type:Date, default: Date.now()}

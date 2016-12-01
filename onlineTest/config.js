@@ -8,7 +8,7 @@ var Config = {
         cookieSecret:'frontendblog',
         name:'wechat',
         host:'localhost',
-        url:'mongodb://127.0.0.1:27017/blog'
+        url:'mongodb://127.0.0.1:27017/onlineTest'
     },
     site: {
         path:'',

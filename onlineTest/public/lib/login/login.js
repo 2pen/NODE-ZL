@@ -6,14 +6,21 @@ function init() {
 }
 
 function doLogin() {
+    var goal;
+    if($(".chooseIdentity").eq(0).children("input").is(':checked')){
+        goal = "student";
+    }else{
+        goal = "teacher";
+    }
     $.ajax({
         type:"POST",
         url:"/login",
         contentType:"application/json",
         dataType:"json",
         data:JSON.stringify({
-            'usr':$("#usr").val(),
-            'pwd':$("#pwd").val()
+            'usrId':$("#usr").val(),
+            'pwd':$("#pwd").val(),
+            'identify':goal,
         }),
         success:function (result) {
             console.log(result);
@@ -21,25 +28,32 @@ function doLogin() {
                 $(".login-box-msg").text(result.msg);
                 $(".login-box-msg").css('padding-bottom','0');
             }else{
-                $.cookie('username', result.data.username, {expires:30});
+                $.cookie('username',result.data.username,{expires:30})
+                $.cookie('userId', result.data.userId, {expires:30});
                 $.cookie('password', result.data.password, {expires:30});
-                $.cookie('imgurl', result.data.imgUrl, {expires:30});
                 $.cookie('id', result.data._id, {expires:30});
-                location.href = "/student";
+                location.href = "/"+goal;
             }
         }
     })
     
 }
 function doRegister() {
+    var goal;
+    if($(".chooseIdentity").eq(0).children("input").is(':checked')){
+        goal = "student";
+    }else{
+        goal = "teacher";
+    }
     $.ajax({
         type:"POST",
         url:"/login/register",
         contentType:"application/json",
         dataType:"json",
         data:JSON.stringify({
-            'usr':$("#usr").val(),
-            'pwd':$("#pwd").val()
+            'usrId':$("#usr").val(),
+            'pwd':$("#pwd").val(),
+            'identify':goal,
         }),
         success:function (result) {
             console.log(result);
@@ -47,11 +61,11 @@ function doRegister() {
                 $(".login-box-msg").text(result.msg);
                 $(".login-box-msg").css('padding-bottom','0');
             }else{
-                $.cookie('username', result.data.username, {expires:30});
+                $.cookie('username',result.data.username,{expires:30})
+                $.cookie('userId', result.data.userId, {expires:30});
                 $.cookie('password', result.data.password, {expires:30});
-                $.cookie('imgurl', result.data.imgUrl, {expires:30});
                 $.cookie('id', result.data._id, {expires:30});
-                location.href = "/";
+                location.href = "/"+goal;
             }
         }
     })
